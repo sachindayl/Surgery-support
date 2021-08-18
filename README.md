@@ -1,6 +1,6 @@
-# app
+# Food Delivery Merchant
 
-Food Delivery merchant portal
+The merchant app provides access to Admins, Store managers, Cooks, Drivers, Waiters.
 
 ## Getting Started
 

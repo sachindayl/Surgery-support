@@ -1,0 +1,31 @@
+abstract class Constants {
+  static const String isLoggedIn = 'is_logged_in';
+  static const String email = 'email';
+  static const String password = 'password';
+  static const String displayName = 'display_name';
+  static const String emptyString = '';
+  static const String space = ' ';
+  static const String activityId = 'activity_id';
+  static const String isShop = 'isShop';
+  static const String italyAreaCode = '+39';
+  static const String euro = '€';
+  static const String hash = '#';
+  static const String main = "main";
+  static const String delivery = 'delivery';
+  static const String takeAway = 'takeaway';
+  static const String inApproval = 'approval';
+  static const String prepConfirmed = 'preparation';
+  static const String processed = 'processed';
+  static const String cancelled = 'cancelled';
+  static const String completed = 'completed';
+  static const String refused = 'refused';
+  static const String deliveryImagePath = 'assets/images/delivery.png';
+  static const String takeAwayImagePath = 'assets/images/shopping.png';
+  static const String monday = "monday";
+  static const String tuesday = "tuesday";
+  static const String wednesday = "wednesday";
+  static const String thursday = "thursday";
+  static const String friday = "friday";
+  static const String saturday = "saturday";
+  static const String sunday = "sunday";
+}
