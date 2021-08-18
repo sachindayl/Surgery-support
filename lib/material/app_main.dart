@@ -1,8 +1,8 @@
-import 'package:app/material/views/login_view.dart';
-import 'package:app/shared/viewmodels/login_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:surgery_support/material/views/login_view.dart';
+import 'package:surgery_support/shared/viewmodels/login_viewmodel.dart';
 
 class MaterialAppMain extends StatelessWidget {
   // This widget is the root of your application.

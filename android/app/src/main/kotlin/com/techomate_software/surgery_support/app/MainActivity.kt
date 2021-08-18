@@ -1,4 +1,4 @@
-package com.digitalyogin.food_delivery_merchant.app
+package com.technomate_software.surgery_support.app
 
 import io.flutter.embedding.android.FlutterActivity
 

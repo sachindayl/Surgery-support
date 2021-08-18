@@ -1,6 +1,6 @@
-# Food Delivery Merchant
+# Surgery Support App
 
-The merchant app provides access to Admins, Store managers, Cooks, Drivers, Waiters.
+This app is for supporting surgery services of Army Hospital Narahenpita
 
 ## Getting Started
 
