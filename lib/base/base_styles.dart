@@ -1,13 +1,14 @@
 import 'dart:ui';
 
 abstract class Styles {
-  static const Color primaryColor = Color(0xff30D158);
-  static const Color accentColor = Color(0xff25C24C);
-  static const Color primaryColorDark = Color(0xff21C94B);
+  static const Color primaryColor = Color(0xff0077B6);
+  static const Color accentColor = Color(0xff00B4D8);
+  static const Color primaryColorDark = Color(0xff03045E);
   static const Color white = Color(0xffFFFFFF);
   static const Color black = Color(0xff000000);
   static const Color navbarWhite = Color(0xffF9F8F8);
-  static const Color backgroundColor = Color(0xffF7F5F2);
+  static const Color backgroundColor = Color(0xffCAF0F8);
+  static const Color cardColor = Color(0xffFFFFFF);
 
   static const double fontSize30 = 30.0;
   static const double fontSize25 = 25.0;

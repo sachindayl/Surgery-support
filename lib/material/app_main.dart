@@ -11,7 +11,7 @@ class MaterialAppMain extends StatelessWidget {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => LoginViewModel())],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Surgery Support',
         theme: ThemeData(
           // This is the theme of your application.
           //
