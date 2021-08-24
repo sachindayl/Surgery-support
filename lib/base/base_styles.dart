@@ -9,6 +9,7 @@ abstract class Styles {
   static const Color navbarWhite = Color(0xffF9F8F8);
   static const Color backgroundColor = Color(0xffCAF0F8);
   static const Color cardColor = Color(0xffFFFFFF);
+  static const Color unselectedTextColor = Color(0xffA1A1A1);
 
   static const double fontSize42 = 42.0;
   static const double fontSize36 = 36.0;
