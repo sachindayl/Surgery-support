@@ -10,6 +10,7 @@ abstract class MaterialStyles {
       accentColor: Styles.accentColor,
       primaryColorDark: Styles.primaryColorDark,
       visualDensity: VisualDensity.adaptivePlatformDensity,
+      iconTheme: IconThemeData(color: Styles.primaryColor),
       textTheme: TextTheme(
           headline1: TextStyle(
               fontSize: Styles.fontSize30,
@@ -52,7 +53,7 @@ abstract class MaterialStyles {
               fontWeight: Styles.fontWeightNormal,
               color: Styles.black.withOpacity(Styles.opacity64)),
           button: TextStyle(fontSize: Styles.fontSize21, color: Colors.grey)),
-      backgroundColor: Styles.white,
+      backgroundColor: Styles.backgroundColor,
       disabledColor: Styles.unselectedTextColor,
       cardColor: Styles.white,
       unselectedWidgetColor: Styles.unselectedTextColor);

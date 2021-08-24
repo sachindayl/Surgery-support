@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:surgery_support/material/views/login_view.dart';
+import 'package:surgery_support/material/views/login/login_view.dart';
 import 'package:surgery_support/shared/viewmodels/login_viewmodel.dart';
+import 'package:surgery_support/shared/viewmodels/main_container_viewmodel.dart';
 
 import 'material_styles.dart';
 
@@ -11,7 +12,10 @@ class MaterialAppMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => LoginViewModel())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => LoginViewModel()),
+        ChangeNotifierProvider(create: (_) => MainContainerViewModel()),
+      ],
       child: MaterialApp(
         title: 'Surgery Support',
         theme: MaterialStyles.lightTheme,

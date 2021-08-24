@@ -1,33 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:surgery_support/base/base_styles.dart';
+import 'package:surgery_support/material/views/main_container/main_container.dart';
 import 'package:surgery_support/material/widgets/bordered_text_field.dart';
 
-import '../material_styles.dart';
+import '../../material_styles.dart';
 
 class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
-          child: Container(
-      color: Styles.primaryColor,
-      alignment: Alignment.center,
-      child: Column(
-           mainAxisSize: MainAxisSize.min,
+      child: Container(
+        color: Styles.primaryColor,
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Flexible(
               fit: FlexFit.loose,
               child: Container(
                 color: Styles.primaryColor,
-                child: SizedBox(height: 250,),
+                child: SizedBox(
+                  height: 250,
+                ),
               ),
             ),
             Flexible(
               fit: FlexFit.loose,
               child: Container(
                 width: double.infinity,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24.0, vertical: 48.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0, vertical: 48.0),
                 decoration: BoxDecoration(
                     color: Styles.white,
                     borderRadius:
@@ -47,7 +50,7 @@ class LoginView extends StatelessWidget {
                     ),
                     Container(
                       alignment: Alignment.centerLeft,
-                      padding: const EdgeInsets.only(top: 16),
+                      padding: const EdgeInsets.only(top: 8),
                       child: Text(
                         'Sign in to continue',
                         style: TextStyle(
@@ -87,7 +90,9 @@ class LoginView extends StatelessWidget {
                                 color: MaterialStyles.lightTheme.primaryColor),
                           )),
                           ElevatedButton(
-                            onPressed: () => '',
+                            onPressed: () => Navigator.of(context)
+                                .pushReplacement(MaterialPageRoute(
+                                    builder: (context) => MainContainer())),
                             child: Icon(
                               Icons.arrow_right_alt_rounded,
                               color: Styles.white,
@@ -105,8 +110,8 @@ class LoginView extends StatelessWidget {
               ),
             )
           ],
+        ),
       ),
-    ),
-        ));
+    ));
   }
 }
