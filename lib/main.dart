@@ -22,7 +22,7 @@ Future<void> main() async {
     };
 
     runApp(EasyLocalization(
-        supportedLocales: [Locale('en', 'US'), Locale('it', 'IT')],
+        supportedLocales: [Locale('en', 'US'), Locale('si', 'LK')],
         path: 'assets/translations',
         fallbackLocale: Locale('en', 'US'),
         child: app));

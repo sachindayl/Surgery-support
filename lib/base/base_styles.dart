@@ -9,7 +9,10 @@ abstract class Styles {
   static const Color navbarWhite = Color(0xffF9F8F8);
   static const Color backgroundColor = Color(0xffCAF0F8);
   static const Color cardColor = Color(0xffFFFFFF);
+  static const Color unselectedTextColor = Color(0xffA1A1A1);
 
+  static const double fontSize42 = 42.0;
+  static const double fontSize36 = 36.0;
   static const double fontSize30 = 30.0;
   static const double fontSize25 = 25.0;
   static const double fontSize21 = 21.0;
@@ -22,6 +25,7 @@ abstract class Styles {
   static const FontWeight fontWeightBold = FontWeight.bold;
   static const FontWeight fontWeightSemiBold = FontWeight.w600;
   static const FontWeight fontWeightNormal = FontWeight.normal;
+  static const FontWeight fontWeightLight = FontWeight.w300;
 
   static const double opacity87 = 0.87;
   static const double opacity64 = 0.64;
