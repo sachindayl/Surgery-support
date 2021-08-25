@@ -57,4 +57,6 @@ abstract class MaterialStyles {
       disabledColor: Styles.unselectedTextColor,
       cardColor: Styles.white,
       unselectedWidgetColor: Styles.unselectedTextColor);
+
+  static final double iconSizedBoxWidth = 50.0;
 }

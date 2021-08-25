@@ -7,9 +7,8 @@ class FormFieldDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
-      padding: const EdgeInsets.only(top: 8.0),
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
           border: OutlineInputBorder(),
