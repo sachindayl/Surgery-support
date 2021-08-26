@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class FormFieldDropdown extends StatelessWidget {
   final String label;
+  final List<String> listItems;
 
-  FormFieldDropdown({required this.label});
+  FormFieldDropdown({required this.label, required this.listItems});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class FormFieldDropdown extends StatelessWidget {
           border: OutlineInputBorder(),
           labelText: label,
         ),
-        items: <String>['A', 'B', 'C', 'D'].map((String value) {
+        items: listItems.map((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(value),

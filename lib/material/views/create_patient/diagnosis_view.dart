@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:surgery_support/base/base_styles.dart';
 import 'package:surgery_support/material/widgets/custom_date_picker.dart';
@@ -21,25 +21,26 @@ class DiagnosisView extends StatelessWidget {
         title: Text('Create patient'),
       ),
       body: SafeArea(
-          child: Container(
+          child: SingleChildScrollView(
+            child: Container(
         padding:
-            const EdgeInsets.symmetric(horizontal: Styles.horizontalPadding),
+              const EdgeInsets.symmetric(horizontal: Styles.horizontalPadding, vertical: 8.0),
         child: Column(
-          children: [
-            FormTitle(title: 'Diagnosis information'),
-            Padding(
-              padding: const EdgeInsets.only(top: 24.0),
-              child: FormRow(
-                  icon: Icon(Icons.assessment_outlined),
-                  formField: CustomTextFormField(
-                    label: 'Indication/diagnosis',
-                  )),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: FormRow(
-                formField: Consumer<CreatePatientViewmodel>(
-                  builder: (context, viewModel, child) {
+            children: [
+              FormTitle(title: 'Diagnosis information'),
+              Padding(
+                padding: const EdgeInsets.only(top: 24.0),
+                child: FormRow(
+                    icon: Icon(Icons.assessment_outlined),
+                    formField: CustomTextFormField(
+                      label: 'Indication/diagnosis',
+                    )),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: FormRow(
+                  formField: Consumer<CreatePatientViewmodel>(
+                      builder: (context, viewModel, child) {
                     return TextFormField(
                         controller: _dateController,
                         decoration: InputDecoration(
@@ -49,73 +50,129 @@ class DiagnosisView extends StatelessWidget {
                         readOnly: true,
                         onTap: () async => await CustomDatePicker(
                                 selectedDate: viewModel.selectedDiagnosisDate,
-                                newDateCallback: (newDate) =>
-                                    viewModel.setDiagnosisDate(newDate))
+                                newDateCallback: (newDate) {
+                                  var inputFormat = DateFormat('dd/MM/yyyy');
+                                  _dateController.text =
+                                      inputFormat.format(newDate);
+                                  viewModel.setDiagnosisDate(newDate);
+                                },
+                                firstDate: DateTime(1990, 1),
+                                lastDate: DateTime.now())
                             .build(context));
-                  }
+                  }),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: FormRow(
-                formField: FormFieldDropdown(
-                  label: 'Procedure',
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: FormRow(
+                  formField: Consumer<CreatePatientViewmodel>(
+                      builder: (context, viewModel, child) {
+                    return FormFieldDropdown(
+                      label: 'Procedure',
+                      listItems: viewModel.procedureList,
+                    );
+                  }),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 12.0),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: MaterialStyles.iconSizedBoxWidth,
-                  ),
-                  Expanded(
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: MaterialStyles.iconSizedBoxWidth,
+                      child: Icon(Icons.outbond_outlined),
+                    ),
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4.0),
+                              border: Border.all(color: Styles.black.withOpacity(Styles.opacity51))
+                        ),
+                        child: ListTile(
+                          title: Text('Outside', style: TextStyle(color: Styles.black.withOpacity(Styles.opacity64)),),
+                          trailing: Checkbox(value: true, onChanged: (value) {}),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: FormRow(
+                    icon: Icon(Icons.cut),
+                    formField: CustomTextFormField(
+                      label: 'Surgery',
+                    )),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: FormRow(
+                  formField: Consumer<CreatePatientViewmodel>(
+                      builder: (context, viewModel, child) {
+                    return FormFieldDropdown(
+                      label: 'Surgery type',
+                      listItems: viewModel.surgeryTypeList,
+                    );
+                  }),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: FormRow(
+                  icon: Icon(Icons.priority_high),
+                  formField: Consumer<CreatePatientViewmodel>(
+                      builder: (context, viewModel, child) {
+                    return FormFieldDropdown(
+                      label: 'Priority',
+                      listItems: viewModel.priorityList,
+                    );
+                  }),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: FormRow(
+                    icon: Icon(Icons.notes),
+                    formField: CustomTextFormField(
+                      label: 'Remarks',
+                    )),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 24.0),
+                child: Row(
+                  children: [
+                    Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Text(
-                    'Outside',
-                    style: TextStyle(fontSize: Styles.fontSize16),
-                  )),
-                  Checkbox(value: true, onChanged: (value) {}),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: FormRow(
-                  icon: Icon(Icons.cut),
-                  formField: CustomTextFormField(
-                    label: 'Surgery',
-                  )),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: FormRow(
-                formField: FormFieldDropdown(
-                  label: 'Surgery type',
+                        'Create',
+                        style: TextStyle(
+                            fontSize: Styles.fontSize21,
+                            fontWeight: Styles.fontWeightSemiBold,
+                            color: MaterialStyles.lightTheme.primaryColor),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => DiagnosisView())),
+                      child: Icon(
+                        Icons.save,
+                        color: Styles.white,
+                      ),
+                      style: ElevatedButton.styleFrom(
+                          primary: Styles.accentColor,
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(16.0)),
+                    )
+                  ],
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: FormRow(
-                icon: Icon(Icons.priority_high),
-                formField: FormFieldDropdown(
-                  label: 'Priority',
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: FormRow(
-                  icon: Icon(Icons.notes),
-                  formField: CustomTextFormField(
-                    label: 'Remarks',
-                  )),
-            ),
-          ],
+            ],
         ),
-      )),
+      ),
+          )),
     );
   }
 }

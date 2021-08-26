@@ -10,7 +10,7 @@ class FormTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.only(top: 24.0),
+      padding: const EdgeInsets.only(top: 16.0),
       child: Text(
         title,
         style: TextStyle(
