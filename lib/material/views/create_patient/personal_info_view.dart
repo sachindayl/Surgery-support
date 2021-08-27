@@ -25,8 +25,8 @@ class PersonalInfoView extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: Styles.horizontalPadding),
+            padding: const EdgeInsets.symmetric(
+                horizontal: Styles.horizontalPadding),
             child: Column(
               children: [
                 FormTitle(
@@ -77,10 +77,12 @@ class PersonalInfoView extends StatelessWidget {
                       ),
                       Flexible(
                         child: Container(
-                          margin: const EdgeInsets.only(right: 4.0 ),
+                          margin: const EdgeInsets.only(right: 4.0),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(4.0),
-                              border: Border.all(color: Styles.black.withOpacity(Styles.opacity51))),
+                              border: Border.all(
+                                  color: Styles.black
+                                      .withOpacity(Styles.opacity51))),
                           child: Consumer<CreatePatientViewmodel>(
                               builder: (context, viewModel, child) {
                             return ListTile(
@@ -97,10 +99,12 @@ class PersonalInfoView extends StatelessWidget {
                       ),
                       Flexible(
                         child: Container(
-                          margin: const EdgeInsets.only(left: 4.0 ),
+                          margin: const EdgeInsets.only(left: 4.0),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(4.0),
-                              border: Border.all(color: Styles.black.withOpacity(Styles.opacity51))),
+                              border: Border.all(
+                                  color: Styles.black
+                                      .withOpacity(Styles.opacity51))),
                           child: Consumer<CreatePatientViewmodel>(
                               builder: (context, viewModel, child) {
                             return ListTile(
@@ -123,27 +127,30 @@ class PersonalInfoView extends StatelessWidget {
                     child: FormRow(
                       icon: Icon(Icons.cake),
                       formField: Consumer<CreatePatientViewmodel>(
-                        builder: (context, viewModel, child) {
-                          return TextFormField(
-                              controller: _dobController,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Date of birth',
-                              ),
-                              readOnly: true,
-                              onTap: () async => await CustomDatePicker(
-                                  selectedDate: viewModel.selectedDiagnosisDate,
-                                  newDateCallback: (newDate) {
-                                    var inputFormat = DateFormat('dd/MM/yyyy');
-                                    _dobController.text = inputFormat.format(newDate);
-                                    viewModel.setDateOfBirth(newDate);
-                                  },
-                                firstDate: DateTime(1900, 1),
-                                lastDate: DateTime.now()
-                              )
-                                  .build(context));
-                        }
-                      ),
+                          builder: (context, viewModel, child) {
+                        return TextFormField(
+                            controller: _dobController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Date of birth',
+                            ),
+                            readOnly: true,
+                            onTap: () async => await CustomDatePicker(
+                                    selectedDate: viewModel
+                                        .newPatient.personalInfo.formattedDob,
+                                    newDateCallback: (newDate) {
+                                      var inputFormat =
+                                          DateFormat('dd/MM/yyyy');
+                                      _dobController.text =
+                                          inputFormat.format(newDate);
+                                      viewModel.newPatient.personalInfo.setDob(newDate);
+                                      viewModel.setNewPatientDetails(
+                                          viewModel.newPatient);
+                                    },
+                                    firstDate: DateTime(1900, 1),
+                                    lastDate: DateTime.now())
+                                .build(context));
+                      }),
                     )),
                 Padding(
                     padding: const EdgeInsets.only(top: 8.0),

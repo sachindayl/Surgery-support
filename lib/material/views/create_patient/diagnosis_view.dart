@@ -22,10 +22,10 @@ class DiagnosisView extends StatelessWidget {
       ),
       body: SafeArea(
           child: SingleChildScrollView(
-            child: Container(
-        padding:
-              const EdgeInsets.symmetric(horizontal: Styles.horizontalPadding, vertical: 8.0),
-        child: Column(
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+              horizontal: Styles.horizontalPadding, vertical: 8.0),
+          child: Column(
             children: [
               FormTitle(title: 'Diagnosis information'),
               Padding(
@@ -48,17 +48,23 @@ class DiagnosisView extends StatelessWidget {
                           labelText: 'Date',
                         ),
                         readOnly: true,
-                        onTap: () async => await CustomDatePicker(
-                                selectedDate: viewModel.selectedDiagnosisDate,
-                                newDateCallback: (newDate) {
-                                  var inputFormat = DateFormat('dd/MM/yyyy');
-                                  _dateController.text =
-                                      inputFormat.format(newDate);
-                                  viewModel.setDiagnosisDate(newDate);
-                                },
-                                firstDate: DateTime(1990, 1),
-                                lastDate: DateTime.now())
-                            .build(context));
+                        onTap: () async {
+                          var inputFormat = DateFormat('dd/MM/yyyy');
+                          await CustomDatePicker(
+                                  selectedDate: viewModel.newPatient.diagnosis
+                                      .formattedDiagnosisDate,
+                                  newDateCallback: (newDate) {
+                                    _dateController.text =
+                                        inputFormat.format(newDate);
+                                    viewModel.newPatient.diagnosis
+                                        .setDiagnosisDate(newDate);
+                                    viewModel.setNewPatientDetails(
+                                        viewModel.newPatient);
+                                  },
+                                  firstDate: DateTime(1990, 1),
+                                  lastDate: DateTime.now())
+                              .build(context);
+                        });
                   }),
                 ),
               ),
@@ -85,12 +91,19 @@ class DiagnosisView extends StatelessWidget {
                     Expanded(
                       child: Container(
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4.0),
-                              border: Border.all(color: Styles.black.withOpacity(Styles.opacity51))
-                        ),
+                            borderRadius: BorderRadius.circular(4.0),
+                            border: Border.all(
+                                color: Styles.black
+                                    .withOpacity(Styles.opacity51))),
                         child: ListTile(
-                          title: Text('Outside', style: TextStyle(color: Styles.black.withOpacity(Styles.opacity64)),),
-                          trailing: Checkbox(value: true, onChanged: (value) {}),
+                          title: Text(
+                            'Outside',
+                            style: TextStyle(
+                                color:
+                                    Styles.black.withOpacity(Styles.opacity64)),
+                          ),
+                          trailing:
+                              Checkbox(value: true, onChanged: (value) {}),
                         ),
                       ),
                     )
@@ -170,9 +183,9 @@ class DiagnosisView extends StatelessWidget {
                 ),
               ),
             ],
+          ),
         ),
-      ),
-          )),
+      )),
     );
   }
 }

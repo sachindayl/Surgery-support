@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:surgery_support/base/constants/constants.dart';
 
 import 'name_model.dart';
@@ -47,4 +48,13 @@ class PersonalInfoModel {
     "dob": dob,
     "phoneNumber": phoneNumber,
   };
+
+  DateTime get formattedDob {
+    var inputFormat = DateFormat('dd/MM/yyyy');
+    return inputFormat.parse(dob);
+  }
+
+  void setDob(DateTime newDate) {
+    dob = DateFormat('dd/MM/yyyy').format(newDate);
+  }
 }

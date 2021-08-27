@@ -1,26 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:surgery_support/models/enums.dart';
+import 'package:surgery_support/models/patient_model.dart';
 
 class CreatePatientViewmodel with ChangeNotifier {
-  DateTime _dateOfBirth = DateTime.now();
-  DateTime _selectedDiagnosisDate = DateTime.now();
   var _gender = Gender.male;
-
-  void setDiagnosisDate(DateTime newDate) {
-    _selectedDiagnosisDate = newDate;
-    notifyListeners();
-  }
-
-  DateTime get selectedDiagnosisDate => _selectedDiagnosisDate;
-
-  void setDateOfBirth(DateTime newDate) {
-    _dateOfBirth = newDate;
-    notifyListeners();
-  }
-
-  DateTime get dateOfBirth => _dateOfBirth;
-
-
+  var _categoryIndex = 0;
+  var _newPatient = PatientModel.newInstance();
 
   List<String> get categoryList => ["ORS", "Officer", "Family"];
 
@@ -36,4 +21,19 @@ class CreatePatientViewmodel with ChangeNotifier {
   }
 
   Gender get gender => _gender;
+
+  void setCategory(int newIndex) {
+    _categoryIndex = newIndex;
+    _newPatient.personalInfo.category = categoryList[newIndex];
+    notifyListeners();
+  }
+
+  int get categoryIndex => _categoryIndex;
+
+  void setNewPatientDetails(PatientModel newState) {
+    _newPatient = newState;
+    notifyListeners();
+  }
+
+  PatientModel get newPatient => _newPatient;
 }
