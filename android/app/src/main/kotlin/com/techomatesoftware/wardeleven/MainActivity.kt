@@ -1,4 +1,4 @@
-package com.technomatesoftware.wardeleven.app
+package com.technomatesoftware.wardeleven
 
 import io.flutter.embedding.android.FlutterActivity
 
