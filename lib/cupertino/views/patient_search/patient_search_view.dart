@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:wardeleven/cupertino/views/create_patient/personal_info_view.dart';
+import 'package:wardeleven/cupertino/widgets/custom_search_text_field.dart';
+import 'package:wardeleven/cupertino/widgets/patient_list_item.dart';
 
 class PatientSearchView extends StatelessWidget {
 
@@ -22,6 +24,21 @@ class PatientSearchView extends StatelessWidget {
                 child: Icon(CupertinoIcons.person_add)),
           ),
         ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: CustomCupertinoSearchTextField(searchTerm: (searchTerm) => '',),
+          ),
+        ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+                (context, index) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+                  child: PatientListItem(),
+                ),
+            childCount: 10,
+          ),
+        )
       ],
     );
   }

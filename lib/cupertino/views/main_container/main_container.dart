@@ -19,8 +19,8 @@ class MainContainer extends StatelessWidget {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.person),
-            label: 'Patient search',
+            icon: Icon(CupertinoIcons.search),
+            label: 'Search',
           ),
         ],
       ),
