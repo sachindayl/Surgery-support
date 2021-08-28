@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:surgery_support/base/base_styles.dart';
-import 'package:surgery_support/cupertino/cupertino_styles.dart';
-import 'package:surgery_support/cupertino/views/main_container/main_container.dart';
-import 'package:surgery_support/cupertino/widgets/bordered_text_field.dart';
+import 'package:wardeleven/base/base_styles.dart';
+import 'package:wardeleven/cupertino/views/main_container/main_container.dart';
+import 'package:wardeleven/cupertino/widgets/bordered_text_field.dart';
 
 class LoginView extends StatelessWidget {
   @override
@@ -80,7 +79,7 @@ class LoginView extends StatelessWidget {
                           style: TextStyle(
                               fontSize: Styles.fontSize21,
                               fontWeight: Styles.fontWeightSemiBold,
-                              color: CupertinoStyles.lightTheme.primaryColor),
+                              color: CupertinoTheme.of(context).primaryColor),
                         )),
                         CupertinoButton(
                           onPressed: () => Navigator.of(context)

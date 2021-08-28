@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:surgery_support/cupertino/views/home/home_view.dart';
-import 'package:surgery_support/cupertino/views/patient_search/patient_search_view.dart';
-import 'package:surgery_support/shared/viewmodels/main_container_viewmodel.dart';
 import 'package:provider/provider.dart';
+import 'package:wardeleven/cupertino/views/home/home_view.dart';
+import 'package:wardeleven/cupertino/views/patient_search/patient_search_view.dart';
+import 'package:wardeleven/shared/viewmodels/main_container_viewmodel.dart';
 
 class MainContainer extends StatelessWidget {
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:surgery_support/base/base_styles.dart';
+import 'package:wardeleven/base/base_styles.dart';
 
 import '../create_patient/personal_info_view.dart';
 import '../home/home_view.dart';

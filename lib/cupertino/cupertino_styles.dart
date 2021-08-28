@@ -42,10 +42,11 @@ abstract class CupertinoStyles {
     ),
   );
 
-  static final TextStyle formPrefixStyle =
-  TextStyle(color: Styles.primaryColor.withOpacity(Styles.opacity87), fontSize: Styles.fontSize14);
+  static final TextStyle formPrefixStyle = TextStyle(
+      color: Styles.primaryColor.withOpacity(Styles.opacity87),
+      fontSize: Styles.fontSize14);
   static final TextStyle navigationBarTextStyle =
-  TextStyle(fontSize: 16.0, color: Styles.primaryColor);
+      TextStyle(fontSize: 16.0, color: Styles.primaryColor);
 
   static TextStyle chartNamingStyle(bool isTouched) {
     final fontSize = isTouched ? 25.0 : 16.0;
@@ -71,4 +72,10 @@ abstract class CupertinoStyles {
       color: Styles.accentColor.withOpacity(Styles.opacity87));
 
   static const double navBarIconSize = 24.0;
+
+  // region Colors
+  static const Color priorityRed = CupertinoColors.destructiveRed;
+  static const Color priorityYellow = CupertinoColors.systemYellow;
+  static const Color priorityGreen = CupertinoColors.activeGreen;
+// endregion
 }

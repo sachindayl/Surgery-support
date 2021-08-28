@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:surgery_support/base/base_styles.dart';
+import 'package:wardeleven/base/base_styles.dart';
 
 class BorderedTextField extends StatelessWidget {
   final String? placeholder;

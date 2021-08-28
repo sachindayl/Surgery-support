@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:surgery_support/base/base_styles.dart';
-import 'package:surgery_support/material/views/main_container/main_container.dart';
-import 'package:surgery_support/material/widgets/bordered_text_field.dart';
+import 'package:wardeleven/base/base_styles.dart';
+import 'package:wardeleven/material/views/main_container/main_container.dart';
+import 'package:wardeleven/material/widgets/bordered_text_field.dart';
 
 import '../../material_styles.dart';
 

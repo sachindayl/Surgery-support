@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:surgery_support/cupertino/views/create_patient/personal_info_view.dart';
+import 'package:wardeleven/cupertino/views/create_patient/personal_info_view.dart';
 
 class PatientSearchView extends StatelessWidget {
 
