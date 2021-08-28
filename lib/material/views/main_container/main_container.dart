@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:surgery_support/base/base_styles.dart';
 
-import '../create_patient/create_patient_view.dart';
+import '../create_patient/personal_info_view.dart';
 import '../home/home_view.dart';
 
 class MainContainer extends StatelessWidget {
@@ -12,10 +12,10 @@ class MainContainer extends StatelessWidget {
         child: Scaffold(
           bottomNavigationBar:
               TabBar(labelColor: Colors.black, tabs: _tabs(context)),
-          body: TabBarView(children: [HomeView(), CreatePatientView()]),
+          body: TabBarView(children: [HomeView(), PersonalInfoView()]),
           floatingActionButton: ElevatedButton(
             onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => CreatePatientView())),
+                MaterialPageRoute(builder: (context) => PersonalInfoView())),
             child: Icon(Icons.person_add),
             style: ElevatedButton.styleFrom(
                 primary: Styles.accentColor,

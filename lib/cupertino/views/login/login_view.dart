@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:surgery_support/base/base_styles.dart';
 import 'package:surgery_support/cupertino/cupertino_styles.dart';
+import 'package:surgery_support/cupertino/views/main_container/main_container.dart';
 import 'package:surgery_support/cupertino/widgets/bordered_text_field.dart';
 
 class LoginView extends StatelessWidget {
@@ -73,10 +74,22 @@ class LoginView extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: Row(
                       children: [
-                        Expanded(child: Text('Sign in', style: TextStyle(fontSize: Styles.fontSize21, fontWeight: Styles.fontWeightSemiBold, color: CupertinoStyles.lightTheme.primaryColor),)),
+                        Expanded(
+                            child: Text(
+                          'Sign in',
+                          style: TextStyle(
+                              fontSize: Styles.fontSize21,
+                              fontWeight: Styles.fontWeightSemiBold,
+                              color: CupertinoStyles.lightTheme.primaryColor),
+                        )),
                         CupertinoButton(
-                          onPressed: () => '',
-                          child: Icon(CupertinoIcons.right_chevron, color: Styles.white,),
+                          onPressed: () => Navigator.of(context)
+                              .pushReplacement(CupertinoPageRoute(
+                                  builder: (context) => MainContainer())),
+                          child: Icon(
+                            CupertinoIcons.right_chevron,
+                            color: Styles.white,
+                          ),
                           color: Styles.accentColor,
                           borderRadius: BorderRadius.all(Radius.circular(32.0)),
                           padding: EdgeInsets.all(16.0),
