@@ -13,7 +13,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(slivers: [
       CupertinoSliverNavigationBar(
-        largeTitle: Text(''),
+        largeTitle: Text('Ward Eleven'),
         trailing: GestureDetector(
           onTap: () => showCupertinoModalBottomSheet(
               useRootNavigator: true,

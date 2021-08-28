@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:wardeleven/cupertino/views/account/account_view.dart';
 import 'package:wardeleven/cupertino/views/home/home_view.dart';
 import 'package:wardeleven/cupertino/views/patient_search/patient_search_view.dart';
 import 'package:wardeleven/shared/viewmodels/main_container_viewmodel.dart';
@@ -22,6 +23,10 @@ class MainContainer extends StatelessWidget {
             icon: Icon(CupertinoIcons.search),
             label: 'Search',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.person),
+            label: 'Account',
+          ),
         ],
       ),
       tabBuilder: (context, index) {
@@ -33,5 +38,5 @@ class MainContainer extends StatelessWidget {
     );
   }
 
-  final List<Widget> _tabs = [HomeView(), PatientSearchView()];
+  final List<Widget> _tabs = [HomeView(), PatientSearchView(), AccountView()];
 }
