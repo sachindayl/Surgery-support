@@ -18,29 +18,35 @@ class PersonalInfoView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Create patient'),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-                horizontal: Styles.horizontalPadding),
-            child: Column(
-              children: [
-                FormTitle(
-                  title: 'Personal Information',
-                ),
-                _registrationNumber(context),
-                _category(context),
-                _firstName(context),
-                _lastName(context),
-                _gender(context),
-                _dob(context),
-                _telephoneNumber(context),
-                _continueButton(context)
-              ],
+    return WillPopScope(
+      onWillPop: () async {
+        context.read<CreatePatientViewmodel>().clearPatientData();
+        return Future.value(true);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Create patient'),
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Styles.horizontalPadding),
+              child: Column(
+                children: [
+                  FormTitle(
+                    title: 'Personal Information',
+                  ),
+                  _registrationNumber(context),
+                  _category(context),
+                  _firstName(context),
+                  _lastName(context),
+                  _gender(context),
+                  _dob(context),
+                  _telephoneNumber(context),
+                  _continueButton(context)
+                ],
+              ),
             ),
           ),
         ),

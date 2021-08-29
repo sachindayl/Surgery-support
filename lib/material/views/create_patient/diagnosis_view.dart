@@ -35,15 +35,15 @@ class DiagnosisView extends StatelessWidget {
       });
     }
 
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: AppBar(
-            title: Text('Create patient'),
-          ),
-          body: SafeArea(
-              child: SingleChildScrollView(
-            child: Container(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Create patient'),
+      ),
+      body: SafeArea(
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+        child: Container(
               padding: const EdgeInsets.symmetric(
                   horizontal: Styles.horizontalPadding, vertical: 8.0),
               child: Column(
@@ -59,14 +59,14 @@ class DiagnosisView extends StatelessWidget {
                   _createButton(context)
                 ],
               ),
-            ),
-          )),
         ),
-        CustomCircularProgressIndicator(
-          isLoading: context.select(
-              (CreatePatientViewmodel viewModel) => viewModel.isLoading),
-        )
-      ],
+      ),
+              CustomCircularProgressIndicator(
+                isLoading: context.select(
+                        (CreatePatientViewmodel viewModel) => viewModel.isLoading),
+              )
+            ],
+          )),
     );
   }
 
