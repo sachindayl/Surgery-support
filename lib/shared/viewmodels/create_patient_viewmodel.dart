@@ -1,13 +1,19 @@
 import 'package:flutter/foundation.dart';
+import 'package:wardeleven/base/failure_handler.dart';
 import 'package:wardeleven/models/enums.dart';
 import 'package:wardeleven/models/patient_model.dart';
+import 'package:wardeleven/services/firebase/firebase_service.dart';
 
 class CreatePatientViewmodel with ChangeNotifier {
   var _gender = Gender.male;
   var _categoryIndex = 0;
   var _genderIndex = 0;
   var _newPatient = PatientModel.newInstance();
+  var _isPatientCreated = DataState.initial;
+  var _isLoading = LoadingState.initial;
+  FailureHandler? _failure;
 
+  // region Getters
   List<String> get categoryList => ["ORS", "Officer", "Family"];
 
   List<String> get procedureList => ["Upper GI", "Lower GI", "Cystoscopy"];
@@ -17,6 +23,24 @@ class CreatePatientViewmodel with ChangeNotifier {
   List<String> get priorityList => ["Normal", "High", "Low"];
 
   List<String> get genderList => ["Male", "Female", "Other"];
+
+  Gender get gender => _gender;
+
+  int get genderIndex => _genderIndex;
+
+  int get categoryIndex => _categoryIndex;
+
+  PatientModel get newPatient => _newPatient;
+
+  DataState get isPatientCreated => _isPatientCreated;
+
+  LoadingState get isLoading => _isLoading;
+
+  FailureHandler? get failure => _failure;
+
+  // endregion
+
+  // region Setters
 
   void setGender(Gender newState) {
     _gender = newState;
@@ -28,8 +52,10 @@ class CreatePatientViewmodel with ChangeNotifier {
     notifyListeners();
   }
 
-  Gender get gender => _gender;
-  int get genderIndex => _genderIndex;
+  void setNewPatientDetails(PatientModel newState) {
+    _newPatient = newState;
+    notifyListeners();
+  }
 
   void setCategory(int newIndex) {
     _categoryIndex = newIndex;
@@ -37,12 +63,41 @@ class CreatePatientViewmodel with ChangeNotifier {
     notifyListeners();
   }
 
-  int get categoryIndex => _categoryIndex;
-
-  void setNewPatientDetails(PatientModel newState) {
-    _newPatient = newState;
+  setPatientCreated(DataState newState) {
+    _isPatientCreated = newState;
     notifyListeners();
   }
 
-  PatientModel get newPatient => _newPatient;
+  setLoading(LoadingState newState) {
+    _isLoading = newState;
+    notifyListeners();
+  }
+
+  void setFailure(FailureHandler failure) {
+    _failure = failure;
+    notifyListeners();
+  }
+
+  void clearPatientData() {
+    _newPatient = PatientModel.newInstance();
+    _isLoading = LoadingState.initial;
+    _isPatientCreated = DataState.initial;
+    _categoryIndex = 0;
+    _genderIndex = 0;
+    _failure = null;
+  }
+
+  // endregion
+
+  // region Network calls
+  Future<void> createPatient() async {
+    try {
+      var isPatientCreated =
+          await FirebaseService().storage.createPatient(_newPatient);
+      setPatientCreated(isPatientCreated);
+    } on FailureHandler catch (e) {
+      setFailure(e);
+    }
+  }
+//endregion
 }

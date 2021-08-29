@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:wardeleven/cupertino/views/create_patient/personal_info_view.dart';
+import 'package:wardeleven/cupertino/views/create_patient/create_patient_view.dart';
 import 'package:wardeleven/cupertino/widgets/custom_search_text_field.dart';
 import 'package:wardeleven/cupertino/widgets/patient_list_item.dart';
 
@@ -18,7 +18,7 @@ class PatientSearchView extends StatelessWidget {
                 elevation: 5.0,
                 expand: true,
                 context: context,
-                builder: (context) => PersonalInfoView()),
+                builder: (context) => CreatePatientView()),
             child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Icon(CupertinoIcons.person_add)),

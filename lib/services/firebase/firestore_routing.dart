@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:wardeleven/base/error_handler.dart';
+import 'package:wardeleven/models/enums.dart';
 import 'package:wardeleven/models/patient_model.dart';
 
 class FirestoreRouting {
@@ -13,14 +15,17 @@ class FirestoreRouting {
 
   FirestoreRouting._internal();
 
-  var patientsCollection = FirebaseFirestore.instance.collection('patients');
+  final _patientsCollection = FirebaseFirestore.instance.collection('patients');
+  final _errorHandler = ErrorHandler();
 
-  Future<void> createPatient(PatientModel patient) async {
-    patientsCollection
-        .add(patient.toJson())
-        .then((value) => log("Patient created.", name: "createPatient"))
-        .catchError(
-            (error) => log("Patient create error.", name: "createPatient"));
+  Future<DataState> createPatient(PatientModel patient) async {
+    return _patientsCollection.add(patient.toJson()).then((value) {
+      log("Patient created.", name: "createPatient");
+      return DataState.success;
+    }).catchError((error) {
+      log("Patient create error.", name: "createPatient");
+      _errorHandler.handleError(error);
+    });
   }
 
   // QuerySnapshot eventsQuery = await ref
@@ -33,6 +38,9 @@ class FirestoreRouting {
   // }
 
   Future<void> deletePatient(String id) async {
-    await patientsCollection.doc(id).delete().then((value) => log("Patient deleted.", name: "createPatient"));
+    await _patientsCollection
+        .doc(id)
+        .delete()
+        .then((value) => log("Patient deleted.", name: "createPatient"));
   }
 }
