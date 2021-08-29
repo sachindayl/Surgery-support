@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:surgery_support/models/enums.dart';
-import 'package:surgery_support/models/patient_model.dart';
+import 'package:wardeleven/models/enums.dart';
+import 'package:wardeleven/models/patient_model.dart';
 
 class CreatePatientViewmodel with ChangeNotifier {
   var _gender = Gender.male;

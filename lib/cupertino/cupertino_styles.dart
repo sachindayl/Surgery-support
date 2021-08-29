@@ -42,10 +42,11 @@ abstract class CupertinoStyles {
     ),
   );
 
-  static final TextStyle formPrefixStyle =
-  TextStyle(color: Styles.primaryColor.withOpacity(Styles.opacity87), fontSize: Styles.fontSize14);
+  static final TextStyle formPrefixStyle = TextStyle(
+      color: Styles.primaryColor.withOpacity(Styles.opacity87),
+      fontSize: Styles.fontSize14);
   static final TextStyle navigationBarTextStyle =
-  TextStyle(fontSize: 16.0, color: Styles.primaryColor);
+      TextStyle(fontSize: 16.0, color: Styles.primaryColor);
 
   static TextStyle chartNamingStyle(bool isTouched) {
     final fontSize = isTouched ? 25.0 : 16.0;
@@ -55,9 +56,24 @@ abstract class CupertinoStyles {
         color: const Color(0xffffffff));
   }
 
+  static final TextStyle mainTitleText = TextStyle(
+      fontSize: Styles.fontSize21,
+      fontWeight: Styles.fontWeightSemiBold,
+      color: Styles.black.withOpacity(Styles.opacity87));
+
   static final TextStyle blackBodyText2 = TextStyle(
       fontSize: Styles.fontSize14,
       fontWeight: Styles.fontWeightNormal,
+      color: Styles.black.withOpacity(Styles.opacity87));
+
+  static final TextStyle cardTitleText = TextStyle(
+      fontSize: Styles.fontSize19,
+      fontWeight: Styles.fontWeightNormal,
+      color: Styles.black.withOpacity(Styles.opacity87));
+
+  static final TextStyle cardSubTitleText = TextStyle(
+      fontSize: Styles.fontSize16,
+      fontWeight: Styles.fontWeightLight,
       color: Styles.black.withOpacity(Styles.opacity87));
 
   static final TextStyle formErrorText = TextStyle(
@@ -71,4 +87,10 @@ abstract class CupertinoStyles {
       color: Styles.accentColor.withOpacity(Styles.opacity87));
 
   static const double navBarIconSize = 24.0;
+
+  // region Colors
+  static const Color priorityRed = CupertinoColors.destructiveRed;
+  static const Color priorityYellow = CupertinoColors.systemYellow;
+  static const Color priorityGreen = CupertinoColors.activeGreen;
+// endregion
 }

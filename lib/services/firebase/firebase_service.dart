@@ -1,4 +1,5 @@
-import 'package:surgery_support/services/firebase/storage_routing.dart';
+
+import 'package:wardeleven/services/firebase/firestore_routing.dart';
 
 import 'auth_routing.dart';
 
@@ -13,5 +14,5 @@ class FirebaseService {
 
   AuthRouting get auth => AuthRouting();
 
-  StorageRouting get storage => StorageRouting();
+  FirestoreRouting get storage => FirestoreRouting();
 }

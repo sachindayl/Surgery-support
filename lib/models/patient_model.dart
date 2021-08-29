@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:surgery_support/models/personal_info_model.dart';
+
+import 'package:wardeleven/models/personal_info_model.dart';
 
 import 'diagnosis_model.dart';
 
@@ -11,14 +12,17 @@ String patientModelToJson(PatientModel data) => json.encode(data.toJson());
 
 class PatientModel {
   PatientModel({
+    this.id,
     required this.personalInfo,
     required this.diagnosis,
   });
 
+  String? id;
   PersonalInfoModel personalInfo;
   DiagnosisModel diagnosis;
 
   factory PatientModel.fromJson(Map<String, dynamic> json) => PatientModel(
+        id: json["id"],
         personalInfo: PersonalInfoModel.fromJson(json["personalInfo"]),
         diagnosis: DiagnosisModel.fromJson(json["diagnosis"]),
       );

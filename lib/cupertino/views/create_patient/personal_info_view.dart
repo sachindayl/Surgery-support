@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:surgery_support/base/base_styles.dart';
-import 'package:surgery_support/cupertino/widgets/custom_date_time_picker.dart';
-import 'package:surgery_support/cupertino/widgets/custom_form_field_picker.dart';
-import 'package:surgery_support/shared/viewmodels/create_patient_viewmodel.dart';
+import 'package:wardeleven/base/base_styles.dart';
+import 'package:wardeleven/cupertino/widgets/custom_date_time_picker.dart';
+import 'package:wardeleven/cupertino/widgets/custom_form_field_picker.dart';
+import 'package:wardeleven/shared/viewmodels/create_patient_viewmodel.dart';
 
 class PersonalInfoView extends StatelessWidget {
   final _genderController = TextEditingController();

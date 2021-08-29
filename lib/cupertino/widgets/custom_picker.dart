@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:surgery_support/base/base_styles.dart';
-import 'package:surgery_support/base/constants/constants.dart';
+import 'package:wardeleven/base/base_styles.dart';
+import 'package:wardeleven/base/constants/constants.dart';
 
 import '../cupertino_styles.dart';
 

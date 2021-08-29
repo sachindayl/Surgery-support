@@ -1,5 +1,5 @@
-name: surgery_support
-description: Surgery Support App
+name: wardeleven
+description: Ward Eleven
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -37,6 +37,7 @@ dependencies:
   firebase_auth: ^3.0.2
   firebase_storage: ^10.0.2
   firebase_messaging: ^10.0.4
+  cloud_firestore: "^2.5.0"
   flutter_local_notifications: ^8.1.1+1
   url_launcher: ^6.0.5
   easy_localization: ^3.0.0

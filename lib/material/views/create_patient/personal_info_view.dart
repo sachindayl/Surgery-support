@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:surgery_support/base/base_styles.dart';
-import 'package:surgery_support/material/views/create_patient/diagnosis_view.dart';
-import 'package:surgery_support/material/widgets/custom_date_picker.dart';
-import 'package:surgery_support/material/widgets/custom_text_form_field.dart';
-import 'package:surgery_support/material/widgets/form_field_dropdown.dart';
-import 'package:surgery_support/material/widgets/form_row.dart';
-import 'package:surgery_support/material/widgets/form_title.dart';
 import 'package:provider/provider.dart';
-import 'package:surgery_support/models/enums.dart';
-import 'package:surgery_support/shared/viewmodels/create_patient_viewmodel.dart';
+import 'package:wardeleven/base/base_styles.dart';
+import 'package:wardeleven/cupertino/widgets/form_title.dart';
+import 'package:wardeleven/material/widgets/custom_date_picker.dart';
+import 'package:wardeleven/material/widgets/custom_text_form_field.dart';
+import 'package:wardeleven/material/widgets/form_field_dropdown.dart';
+import 'package:wardeleven/material/widgets/form_row.dart';
+import 'package:wardeleven/models/enums.dart';
+import 'package:wardeleven/shared/viewmodels/create_patient_viewmodel.dart';
 
 import '../../material_styles.dart';
+import 'diagnosis_view.dart';
 
 class PersonalInfoView extends StatelessWidget {
   final TextEditingController _dobController = TextEditingController();
