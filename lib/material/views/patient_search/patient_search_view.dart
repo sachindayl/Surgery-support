@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:wardeleven/material/widgets/patient_list_item.dart';
+import 'package:provider/provider.dart';
+import 'package:wardeleven/shared/viewmodels/patient_history_viewmodel.dart';
 
-class PatientSearchView extends StatelessWidget {
+class PatientSearchView extends StatefulWidget {
+  @override
+  _PatientSearchViewState createState() => _PatientSearchViewState();
+}
+
+class _PatientSearchViewState extends State<PatientSearchView> {
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() async {
+      await context.read<PatientHistoryViewModel>().getPatients();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,8 +43,17 @@ class PatientSearchView extends StatelessWidget {
             ]),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (context, index) => PatientListItem(),
-                childCount: 10,
+                (context, index) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+                  child: PatientListItem(
+                      patient: context
+                          .watch<PatientHistoryViewModel>()
+                          .patientsList[index]
+                  ),
+                ),
+                childCount: context
+                    .watch<PatientHistoryViewModel>()
+                    .patientsList.length,
               ),
             )
           ],
