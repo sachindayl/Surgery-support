@@ -57,7 +57,7 @@ abstract class CupertinoStyles {
   }
 
   static final TextStyle mainTitleText = TextStyle(
-      fontSize: Styles.fontSize19,
+      fontSize: Styles.fontSize21,
       fontWeight: Styles.fontWeightSemiBold,
       color: Styles.black.withOpacity(Styles.opacity87));
 
