@@ -15,7 +15,8 @@ class CreatePatientViewmodel with ChangeNotifier {
   FailureHandler? _failure;
 
   // region Getters
-  List<String> get categoryList => ["ORS", "Officer", "Family"];
+  List<String> get categoryList =>
+      ["ORS", "Officer", "Family"];
 
   List<String> get procedureList => ["Upper GI", "Lower GI", "Cystoscopy"];
 
@@ -28,6 +29,7 @@ class CreatePatientViewmodel with ChangeNotifier {
   Gender get gender => _gender;
 
   int get genderIndex => _genderIndex;
+
   int get priorityIndex => _priorityIndex;
 
   int get categoryIndex => _categoryIndex;

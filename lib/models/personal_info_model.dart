@@ -33,9 +33,9 @@ class PersonalInfoModel {
   factory PersonalInfoModel.newInstance() {
     return PersonalInfoModel(
         registrationNo: Constants.emptyString,
-        category: Constants.emptyString,
+        category: "ORS",
         name: NameModel.newInstance(),
-        gender: Constants.emptyString,
+        gender: 'Male',
         dob: Constants.emptyString,
         phoneNumber: Constants.emptyString);
   }

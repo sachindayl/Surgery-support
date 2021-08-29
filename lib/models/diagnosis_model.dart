@@ -10,7 +10,6 @@ class DiagnosisModel {
     required this.surgery,
     required this.surgeryType,
     required this.priority,
-    required this.remarks,
   });
 
   String indication;
@@ -20,7 +19,6 @@ class DiagnosisModel {
   String surgery;
   String surgeryType;
   String priority;
-  String remarks;
 
   factory DiagnosisModel.fromJson(Map<String, dynamic> json) => DiagnosisModel(
         indication: json["indication"],
@@ -30,19 +28,17 @@ class DiagnosisModel {
         surgery: json["surgery"],
         surgeryType: json["surgeryType"],
         priority: json["priority"],
-        remarks: json["remarks"],
       );
 
   factory DiagnosisModel.newInstance() {
     return DiagnosisModel(
         indication: Constants.emptyString,
         date: Constants.emptyString,
-        procedure: Constants.emptyString,
+        procedure: 'Upper GI',
         isOutside: false,
         surgery: Constants.emptyString,
-        surgeryType: Constants.emptyString,
-        priority: 'Low',
-        remarks: Constants.emptyString);
+        surgeryType: 'Major',
+        priority: 'Low');
   }
 
   Map<String, dynamic> toJson() => {
@@ -53,7 +49,6 @@ class DiagnosisModel {
         "surgery": surgery,
         "surgeryType": surgeryType,
         "priority": priority,
-        "remarks": remarks,
       };
 
   DateTime get formattedDiagnosisDate {
