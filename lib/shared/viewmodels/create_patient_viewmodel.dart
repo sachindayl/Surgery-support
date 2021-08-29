@@ -8,6 +8,7 @@ class CreatePatientViewmodel with ChangeNotifier {
   var _gender = Gender.male;
   var _categoryIndex = 0;
   var _genderIndex = 0;
+  var _priorityIndex = 0;
   var _newPatient = PatientModel.newInstance();
   var _isPatientCreated = DataState.initial;
   var _isLoading = LoadingState.initial;
@@ -27,6 +28,7 @@ class CreatePatientViewmodel with ChangeNotifier {
   Gender get gender => _gender;
 
   int get genderIndex => _genderIndex;
+  int get priorityIndex => _priorityIndex;
 
   int get categoryIndex => _categoryIndex;
 
@@ -49,6 +51,11 @@ class CreatePatientViewmodel with ChangeNotifier {
 
   void setGenderIndex(int index) {
     _genderIndex = index;
+    notifyListeners();
+  }
+
+  void setPriorityIndex(int index) {
+    _priorityIndex = index;
     notifyListeners();
   }
 
@@ -84,6 +91,7 @@ class CreatePatientViewmodel with ChangeNotifier {
     _isPatientCreated = DataState.initial;
     _categoryIndex = 0;
     _genderIndex = 0;
+    _priorityIndex = 0;
     _failure = null;
   }
 

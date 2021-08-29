@@ -8,16 +8,13 @@ import 'package:wardeleven/models/patient_model.dart';
 class PatientListItem extends StatelessWidget {
   final PatientModel patient;
 
-
   PatientListItem({required this.patient});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () =>
-          Navigator.of(context)
-              .push(
-              CupertinoPageRoute(builder: (context) => PatientProfileView())),
+      onTap: () => Navigator.of(context)
+          .push(CupertinoPageRoute(builder: (context) => PatientProfileView())),
       child: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
@@ -63,8 +60,10 @@ class PatientListItem extends StatelessWidget {
       return CupertinoColors.destructiveRed;
     } else if (patient.diagnosis.priority.toLowerCase() == "medium") {
       return CupertinoColors.activeOrange;
-    } else {
+    } else if (patient.diagnosis.priority.toLowerCase() == "low") {
       return CupertinoColors.activeGreen;
+    } else {
+      return CupertinoColors.inactiveGray;
     }
   }
 }
