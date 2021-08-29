@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,14 +29,18 @@ class FirestoreRouting {
     });
   }
 
-  // QuerySnapshot eventsQuery = await ref
-  //     .where("time", isGreaterThan: new DateTime.now().millisecondsSinceEpoch)
-  //     .where("food", isEqualTo: true)
-  //     .getDocuments();
-
-  // Future<PatientModel> getPatients() {
-  //   patientsCollection.snapshots();
-  // }
+  Future<List<PatientModel>> getPatients() async {
+    return await _patientsCollection
+        .get()
+        .then((QuerySnapshot query) => query.docs.map((item) {
+              var json = jsonEncode(item.data());
+              return PatientModel.fromJson(jsonDecode(json));
+            }).toList())
+        .catchError((error) {
+      log(error.toString(), name: "getPatients");
+      _errorHandler.handleError(error);
+    });
+  }
 
   Future<void> deletePatient(String id) async {
     await _patientsCollection

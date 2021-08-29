@@ -20,7 +20,7 @@ class CreatePatientViewmodel with ChangeNotifier {
 
   List<String> get surgeryTypeList => ["Major", "Minor"];
 
-  List<String> get priorityList => ["Normal", "High", "Low"];
+  List<String> get priorityList => ["Low", "Medium", "High"];
 
   List<String> get genderList => ["Male", "Female", "Other"];
 
@@ -93,7 +93,7 @@ class CreatePatientViewmodel with ChangeNotifier {
   Future<void> createPatient() async {
     try {
       var isPatientCreated =
-          await FirebaseService().storage.createPatient(_newPatient);
+          await FirebaseService().firestore.createPatient(_newPatient);
       setPatientCreated(isPatientCreated);
     } on FailureHandler catch (e) {
       setFailure(e);

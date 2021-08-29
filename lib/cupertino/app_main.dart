@@ -6,6 +6,7 @@ import 'package:wardeleven/shared/viewmodels/create_patient_viewmodel.dart';
 import 'package:wardeleven/shared/viewmodels/home_viewmodel.dart';
 import 'package:wardeleven/shared/viewmodels/login_viewmodel.dart';
 import 'package:wardeleven/shared/viewmodels/main_container_viewmodel.dart';
+import 'package:wardeleven/shared/viewmodels/patient_history_viewmodel.dart';
 
 import 'cupertino_styles.dart';
 
@@ -19,6 +20,7 @@ class CupertinoAppMain extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => MainContainerViewModel()),
         ChangeNotifierProvider(create: (_) => HomeViewModel()),
         ChangeNotifierProvider(create: (_) => CreatePatientViewmodel()),
+        ChangeNotifierProvider(create: (_) => PatientHistoryViewModel()),
       ],
       child: CupertinoApp(
         title: 'Ward Eleven',

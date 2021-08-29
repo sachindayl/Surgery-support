@@ -14,5 +14,5 @@ class FirebaseService {
 
   AuthRouting get auth => AuthRouting();
 
-  FirestoreRouting get storage => FirestoreRouting();
+  FirestoreRouting get firestore => FirestoreRouting();
 }

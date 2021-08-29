@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-
 import 'package:wardeleven/models/personal_info_model.dart';
 
 import 'diagnosis_model.dart';
@@ -37,4 +36,7 @@ class PatientModel {
         personalInfo: PersonalInfoModel.newInstance(),
         diagnosis: DiagnosisModel.newInstance());
   }
+
+  String get fullName =>
+      '${personalInfo.name.firstName} ${personalInfo.name.lastName}';
 }

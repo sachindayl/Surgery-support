@@ -41,7 +41,7 @@ class DiagnosisModel {
         isOutside: false,
         surgery: Constants.emptyString,
         surgeryType: Constants.emptyString,
-        priority: Constants.emptyString,
+        priority: 'Low',
         remarks: Constants.emptyString);
   }
 
