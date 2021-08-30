@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:wardeleven/base/base_styles.dart';
+import 'package:provider/provider.dart';
 import 'package:wardeleven/cupertino/cupertino_styles.dart';
 import 'package:wardeleven/cupertino/views/create_patient/create_patient_view.dart';
 import 'package:wardeleven/cupertino/widgets/custom_calendar.dart';
-import 'package:provider/provider.dart';
+import 'package:wardeleven/cupertino/widgets/message_tile.dart';
+import 'package:wardeleven/cupertino/widgets/patient_list_item.dart';
 import 'package:wardeleven/shared/viewmodels/home_viewmodel.dart';
 
 class HomeView extends StatelessWidget {
@@ -30,48 +31,79 @@ class HomeView extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: CustomCalendar(
-              context.read<HomeViewModel>().calenderEvents, (date) => ''),
+              context.watch<HomeViewModel>().selectedDay,
+              context.watch<HomeViewModel>().focusedDay,
+              context.watch<HomeViewModel>().calenderEvents,
+              (selectedDay) =>
+                  context.read<HomeViewModel>().setSelectedDay(selectedDay),
+              (focusedDay) =>
+                  context.read<HomeViewModel>().setFocusedDay(focusedDay)),
         ),
       ),
       SliverToBoxAdapter(
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.centerLeft,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Text(
-                'High priority surgeries',
-                style: CupertinoStyles.mainTitleText,
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(
-                  horizontal: Styles.itemBorderRadius, vertical: 8.0),
-              child: Column(
-                children: [],
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Text(
-                'Surgeries',
-                style: CupertinoStyles.mainTitleText,
-              ),
-            ),
-            Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: Styles.itemBorderRadius, vertical: 8.0),
-                child: Column(
-                  children: [],
-                ))
-          ],
+        child: Container(
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Text(
+            'High priority surgeries',
+            style: CupertinoStyles.mainTitleText,
+          ),
         ),
-      )
+      ),
+      context.watch<HomeViewModel>().todayHighPriorityPatients.isNotEmpty
+          ? SliverList(
+              delegate: SliverChildBuilderDelegate(
+              (context, index) => Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+                child: PatientListItem(
+                    patient: context
+                        .watch<HomeViewModel>()
+                        .todayHighPriorityPatients[index]),
+              ),
+              childCount: context
+                  .watch<HomeViewModel>()
+                  .todayHighPriorityPatients
+                  .length,
+            ))
+          : SliverToBoxAdapter(
+              child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 4.0),
+                  child: MessageTile()),
+            ),
+      SliverToBoxAdapter(
+        child: Container(
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Text(
+            'Surgeries',
+            style: CupertinoStyles.mainTitleText,
+          ),
+        ),
+      ),
+      context.watch<HomeViewModel>().todayOtherPatients.isNotEmpty
+          ? SliverList(
+              delegate: SliverChildBuilderDelegate(
+              (context, index) => Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+                child: PatientListItem(
+                    patient: context
+                        .watch<HomeViewModel>()
+                        .todayOtherPatients[index]),
+              ),
+              childCount:
+                  context.watch<HomeViewModel>().todayOtherPatients.length,
+            ))
+          : SliverToBoxAdapter(
+              child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 4.0),
+                  child: MessageTile()),
+            ),
     ]);
   }
 }

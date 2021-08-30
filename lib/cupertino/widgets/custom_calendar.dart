@@ -5,18 +5,20 @@ import 'package:wardeleven/base/base_styles.dart';
 import 'package:wardeleven/models/patient_model.dart';
 
 class CustomCalendar extends StatefulWidget {
+  final DateTime selectedDay;
+  final DateTime focusedDay;
   final Map<DateTime, List<PatientModel>> events;
   final Function(DateTime) selectedDayCallback;
+  final Function(DateTime) focusedDayCallback;
 
-  CustomCalendar(this.events, this.selectedDayCallback);
+  CustomCalendar(this.selectedDay, this.focusedDay, this.events,
+      this.selectedDayCallback, this.focusedDayCallback);
 
   @override
   _CustomCalendarState createState() => _CustomCalendarState();
 }
 
 class _CustomCalendarState extends State<CustomCalendar> {
-  DateTime _selectedDay = DateTime.now();
-  DateTime _focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.week;
 
   @override
@@ -33,20 +35,18 @@ class _CustomCalendarState extends State<CustomCalendar> {
               TableCalendar(
                 firstDay: DateTime.utc(2020, 01, 01),
                 lastDay: DateTime.utc(2040, 12, 31),
-                focusedDay: _focusedDay,
+                focusedDay: widget.focusedDay,
                 selectedDayPredicate: (DateTime date) {
-                  return isSameDay(_selectedDay, date);
+                  return isSameDay(widget.selectedDay, date);
                 },
                 eventLoader: _getEventsFromDay,
                 onDaySelected: (selectedDay, focusedDay) {
                   setState(() {
-                    _selectedDay = selectedDay;
-                    widget.selectedDayCallback(_selectedDay);
-                    _focusedDay = focusedDay;
+                    widget.selectedDayCallback(selectedDay);
                   });
                 },
                 onPageChanged: (focusedDay) {
-                  _focusedDay = focusedDay;
+                  widget.focusedDayCallback(focusedDay);
                 },
                 calendarFormat: _calendarFormat,
                 onFormatChanged: (format) {
@@ -86,10 +86,4 @@ class _CustomCalendarState extends State<CustomCalendar> {
     return widget.events[DateTime(day.year, day.month, day.day)] ?? [];
   }
 
-// Text(
-// e.orderType == Constants.DELIVERY
-// ? '${'delivery'.tr()} ${'to'.tr()} ${e.customer.address.city}, ${e.customer.address.zip} ${'at'.tr()} ${e.timeOnly}'
-//     : '${'take_away'.tr()} ${'at'.tr()} ${e.timeOnly}',
-// style: TextStyle(fontSize: Styles.FONT_SIZE_16),
-// )
 }

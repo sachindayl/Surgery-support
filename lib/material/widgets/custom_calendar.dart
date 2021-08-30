@@ -84,10 +84,4 @@ class _CustomCalendarState extends State<CustomCalendar> {
     return widget.events[DateTime(day.year, day.month, day.day)] ?? [];
   }
 
-// Text(
-// e.orderType == Constants.DELIVERY
-// ? '${'delivery'.tr()} ${'to'.tr()} ${e.customer.address.city}, ${e.customer.address.zip} ${'at'.tr()} ${e.timeOnly}'
-//     : '${'take_away'.tr()} ${'at'.tr()} ${e.timeOnly}',
-// style: TextStyle(fontSize: Styles.FONT_SIZE_16),
-// )
 }
