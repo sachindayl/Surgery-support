@@ -8,13 +8,33 @@ import 'package:wardeleven/material/widgets/custom_text_form_field.dart';
 import 'package:wardeleven/material/widgets/form_field_dropdown.dart';
 import 'package:wardeleven/material/widgets/form_row.dart';
 import 'package:wardeleven/models/enums.dart';
+import 'package:wardeleven/models/patient_model.dart';
 import 'package:wardeleven/shared/viewmodels/create_patient_viewmodel.dart';
 
 import '../../material_styles.dart';
 import 'diagnosis_view.dart';
 
-class PersonalInfoView extends StatelessWidget {
+class PersonalInfoView extends StatefulWidget {
+  final PatientModel? selectedPatient;
+
+  PersonalInfoView({this.selectedPatient});
+
+  @override
+  _PersonalInfoViewState createState() => _PersonalInfoViewState();
+}
+
+class _PersonalInfoViewState extends State<PersonalInfoView> {
+  final TextEditingController _regController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      context.read<CreatePatientViewmodel>().setNewPatientDetails(
+          widget.selectedPatient ?? PatientModel.newInstance());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +45,9 @@ class PersonalInfoView extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Create patient'),
+          title: Text(widget.selectedPatient != null
+              ? 'Update patient'
+              : 'Create patient'),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -54,27 +76,28 @@ class PersonalInfoView extends StatelessWidget {
     );
   }
 
-  Widget _registrationNumber(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 24.0),
-        child: FormRow(
-          icon: Icon(Icons.app_registration),
-          formField: CustomTextFormField(
-            initialValue: context
-                .read<CreatePatientViewmodel>()
-                .newPatient
-                .personalInfo
-                .registrationNo,
-            label: 'Registration No',
-            onChanged: (value) {
-              var patient = context.read<CreatePatientViewmodel>().newPatient;
-              patient.personalInfo.registrationNo = value;
-              context
-                  .read<CreatePatientViewmodel>()
-                  .setNewPatientDetails(patient);
-            },
-          ),
+  Widget _registrationNumber(BuildContext context) {
+    _regController.text = context
+        .watch<CreatePatientViewmodel>()
+        .newPatient
+        .personalInfo
+        .registrationNo;
+    return Padding(
+      padding: const EdgeInsets.only(top: 24.0),
+      child: FormRow(
+        icon: Icon(Icons.app_registration),
+        formField: CustomTextFormField(
+          controller: TextEditingController(
+              text: context
+                  .watch<CreatePatientViewmodel>()
+                  .newPatient
+                  .personalInfo
+                  .registrationNo),
+          label: 'Registration No',
         ),
-      );
+      ),
+    );
+  }
 
   Widget _category(BuildContext context) => Padding(
         padding: const EdgeInsets.only(top: 8.0),
@@ -276,4 +299,11 @@ class PersonalInfoView extends StatelessWidget {
           ],
         ),
       );
+
+  _savePersonalInfo(BuildContext context) {
+    var viewModel = context.read<CreatePatientViewmodel>();
+    viewModel.newPatient.personalInfo.registrationNo = _regController.text;
+
+    viewModel.setNewPatientDetails(viewModel.newPatient);
+  }
 }

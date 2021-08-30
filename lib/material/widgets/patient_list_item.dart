@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wardeleven/base/base_styles.dart';
-import 'package:wardeleven/material/views/patient_profile/patient_profile_view.dart';
+import 'package:wardeleven/material/views/create_patient/personal_info_view.dart';
 import 'package:wardeleven/material/widgets/custom_card.dart';
 import 'package:wardeleven/models/patient_model.dart';
 
@@ -24,8 +24,8 @@ class PatientListItem extends StatelessWidget {
               size: Styles.fontSize14,
               color: statusColor,
             )),
-        onTap: () => Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => PatientProfileView())),
+        onTap: () => Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => PersonalInfoView(selectedPatient: patient))),
       ),
     );
   }

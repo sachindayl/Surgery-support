@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:wardeleven/base/base_styles.dart';
+import 'package:wardeleven/base/constants/constants.dart';
 import 'package:wardeleven/material/views/main_container/main_container.dart';
 import 'package:wardeleven/material/widgets/custom_circular_progress_indicator.dart';
 import 'package:wardeleven/material/widgets/custom_date_picker.dart';
@@ -14,8 +15,19 @@ import 'package:wardeleven/shared/viewmodels/create_patient_viewmodel.dart';
 
 import '../../material_styles.dart';
 
-class DiagnosisView extends StatelessWidget {
+class DiagnosisView extends StatefulWidget {
+  @override
+  _DiagnosisViewState createState() => _DiagnosisViewState();
+}
+
+class _DiagnosisViewState extends State<DiagnosisView> {
   final TextEditingController _dateController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _dateController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,38 +47,56 @@ class DiagnosisView extends StatelessWidget {
       });
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Create patient'),
-      ),
-      body: SafeArea(
-          child: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: Styles.horizontalPadding, vertical: 8.0),
-              child: Column(
-                children: [
-                  FormTitle(title: 'Diagnosis information'),
-                  _indication(context),
-                  _surgeryDate(context),
-                  _procedure(context),
-                  _outsideSurgery(context),
-                  _surgery(context),
-                  _surgeryType(context),
-                  _priority(context),
-                  _createButton(context)
-                ],
+    return WillPopScope(
+      onWillPop: () async {
+        _dateController.text = context
+            .read<CreatePatientViewmodel>()
+            .newPatient
+            .diagnosis
+            .diagnosisDateToString;
+        return Future.value(true);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(context
+                      .read<CreatePatientViewmodel>()
+                      .newPatient
+                      .personalInfo
+                      .name
+                      .firstName !=
+                  Constants.emptyString
+              ? 'Update patient'
+              : 'Create patient'),
+        ),
+        body: SafeArea(
+            child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: Styles.horizontalPadding, vertical: 8.0),
+                child: Column(
+                  children: [
+                    FormTitle(title: 'Diagnosis information'),
+                    _indication(context),
+                    _surgeryDate(context),
+                    _procedure(context),
+                    _outsideSurgery(context),
+                    _surgery(context),
+                    _surgeryType(context),
+                    _priority(context),
+                    _createButton(context)
+                  ],
+                ),
               ),
             ),
-          ),
-          CustomCircularProgressIndicator(
-            isLoading: context.select(
-                (CreatePatientViewmodel viewModel) => viewModel.isLoading),
-          )
-        ],
-      )),
+            CustomCircularProgressIndicator(
+              isLoading: context.select(
+                  (CreatePatientViewmodel viewModel) => viewModel.isLoading),
+            )
+          ],
+        )),
+      ),
     );
   }
 
@@ -91,35 +121,36 @@ class DiagnosisView extends StatelessWidget {
             )),
       );
 
-  Widget _surgeryDate(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 8.0),
-        child: FormRow(
-          formField: Consumer<CreatePatientViewmodel>(
-              builder: (context, viewModel, child) {
-            return TextFormField(
-                controller: _dateController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Date',
-                ),
-                readOnly: true,
-                onTap: () async {
-                  var inputFormat = DateFormat('dd/MM/yyyy');
-                  await CustomDatePicker(
-                          selectedDate: viewModel.newPatient.diagnosis.date,
-                          newDateCallback: (newDate) {
-                            _dateController.text = inputFormat.format(newDate);
-                            viewModel.newPatient.diagnosis.date = newDate;
-                            viewModel
-                                .setNewPatientDetails(viewModel.newPatient);
-                          },
-                          firstDate: DateTime(1990, 1),
-                          lastDate: DateTime.now())
-                      .build(context);
-                });
-          }),
-        ),
-      );
+  Widget _surgeryDate(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: FormRow(
+        formField: Consumer<CreatePatientViewmodel>(
+            builder: (context, viewModel, child) {
+          _dateController.text =
+              viewModel.newPatient.diagnosis.diagnosisDateToString;
+          return TextFormField(
+              controller: _dateController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Date',
+              ),
+              readOnly: true,
+              onTap: () async {
+                var inputFormat = DateFormat('dd/MM/yyyy');
+                await CustomDatePicker(
+                        selectedDate: viewModel.newPatient.diagnosis.date,
+                        newDateCallback: (newDate) {
+                          _dateController.text = inputFormat.format(newDate);
+                        },
+                        firstDate: DateTime(1990, 1),
+                        lastDate: DateTime.now())
+                    .build(context);
+              });
+        }),
+      ),
+    );
+  }
 
   Widget _procedure(BuildContext context) => Padding(
         padding: const EdgeInsets.only(top: 8.0),
@@ -266,7 +297,12 @@ class DiagnosisView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Create',
+                context
+                    .read<CreatePatientViewmodel>()
+                    .newPatient
+                    .personalInfo
+                    .name
+                    .firstName != Constants.emptyString ? 'Update': 'Create',
                 style: TextStyle(
                     fontSize: Styles.fontSize21,
                     fontWeight: Styles.fontWeightSemiBold,
@@ -279,6 +315,7 @@ class DiagnosisView extends StatelessWidget {
                   context
                       .read<CreatePatientViewmodel>()
                       .setLoading(LoadingState.loading);
+                  _submitControllerData(context);
                   await context.read<CreatePatientViewmodel>().createPatient();
                   context
                       .read<CreatePatientViewmodel>()
@@ -326,5 +363,12 @@ class DiagnosisView extends StatelessWidget {
         );
       },
     );
+  }
+
+  _submitControllerData(BuildContext context) {
+    var viewModel = context.read<CreatePatientViewmodel>();
+    viewModel.newPatient.diagnosis.date =
+        DateFormat('dd/MM/yyyy').parse(_dateController.text);
+    viewModel.setNewPatientDetails(viewModel.newPatient);
   }
 }

@@ -33,8 +33,8 @@ class FirestoreRouting {
     return await _patientsCollection
         .get()
         .then((QuerySnapshot query) => query.docs.map((item) {
-              log(item.data().toString(), name: "getPatients");
               var json = jsonEncode(item.data());
+              log(json, name: "getPatients");
               return PatientModel.fromJson(jsonDecode(json));
             }).toList())
         .catchError((error) {

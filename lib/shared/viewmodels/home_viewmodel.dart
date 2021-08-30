@@ -1,6 +1,4 @@
 
-import 'dart:developer';
-
 import 'package:flutter/foundation.dart';
 import 'package:wardeleven/base/base_viewmodel_contract.dart';
 import 'package:wardeleven/base/failure_handler.dart';
@@ -50,12 +48,12 @@ class HomeViewModel with ChangeNotifier implements BaseViewModelContract {
   Map<DateTime, List<PatientModel>> get calenderEvents {
     Map<DateTime, List<PatientModel>> calendarEventMap = {};
 
-    for(var patient in _patients) {
+    for (var patient in _patients) {
       calendarEventMap[patient.diagnosis.date] = _patients
-          .where((element) => element.diagnosis.date == patient.diagnosis.date).toList();
+          .where((element) => element.diagnosis.date == patient.diagnosis.date)
+          .toList();
     }
 
-    log(calendarEventMap.toString(), name: "calenderEvents");
     return calendarEventMap;
   }
 
