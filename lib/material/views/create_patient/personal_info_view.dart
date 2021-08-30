@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +28,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   final TextEditingController _dobController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
 
   @override
   void initState() {
@@ -46,6 +46,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
     _dobController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
+    _phoneController.dispose();
   }
 
   @override
@@ -266,54 +267,54 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
         ),
       );
 
-  Widget _dob(BuildContext context) => Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: FormRow(
-        icon: Icon(Icons.cake),
-        formField: Consumer<CreatePatientViewmodel>(
-            builder: (context, viewModel, child) {
-          return TextFormField(
-              controller: _dobController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Date of birth',
-              ),
-              readOnly: true,
-              onTap: () async => await CustomDatePicker(
-                      selectedDate:
-                          viewModel.newPatient.personalInfo.formattedDob,
-                      newDateCallback: (newDate) {
-                        var inputFormat = DateFormat('dd/MM/yyyy');
-                        _dobController.text = inputFormat.format(newDate);
-                        viewModel.newPatient.personalInfo.setDob(newDate);
-                        viewModel.setNewPatientDetails(viewModel.newPatient);
-                      },
-                      firstDate: DateTime(1900, 1),
-                      lastDate: DateTime.now())
-                  .build(context));
-        }),
-      ));
+  Widget _dob(BuildContext context) {
+    _dobController.text =
+        context.watch<CreatePatientViewmodel>().newPatient.personalInfo.dob;
+    return Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: FormRow(
+          icon: Icon(Icons.cake),
+          formField: Consumer<CreatePatientViewmodel>(
+              builder: (context, viewModel, child) {
+            return TextFormField(
+                controller: _dobController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Date of birth',
+                ),
+                readOnly: true,
+                onTap: () async => await CustomDatePicker(
+                        selectedDate:
+                            viewModel.newPatient.personalInfo.formattedDob,
+                        newDateCallback: (newDate) {
+                          var inputFormat = DateFormat('dd/MM/yyyy');
+                          _dobController.text = inputFormat.format(newDate);
+                          viewModel.newPatient.personalInfo.setDob(newDate);
+                          viewModel.setNewPatientDetails(viewModel.newPatient);
+                        },
+                        firstDate: DateTime(1900, 1),
+                        lastDate: DateTime.now())
+                    .build(context));
+          }),
+        ));
+  }
 
-  Widget _telephoneNumber(BuildContext context) => Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: FormRow(
-        icon: Icon(Icons.phone),
-        formField: CustomTextFormField(
-          label: 'Telephone no.',
-          initialValue: context
-              .read<CreatePatientViewmodel>()
-              .newPatient
-              .personalInfo
-              .phoneNumber,
-          onChanged: (value) {
-            var patient = context.read<CreatePatientViewmodel>().newPatient;
-            patient.personalInfo.phoneNumber = value;
-            context
-                .read<CreatePatientViewmodel>()
-                .setNewPatientDetails(patient);
-          },
-        ),
-      ));
+  Widget _telephoneNumber(BuildContext context) {
+    _phoneController.text = context
+        .watch<CreatePatientViewmodel>()
+        .newPatient
+        .personalInfo
+        .phoneNumber;
+    return Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: FormRow(
+          icon: Icon(Icons.phone),
+          formField: CustomTextFormField(
+            label: 'Telephone no.',
+            controller: _phoneController,
+          ),
+        ));
+  }
 
   Widget _continueButton(BuildContext context) => Padding(
         padding: const EdgeInsets.only(top: 24.0),
@@ -331,8 +332,11 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
               ),
             ),
             ElevatedButton(
-              onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => DiagnosisView())),
+              onPressed: () {
+                _savePersonalInfo(context);
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => DiagnosisView()));
+              },
               child: Icon(
                 Icons.arrow_right_alt_rounded,
                 color: Styles.white,
@@ -352,6 +356,8 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
     viewModel.newPatient.personalInfo.name.firstName =
         _firstNameController.text;
     viewModel.newPatient.personalInfo.name.lastName = _lastNameController.text;
+    viewModel.newPatient.personalInfo.phoneNumber = _phoneController.text;
+
     viewModel.setNewPatientDetails(viewModel.newPatient);
   }
 }

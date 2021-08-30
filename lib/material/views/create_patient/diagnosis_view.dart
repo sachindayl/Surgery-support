@@ -38,6 +38,13 @@ class _DiagnosisViewState extends State<DiagnosisView> {
         await _showMessage(
             context, 'Success!', 'The patient was created successfully.');
       });
+    } else if (context.select(
+            (CreatePatientViewmodel viewmodel) => viewmodel.isPatientUpdated) ==
+        DataState.success) {
+      Future.delayed(Duration.zero, () async {
+        await _showMessage(
+            context, 'Success!', 'The patient was updated successfully.');
+      });
     } else if (context
             .select((CreatePatientViewmodel viewmodel) => viewmodel.failure) !=
         null) {
@@ -298,11 +305,14 @@ class _DiagnosisViewState extends State<DiagnosisView> {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 context
-                    .read<CreatePatientViewmodel>()
-                    .newPatient
-                    .personalInfo
-                    .name
-                    .firstName != Constants.emptyString ? 'Update': 'Create',
+                            .read<CreatePatientViewmodel>()
+                            .newPatient
+                            .personalInfo
+                            .name
+                            .firstName !=
+                        Constants.emptyString
+                    ? 'Update'
+                    : 'Create',
                 style: TextStyle(
                     fontSize: Styles.fontSize21,
                     fontWeight: Styles.fontWeightSemiBold,
@@ -312,14 +322,16 @@ class _DiagnosisViewState extends State<DiagnosisView> {
             ElevatedButton(
               onPressed: () {
                 Future.delayed(Duration.zero, () async {
-                  context
-                      .read<CreatePatientViewmodel>()
-                      .setLoading(LoadingState.loading);
+                  var viewModel = context.read<CreatePatientViewmodel>();
+
+                  viewModel.setLoading(LoadingState.loading);
                   _submitControllerData(context);
-                  await context.read<CreatePatientViewmodel>().createPatient();
-                  context
-                      .read<CreatePatientViewmodel>()
-                      .setLoading(LoadingState.complete);
+                  viewModel.newPatient.personalInfo.name.firstName !=
+                          Constants.emptyString
+                      ? await viewModel.updatePatient()
+                      : await viewModel.createPatient();
+
+                  viewModel.setLoading(LoadingState.complete);
                 });
               },
               child: Icon(
@@ -355,8 +367,9 @@ class _DiagnosisViewState extends State<DiagnosisView> {
               child: const Text('OK'),
               onPressed: () {
                 context.read<CreatePatientViewmodel>().clearPatientData();
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => MainContainer()));
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => MainContainer()),
+                    (Route<dynamic> route) => false);
               },
             ),
           ],

@@ -10,12 +10,12 @@ class CreatePatientViewmodel with ChangeNotifier {
   var _priorityIndex = 0;
   var _newPatient = PatientModel.newInstance();
   var _isPatientCreated = DataState.initial;
+  var _isPatientUpdated = DataState.initial;
   var _isLoading = LoadingState.initial;
   FailureHandler? _failure;
 
   // region Getters
-  List<String> get categoryList =>
-      ["ORS", "Officer", "Family"];
+  List<String> get categoryList => ["ORS", "Officer", "Family"];
 
   List<String> get procedureList => ["Upper GI", "Lower GI", "Cystoscopy"];
 
@@ -34,6 +34,8 @@ class CreatePatientViewmodel with ChangeNotifier {
   PatientModel get newPatient => _newPatient;
 
   DataState get isPatientCreated => _isPatientCreated;
+
+  DataState get isPatientUpdated => _isPatientUpdated;
 
   LoadingState get isLoading => _isLoading;
 
@@ -69,6 +71,11 @@ class CreatePatientViewmodel with ChangeNotifier {
     notifyListeners();
   }
 
+  setPatientUpdated(DataState newState) {
+    _isPatientUpdated = newState;
+    notifyListeners();
+  }
+
   setLoading(LoadingState newState) {
     _isLoading = newState;
     notifyListeners();
@@ -83,6 +90,7 @@ class CreatePatientViewmodel with ChangeNotifier {
     _newPatient = PatientModel.newInstance();
     _isLoading = LoadingState.initial;
     _isPatientCreated = DataState.initial;
+    _isPatientUpdated = DataState.initial;
     _categoryIndex = 0;
     _genderIndex = 0;
     _priorityIndex = 0;
@@ -97,6 +105,16 @@ class CreatePatientViewmodel with ChangeNotifier {
       var isPatientCreated =
           await FirebaseService().firestore.createPatient(_newPatient);
       setPatientCreated(isPatientCreated);
+    } on FailureHandler catch (e) {
+      setFailure(e);
+    }
+  }
+
+  Future<void> updatePatient() async {
+    try {
+      var isPatientUpdated =
+          await FirebaseService().firestore.updatePatient(_newPatient);
+      setPatientUpdated(isPatientUpdated);
     } on FailureHandler catch (e) {
       setFailure(e);
     }

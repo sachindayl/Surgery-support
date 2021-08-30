@@ -16,15 +16,31 @@ class FirestoreRouting {
 
   FirestoreRouting._internal();
 
-  final _patientsCollection = FirebaseFirestore.instance.collection('patients');
+  final _patientsCollection = FirebaseFirestore.instance
+      .collection('patients')
+      .withConverter<PatientModel>(
+        fromFirestore: (snapshot, _) => PatientModel.fromJson(snapshot.data()!),
+        toFirestore: (patient, _) => patient.toJson(),
+      );
+
   final _errorHandler = ErrorHandler();
 
   Future<DataState> createPatient(PatientModel patient) async {
-    return _patientsCollection.add(patient.toJson()).then((value) {
+    return _patientsCollection.add(patient).then((value) {
       log("Patient created.", name: "createPatient");
       return DataState.success;
     }).catchError((error) {
       log("Patient create error.", name: "createPatient");
+      _errorHandler.handleError(error);
+    });
+  }
+
+  Future<DataState> updatePatient(PatientModel patient) async {
+    return _patientsCollection.doc(patient.id).set(patient).then((value) {
+      log("Patient updated.", name: "updatePatient");
+      return DataState.success;
+    }).catchError((error) {
+      log("Patient update error.", name: "updatePatient");
       _errorHandler.handleError(error);
     });
   }
@@ -34,8 +50,10 @@ class FirestoreRouting {
         .get()
         .then((QuerySnapshot query) => query.docs.map((item) {
               var json = jsonEncode(item.data());
-              log(json, name: "getPatients");
-              return PatientModel.fromJson(jsonDecode(json));
+              log(item.id, name: "getPatients");
+              var patient = PatientModel.fromJson(jsonDecode(json));
+              patient.id = item.id;
+              return patient;
             }).toList())
         .catchError((error) {
       log(error.toString(), name: "getPatients");
@@ -53,7 +71,10 @@ class FirestoreRouting {
         .get()
         .then((QuerySnapshot query) => query.docs.map((item) {
               var json = jsonEncode(item.data());
-              return PatientModel.fromJson(jsonDecode(json));
+              log(item.id, name: "getPatients");
+              var patient = PatientModel.fromJson(jsonDecode(json));
+              patient.id = item.id;
+              return patient;
             }).toList())
         .catchError((error) {
       log(error.toString(), name: "getPatientsForFocusedTimePeriod");

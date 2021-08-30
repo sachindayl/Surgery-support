@@ -30,7 +30,7 @@ class _HomeViewState extends State<HomeView> {
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
-              title: Text('Recent'),
+              title: Text('Ward Eleven'),
             ),
             SliverToBoxAdapter(
               child: Container(
