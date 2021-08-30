@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:wardeleven/base/base_viewmodel_contract.dart';
@@ -16,26 +15,29 @@ class HomeViewModel with ChangeNotifier implements BaseViewModelContract {
 
   Future<void> getMonthlyPatients() async {
     try {
-      var patients = await FirebaseService().firestore
+      var patients = await FirebaseService()
+          .firestore
           .getPatientsForFocusedTimePeriod(_focusedDay);
-      log(patients.toString(), name: "getMonthlyPatients");
       setPatients(patients);
     } on FailureHandler catch (e) {
       setFailure(e);
     }
   }
 
-
   void setSelectedDay(DateTime day) {
     _selectedDay = day;
     notifyListeners();
   }
+
+  DateTime get selectedDay => _selectedDay;
 
   void setFocusedDay(DateTime day) {
     _focusedDay = day;
     getMonthlyPatients();
     notifyListeners();
   }
+
+  DateTime get focusedDay => _focusedDay;
 
   void setPatients(List<PatientModel> patients) {
     _patients.clear();
@@ -50,41 +52,31 @@ class HomeViewModel with ChangeNotifier implements BaseViewModelContract {
       var diagnosisDate = patient.diagnosis.date;
       var dailyPatients = _patients
           .where((e) =>
-      diagnosisDate.day == _selectedDay.day &&
-          diagnosisDate.month == _selectedDay.month &&
-          diagnosisDate.year == _selectedDay.year).toList();
+              _focusedDay.day <= diagnosisDate.day &&
+              _focusedDay.month <= diagnosisDate.month &&
+              _focusedDay.year <= diagnosisDate.year)
+          .toList();
       return calendarEventMap[diagnosisDate] = dailyPatients;
     }).toList();
-
-    // _patients.forEach((patient) {
-    //   var dateFormat = DateFormat('dd/MM/yyyy').parse(patient.diagnosis.date);
-    //   var dailyPatients = _patients.where((e) =>
-    //    dateFormat.day == _selectedDay.day &&
-    //       dateFormat.month == _selectedDay.month &&
-    //       dateFormat.year == _selectedDay.year).toList();
-    //   calendarEventMap[dateFormat] = dailyPatients;
-    // });
-
-
-    // var dateFormat = DateFormat('dd/MM/yyyy').format(_focusedDay);
-    log(calendarEventMap.toString(), name: "calenderEvents");
 
     return calendarEventMap;
   }
 
-  List<PatientModel> get todayHighPriorityPatients =>
-      _patients.where((patient) =>
-      patient.diagnosis.priority == 'High' &&
-      patient.diagnosis.date.day == _selectedDay.day &&
-          patient.diagnosis.date.month == _selectedDay.month &&
-          patient.diagnosis.date.year == _selectedDay.year).toList();
-
-  List<PatientModel> get todayOtherPatients =>
-      _patients.where((patient) =>
-      patient.diagnosis.priority != 'High' &&
+  List<PatientModel> get todayHighPriorityPatients => _patients
+      .where((patient) =>
+          patient.diagnosis.priority == 'High' &&
           patient.diagnosis.date.day == _selectedDay.day &&
           patient.diagnosis.date.month == _selectedDay.month &&
-          patient.diagnosis.date.year == _selectedDay.year).toList();
+          patient.diagnosis.date.year == _selectedDay.year)
+      .toList();
+
+  List<PatientModel> get todayOtherPatients => _patients
+      .where((patient) =>
+          patient.diagnosis.priority != 'High' &&
+          patient.diagnosis.date.day == _selectedDay.day &&
+          patient.diagnosis.date.month == _selectedDay.month &&
+          patient.diagnosis.date.year == _selectedDay.year)
+      .toList();
 
   @override
   FailureHandler? get failure => _failure;

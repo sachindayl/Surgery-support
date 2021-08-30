@@ -38,7 +38,9 @@ class _HomeViewState extends State<HomeView> {
                     const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                 child: CustomCard(
                     child: CustomCalendar(
-                        context.read<HomeViewModel>().calenderEvents,
+                        context.watch<HomeViewModel>().selectedDay,
+                        context.watch<HomeViewModel>().focusedDay,
+                        context.watch<HomeViewModel>().calenderEvents,
                         (selectedDay) => context
                             .read<HomeViewModel>()
                             .setSelectedDay(selectedDay),

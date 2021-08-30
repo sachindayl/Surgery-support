@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:intl/intl.dart';
 import 'package:wardeleven/base/constants/constants.dart';
@@ -23,7 +22,6 @@ class DiagnosisModel {
   String priority;
 
   factory DiagnosisModel.fromJson(Map<String, dynamic> json) {
-    log("in diagnosis");
     var date = (json["date"] as String).split('T');
     return DiagnosisModel(
         indication: json["indication"],
@@ -56,17 +54,6 @@ class DiagnosisModel {
         "surgeryType": surgeryType,
         "priority": priority,
       };
-
-  // DateTime get formattedDiagnosisDate {
-  //   if(date == Constants.emptyString) {
-  //     return DateTime.now();
-  //   }
-  //   return DateFormat('dd/MM/yyyy').parse(date);
-  // }
-
-  // void setDiagnosisDate(DateTime newDate) {
-  //   date = DateFormat('dd/MM/yyyy').format(newDate);
-  // }
 
   String get diagnosisDateToString => DateFormat('dd/MM/yyyy').format(date);
 }

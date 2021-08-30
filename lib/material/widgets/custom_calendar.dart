@@ -4,26 +4,27 @@ import 'package:wardeleven/base/base_styles.dart';
 import 'package:wardeleven/models/patient_model.dart';
 
 class CustomCalendar extends StatefulWidget {
+  final DateTime selectedDay;
+  final DateTime focusedDay;
   final Map<DateTime, List<PatientModel>> events;
   final Function(DateTime) selectedDayCallback;
   final Function(DateTime) focusedDayCallback;
 
-  CustomCalendar(this.events, this.selectedDayCallback, this.focusedDayCallback);
+  CustomCalendar(this.selectedDay, this.focusedDay, this.events,
+      this.selectedDayCallback, this.focusedDayCallback);
 
   @override
   _CustomCalendarState createState() => _CustomCalendarState();
 }
 
 class _CustomCalendarState extends State<CustomCalendar> {
-  DateTime _selectedDay = DateTime.now();
-  DateTime _focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.week;
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Theme.of(context).backgroundColor,
-      child: Container(
+        color: Theme.of(context).backgroundColor,
+        child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           decoration: BoxDecoration(
               color: Styles.white, borderRadius: BorderRadius.circular(12.0)),
@@ -32,21 +33,19 @@ class _CustomCalendarState extends State<CustomCalendar> {
               TableCalendar(
                 firstDay: DateTime.utc(1990, 01, 01),
                 lastDay: DateTime.utc(2040, 12, 31),
-                focusedDay: _focusedDay,
+                focusedDay: widget.focusedDay,
                 selectedDayPredicate: (DateTime date) {
-                  return isSameDay(_selectedDay, date);
+                  return isSameDay(widget.selectedDay, date);
                 },
                 eventLoader: _getEventsFromDay,
                 onDaySelected: (selectedDay, focusedDay) {
                   setState(() {
-                    _selectedDay = selectedDay;
-                    widget.selectedDayCallback(_selectedDay);
-                    _focusedDay = focusedDay;
+                    widget.selectedDayCallback(selectedDay);
+                    // _focusedDay = focusedDay;
                   });
                 },
                 onPageChanged: (focusedDay) {
                   widget.focusedDayCallback(focusedDay);
-                  _focusedDay = focusedDay;
                 },
                 calendarFormat: _calendarFormat,
                 onFormatChanged: (format) {
@@ -78,8 +77,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
               )
             ],
           ),
-        )
-    );
+        ));
   }
 
   List<PatientModel> _getEventsFromDay(DateTime day) {

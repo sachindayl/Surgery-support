@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
 import 'package:wardeleven/base/error_handler.dart';
 import 'package:wardeleven/models/enums.dart';
 import 'package:wardeleven/models/patient_model.dart';
@@ -46,10 +45,11 @@ class FirestoreRouting {
 
   Future<List<PatientModel>> getPatientsForFocusedTimePeriod(
       DateTime focusedDay) async {
-    var formattedDay = DateFormat('dd/MM/yyyy').format(focusedDay);
-    log(formattedDay.toString(), name: "getPatientsForFocusedTimePeriod");
-
+    var monthPriorEvents =
+        DateTime(focusedDay.year, focusedDay.month - 1, focusedDay.day);
     return await _patientsCollection
+        .where('diagnosis.date',
+            isGreaterThanOrEqualTo: monthPriorEvents.toIso8601String())
         .get()
         .then((QuerySnapshot query) => query.docs.map((item) {
               var json = jsonEncode(item.data());
