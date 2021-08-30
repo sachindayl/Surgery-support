@@ -165,7 +165,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         }),
         child: Padding(
           padding: const EdgeInsets.all(4.0),
-          child: Text(widget.selectedPatient != null ? 'Update' : 'Create'),
+          child: Text(widget.selectedPatient != null ? 'Update' : 'Create', style: TextStyle(color: CupertinoTheme.of(context).primaryContrastingColor, fontWeight: Styles.fontWeightSemiBold),),
         ),
       );
 
