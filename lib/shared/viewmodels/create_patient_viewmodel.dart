@@ -5,7 +5,6 @@ import 'package:wardeleven/models/patient_model.dart';
 import 'package:wardeleven/services/firebase/firebase_service.dart';
 
 class CreatePatientViewmodel with ChangeNotifier {
-  var _gender = Gender.male;
   var _categoryIndex = 0;
   var _genderIndex = 0;
   var _priorityIndex = 0;
@@ -26,8 +25,6 @@ class CreatePatientViewmodel with ChangeNotifier {
 
   List<String> get genderList => ["Male", "Female", "Other"];
 
-  Gender get gender => _gender;
-
   int get genderIndex => _genderIndex;
 
   int get priorityIndex => _priorityIndex;
@@ -45,11 +42,6 @@ class CreatePatientViewmodel with ChangeNotifier {
   // endregion
 
   // region Setters
-
-  void setGender(Gender newState) {
-    _gender = newState;
-    notifyListeners();
-  }
 
   void setGenderIndex(int index) {
     _genderIndex = index;

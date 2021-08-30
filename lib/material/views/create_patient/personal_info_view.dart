@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +8,7 @@ import 'package:wardeleven/material/widgets/custom_date_picker.dart';
 import 'package:wardeleven/material/widgets/custom_text_form_field.dart';
 import 'package:wardeleven/material/widgets/form_field_dropdown.dart';
 import 'package:wardeleven/material/widgets/form_row.dart';
-import 'package:wardeleven/models/enums.dart';
+import 'package:wardeleven/models/gender_model.dart';
 import 'package:wardeleven/models/patient_model.dart';
 import 'package:wardeleven/shared/viewmodels/create_patient_viewmodel.dart';
 
@@ -26,6 +27,8 @@ class PersonalInfoView extends StatefulWidget {
 class _PersonalInfoViewState extends State<PersonalInfoView> {
   final TextEditingController _regController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
 
   @override
   void initState() {
@@ -34,6 +37,15 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
       context.read<CreatePatientViewmodel>().setNewPatientDetails(
           widget.selectedPatient ?? PatientModel.newInstance());
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _regController.dispose();
+    _dobController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
   }
 
   @override
@@ -87,12 +99,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
       child: FormRow(
         icon: Icon(Icons.app_registration),
         formField: CustomTextFormField(
-          controller: TextEditingController(
-              text: context
-                  .watch<CreatePatientViewmodel>()
-                  .newPatient
-                  .personalInfo
-                  .registrationNo),
+          controller: _regController,
           label: 'Registration No',
         ),
       ),
@@ -123,98 +130,137 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
         }),
       );
 
-  Widget _firstName(BuildContext context) => Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: FormRow(
-        icon: Icon(Icons.person),
-        formField: CustomTextFormField(
-          label: 'First name',
-          initialValue: context
-              .read<CreatePatientViewmodel>()
-              .newPatient
-              .personalInfo
-              .name
-              .firstName,
-          onChanged: (value) {
-            var patient = context.read<CreatePatientViewmodel>().newPatient;
-            patient.personalInfo.name.firstName = value;
-            context
-                .read<CreatePatientViewmodel>()
-                .setNewPatientDetails(patient);
-          },
-        ),
-      ));
+  Widget _firstName(BuildContext context) {
+    _firstNameController.text = context
+        .watch<CreatePatientViewmodel>()
+        .newPatient
+        .personalInfo
+        .name
+        .firstName;
+    return Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: FormRow(
+          icon: Icon(Icons.person),
+          formField: CustomTextFormField(
+            label: 'First name',
+            controller: _firstNameController,
+          ),
+        ));
+  }
 
-  Widget _lastName(BuildContext context) => Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: FormRow(
-        formField: CustomTextFormField(
-          label: 'Last name',
-          initialValue: context
-              .read<CreatePatientViewmodel>()
-              .newPatient
-              .personalInfo
-              .name
-              .lastName,
-          onChanged: (value) {
-            var patient = context.read<CreatePatientViewmodel>().newPatient;
-            patient.personalInfo.name.lastName = value;
-            context
-                .read<CreatePatientViewmodel>()
-                .setNewPatientDetails(patient);
-          },
-        ),
-      ));
+  Widget _lastName(BuildContext context) {
+    _lastNameController.text = context
+        .watch<CreatePatientViewmodel>()
+        .newPatient
+        .personalInfo
+        .name
+        .lastName;
+    return Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: FormRow(
+          formField: CustomTextFormField(
+            label: 'Last name',
+            controller: _lastNameController,
+          ),
+        ));
+  }
 
   Widget _gender(BuildContext context) => Padding(
         padding: const EdgeInsets.only(top: 8.0),
-        child: Row(
+        child: Column(
           children: [
-            SizedBox(
-              width: MaterialStyles.iconSizedBoxWidth,
-              child: Icon(Icons.female),
+            Row(
+              children: [
+                SizedBox(
+                  width: MaterialStyles.iconSizedBoxWidth,
+                  child: Icon(Icons.female),
+                ),
+                Flexible(
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 4.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4.0),
+                        border: Border.all(
+                            color: Styles.black.withOpacity(Styles.opacity51))),
+                    child: Consumer<CreatePatientViewmodel>(
+                        builder: (context, viewModel, child) {
+                      return ListTile(
+                        title: Text('Male'),
+                        onTap: () {
+                          viewModel.newPatient.personalInfo.gender =
+                              Gender.male.string;
+                          viewModel.setNewPatientDetails(viewModel.newPatient);
+                        },
+                        trailing: Radio<Gender>(
+                          value: Gender.male,
+                          groupValue:
+                              viewModel.newPatient.personalInfo.gender.gender,
+                          onChanged: (_) {},
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+                Flexible(
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 4.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4.0),
+                        border: Border.all(
+                            color: Styles.black.withOpacity(Styles.opacity51))),
+                    child: Consumer<CreatePatientViewmodel>(
+                        builder: (context, viewModel, child) {
+                      return ListTile(
+                        title: Text('Female'),
+                        onTap: () {
+                          viewModel.newPatient.personalInfo.gender =
+                              Gender.female.string;
+                          viewModel.setNewPatientDetails(viewModel.newPatient);
+                        },
+                        trailing: Radio<Gender>(
+                          value: Gender.female,
+                          groupValue:
+                              viewModel.newPatient.personalInfo.gender.gender,
+                          onChanged: (_) => {},
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+              ],
             ),
-            Flexible(
-              child: Container(
-                margin: const EdgeInsets.only(right: 4.0),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4.0),
-                    border: Border.all(
-                        color: Styles.black.withOpacity(Styles.opacity51))),
-                child: Consumer<CreatePatientViewmodel>(
-                    builder: (context, viewModel, child) {
-                  return ListTile(
-                    title: Text('Male'),
-                    onTap: () => viewModel.setGender(Gender.male),
-                    trailing: Radio<Gender>(
-                      value: Gender.male,
-                      groupValue: viewModel.gender,
-                      onChanged: (_) => {},
-                    ),
-                  );
-                }),
-              ),
-            ),
-            Flexible(
-              child: Container(
-                margin: const EdgeInsets.only(left: 4.0),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4.0),
-                    border: Border.all(
-                        color: Styles.black.withOpacity(Styles.opacity51))),
-                child: Consumer<CreatePatientViewmodel>(
-                    builder: (context, viewModel, child) {
-                  return ListTile(
-                    title: Text('Female'),
-                    onTap: () => viewModel.setGender(Gender.female),
-                    trailing: Radio<Gender>(
-                      value: Gender.female,
-                      groupValue: viewModel.gender,
-                      onChanged: (_) => {},
-                    ),
-                  );
-                }),
-              ),
+            Row(
+              children: [
+                SizedBox(
+                  width: MaterialStyles.iconSizedBoxWidth,
+                ),
+                Flexible(
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 8.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4.0),
+                        border: Border.all(
+                            color: Styles.black.withOpacity(Styles.opacity51))),
+                    child: Consumer<CreatePatientViewmodel>(
+                        builder: (context, viewModel, child) {
+                      return ListTile(
+                        title: Text('Other'),
+                        onTap: () {
+                          viewModel.newPatient.personalInfo.gender =
+                              Gender.other.string;
+                          viewModel.setNewPatientDetails(viewModel.newPatient);
+                        },
+                        trailing: Radio<Gender>(
+                          value: Gender.other,
+                          groupValue:
+                              viewModel.newPatient.personalInfo.gender.gender,
+                          onChanged: (_) => {},
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+              ],
             )
           ],
         ),
@@ -303,7 +349,9 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   _savePersonalInfo(BuildContext context) {
     var viewModel = context.read<CreatePatientViewmodel>();
     viewModel.newPatient.personalInfo.registrationNo = _regController.text;
-
+    viewModel.newPatient.personalInfo.name.firstName =
+        _firstNameController.text;
+    viewModel.newPatient.personalInfo.name.lastName = _lastNameController.text;
     viewModel.setNewPatientDetails(viewModel.newPatient);
   }
 }
