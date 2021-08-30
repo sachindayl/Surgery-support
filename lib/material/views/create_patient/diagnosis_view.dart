@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:wardeleven/base/base_styles.dart';
-import 'package:wardeleven/cupertino/views/main_container/main_container.dart';
-import 'package:wardeleven/cupertino/widgets/form_title.dart';
+import 'package:wardeleven/material/views/main_container/main_container.dart';
 import 'package:wardeleven/material/widgets/custom_circular_progress_indicator.dart';
 import 'package:wardeleven/material/widgets/custom_date_picker.dart';
 import 'package:wardeleven/material/widgets/custom_text_form_field.dart';
 import 'package:wardeleven/material/widgets/form_field_dropdown.dart';
 import 'package:wardeleven/material/widgets/form_row.dart';
+import 'package:wardeleven/material/widgets/form_title.dart';
 import 'package:wardeleven/models/enums.dart';
 import 'package:wardeleven/shared/viewmodels/create_patient_viewmodel.dart';
 
@@ -107,11 +107,10 @@ class DiagnosisView extends StatelessWidget {
                   var inputFormat = DateFormat('dd/MM/yyyy');
                   await CustomDatePicker(
                           selectedDate: viewModel
-                              .newPatient.diagnosis.formattedDiagnosisDate,
+                              .newPatient.diagnosis.date,
                           newDateCallback: (newDate) {
                             _dateController.text = inputFormat.format(newDate);
-                            viewModel.newPatient.diagnosis
-                                .setDiagnosisDate(newDate);
+                            viewModel.newPatient.diagnosis.date = newDate;
                             viewModel
                                 .setNewPatientDetails(viewModel.newPatient);
                           },

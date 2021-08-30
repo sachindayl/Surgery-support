@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:wardeleven/base/error_handler.dart';
 import 'package:wardeleven/models/enums.dart';
 import 'package:wardeleven/models/patient_model.dart';
@@ -33,11 +34,29 @@ class FirestoreRouting {
     return await _patientsCollection
         .get()
         .then((QuerySnapshot query) => query.docs.map((item) {
+              log(item.data().toString(), name: "getPatients");
               var json = jsonEncode(item.data());
               return PatientModel.fromJson(jsonDecode(json));
             }).toList())
         .catchError((error) {
       log(error.toString(), name: "getPatients");
+      _errorHandler.handleError(error);
+    });
+  }
+
+  Future<List<PatientModel>> getPatientsForFocusedTimePeriod(
+      DateTime focusedDay) async {
+    var formattedDay = DateFormat('dd/MM/yyyy').format(focusedDay);
+    log(formattedDay.toString(), name: "getPatientsForFocusedTimePeriod");
+
+    return await _patientsCollection
+        .get()
+        .then((QuerySnapshot query) => query.docs.map((item) {
+              var json = jsonEncode(item.data());
+              return PatientModel.fromJson(jsonDecode(json));
+            }).toList())
+        .catchError((error) {
+      log(error.toString(), name: "getPatientsForFocusedTimePeriod");
       _errorHandler.handleError(error);
     });
   }

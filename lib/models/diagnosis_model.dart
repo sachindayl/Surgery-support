@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:intl/intl.dart';
 import 'package:wardeleven/base/constants/constants.dart';
 
@@ -13,27 +15,31 @@ class DiagnosisModel {
   });
 
   String indication;
-  String date;
+  DateTime date;
   String procedure;
   bool isOutside;
   String surgery;
   String surgeryType;
   String priority;
 
-  factory DiagnosisModel.fromJson(Map<String, dynamic> json) => DiagnosisModel(
+  factory DiagnosisModel.fromJson(Map<String, dynamic> json) {
+    log("in diagnosis");
+    var date = (json["date"] as String).split('T');
+    return DiagnosisModel(
         indication: json["indication"],
-        date: json["date"],
+        date: DateFormat('yy-MM-dd').parse(date[0]),
         procedure: json["procedure"],
         isOutside: json["isOutside"],
         surgery: json["surgery"],
         surgeryType: json["surgeryType"],
         priority: json["priority"],
       );
+  }
 
   factory DiagnosisModel.newInstance() {
     return DiagnosisModel(
         indication: Constants.emptyString,
-        date: Constants.emptyString,
+        date: DateTime.now(),
         procedure: 'Upper GI',
         isOutside: false,
         surgery: Constants.emptyString,
@@ -43,7 +49,7 @@ class DiagnosisModel {
 
   Map<String, dynamic> toJson() => {
         "indication": indication,
-        "date": date,
+        "date": date.toIso8601String(),
         "procedure": procedure,
         "isOutside": isOutside,
         "surgery": surgery,
@@ -51,14 +57,16 @@ class DiagnosisModel {
         "priority": priority,
       };
 
-  DateTime get formattedDiagnosisDate {
-    if(date == Constants.emptyString) {
-      return DateTime.now();
-    }
-    return DateFormat('dd/MM/yyyy').parse(date);
-  }
+  // DateTime get formattedDiagnosisDate {
+  //   if(date == Constants.emptyString) {
+  //     return DateTime.now();
+  //   }
+  //   return DateFormat('dd/MM/yyyy').parse(date);
+  // }
 
-  void setDiagnosisDate(DateTime newDate) {
-    date = DateFormat('dd/MM/yyyy').format(newDate);
-  }
+  // void setDiagnosisDate(DateTime newDate) {
+  //   date = DateFormat('dd/MM/yyyy').format(newDate);
+  // }
+
+  String get diagnosisDateToString => DateFormat('dd/MM/yyyy').format(date);
 }

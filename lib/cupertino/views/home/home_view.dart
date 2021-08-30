@@ -30,7 +30,7 @@ class HomeView extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: CustomCalendar(
-              context.read<HomeViewModel>().events, (date) => ''),
+              context.read<HomeViewModel>().calenderEvents, (date) => ''),
         ),
       ),
       SliverToBoxAdapter(

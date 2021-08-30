@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:wardeleven/base/base_styles.dart';
+import 'package:wardeleven/models/patient_model.dart';
 
 class CustomCalendar extends StatefulWidget {
-  final Map<DateTime, List<String>> events;
+  final Map<DateTime, List<PatientModel>> events;
   final Function(DateTime) selectedDayCallback;
 
   CustomCalendar(this.events, this.selectedDayCallback);
@@ -81,7 +82,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
     );
   }
 
-  List<String> _getEventsFromDay(DateTime day) {
+  List<PatientModel> _getEventsFromDay(DateTime day) {
     return widget.events[DateTime(day.year, day.month, day.day)] ?? [];
   }
 

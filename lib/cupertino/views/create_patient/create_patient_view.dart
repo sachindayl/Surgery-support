@@ -220,16 +220,14 @@ class CreatePatientView extends StatelessWidget {
                             CustomDateTimePicker(
                               isDate: true,
                               value:
-                              viewModel.newPatient.diagnosis
-                                  .formattedDiagnosisDate,
+                              viewModel.newPatient.diagnosis.date,
                               maxDate: DateTime.now(),
                               minDate: DateTime(1990, 1),
                               valueCallback: (updatedDate) {
                                 _dateController.text =
                                     DateFormat('dd/MM/yyyy').format(
                                         updatedDate);
-                                viewModel.newPatient.diagnosis
-                                    .setDiagnosisDate(updatedDate);
+                                viewModel.newPatient.diagnosis.date = updatedDate;
                                 viewModel.setNewPatientDetails(
                                     viewModel.newPatient);
                               },
