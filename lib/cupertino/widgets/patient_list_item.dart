@@ -1,19 +1,28 @@
 import 'package:flutter/cupertino.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:wardeleven/base/base_styles.dart';
 import 'package:wardeleven/cupertino/cupertino_styles.dart';
-import 'package:wardeleven/cupertino/views/patient_profile/patient_profile_view.dart';
+import 'package:wardeleven/cupertino/views/create_patient/create_patient_view.dart';
 import 'package:wardeleven/models/patient_model.dart';
 
 class PatientListItem extends StatelessWidget {
+  final Function(bool) isUpdateSuccessful;
   final PatientModel patient;
 
-  PatientListItem({required this.patient});
+  PatientListItem({required this.patient, required this.isUpdateSuccessful});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context)
-          .push(CupertinoPageRoute(builder: (context) => PatientProfileView())),
+      onTap: () => showCupertinoModalBottomSheet(
+          useRootNavigator: true,
+          elevation: 5.0,
+          expand: true,
+          context: context,
+          builder: (context) => CreatePatientView(
+                selectedPatient: patient,
+                updateSuccessful: isUpdateSuccessful,
+              )),
       child: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(

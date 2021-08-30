@@ -32,7 +32,15 @@ class _PatientSearchViewState extends State<PatientSearchView> {
                 elevation: 5.0,
                 expand: true,
                 context: context,
-                builder: (context) => CreatePatientView()),
+                builder: (context) => CreatePatientView(
+                      updateSuccessful: (isSuccessful) async {
+                        if (isSuccessful) {
+                          await context
+                              .read<PatientHistoryViewModel>()
+                              .getPatients();
+                        }
+                      },
+                    )),
             child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Icon(CupertinoIcons.person_add)),
@@ -56,6 +64,11 @@ class _PatientSearchViewState extends State<PatientSearchView> {
                 patient: context
                     .watch<PatientHistoryViewModel>()
                     .patientsList[index],
+                isUpdateSuccessful: (isSuccessful) async {
+                  if (isSuccessful) {
+                    await context.read<PatientHistoryViewModel>().getPatients();
+                  }
+                },
               ),
             ),
             childCount:

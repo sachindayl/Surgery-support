@@ -8,6 +8,8 @@ class CreatePatientViewmodel with ChangeNotifier {
   var _categoryIndex = 0;
   var _genderIndex = 0;
   var _priorityIndex = 0;
+  var _procedureIndex = 0;
+  var _surgeryTypeIndex = 0;
   var _newPatient = PatientModel.newInstance();
   var _isPatientCreated = DataState.initial;
   var _isPatientUpdated = DataState.initial;
@@ -31,6 +33,10 @@ class CreatePatientViewmodel with ChangeNotifier {
 
   int get categoryIndex => _categoryIndex;
 
+  int get procedureIndex => _procedureIndex;
+
+  int get surgeryTypeIndex => _surgeryTypeIndex;
+
   PatientModel get newPatient => _newPatient;
 
   DataState get isPatientCreated => _isPatientCreated;
@@ -50,8 +56,18 @@ class CreatePatientViewmodel with ChangeNotifier {
     notifyListeners();
   }
 
+  void setProcedureIndex(int index) {
+    _procedureIndex = index;
+    notifyListeners();
+  }
+
   void setPriorityIndex(int index) {
     _priorityIndex = index;
+    notifyListeners();
+  }
+
+  void setSurgeryTypeIndex(int index) {
+    _surgeryTypeIndex = index;
     notifyListeners();
   }
 
@@ -94,6 +110,8 @@ class CreatePatientViewmodel with ChangeNotifier {
     _categoryIndex = 0;
     _genderIndex = 0;
     _priorityIndex = 0;
+    _procedureIndex = 0;
+    _surgeryTypeIndex = 0;
     _failure = null;
   }
 

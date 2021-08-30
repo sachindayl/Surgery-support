@@ -9,7 +9,20 @@ import 'package:wardeleven/cupertino/widgets/message_tile.dart';
 import 'package:wardeleven/cupertino/widgets/patient_list_item.dart';
 import 'package:wardeleven/shared/viewmodels/home_viewmodel.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
+  @override
+  _HomeViewState createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      await context.read<HomeViewModel>().getMonthlyPatients();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(slivers: [
@@ -21,7 +34,12 @@ class HomeView extends StatelessWidget {
               elevation: 5.0,
               expand: true,
               context: context,
-              builder: (context) => CreatePatientView()),
+              builder: (context) =>
+                  CreatePatientView(updateSuccessful: (isUpdated) async {
+                    if (isUpdated) {
+                      await context.read<HomeViewModel>().getMonthlyPatients();
+                    }
+                  })),
           child: Padding(
               padding: const EdgeInsets.all(4.0),
               child: Icon(CupertinoIcons.person_add)),
@@ -59,7 +77,14 @@ class HomeView extends StatelessWidget {
                 child: PatientListItem(
                     patient: context
                         .watch<HomeViewModel>()
-                        .todayHighPriorityPatients[index]),
+                        .todayHighPriorityPatients[index],
+                    isUpdateSuccessful: (isUpdated) async {
+                      if (isUpdated) {
+                        await context
+                            .read<HomeViewModel>()
+                            .getMonthlyPatients();
+                      }
+                    }),
               ),
               childCount: context
                   .watch<HomeViewModel>()
@@ -92,7 +117,14 @@ class HomeView extends StatelessWidget {
                 child: PatientListItem(
                     patient: context
                         .watch<HomeViewModel>()
-                        .todayOtherPatients[index]),
+                        .todayOtherPatients[index],
+                    isUpdateSuccessful: (isUpdated) async {
+                      if (isUpdated) {
+                        await context
+                            .read<HomeViewModel>()
+                            .getMonthlyPatients();
+                      }
+                    }),
               ),
               childCount:
                   context.watch<HomeViewModel>().todayOtherPatients.length,
