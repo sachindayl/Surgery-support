@@ -41,9 +41,9 @@ class DiagnosisView extends StatelessWidget {
       ),
       body: SafeArea(
           child: Stack(
-            children: [
-              SingleChildScrollView(
-        child: Container(
+        children: [
+          SingleChildScrollView(
+            child: Container(
               padding: const EdgeInsets.symmetric(
                   horizontal: Styles.horizontalPadding, vertical: 8.0),
               child: Column(
@@ -59,14 +59,14 @@ class DiagnosisView extends StatelessWidget {
                   _createButton(context)
                 ],
               ),
-        ),
-      ),
-              CustomCircularProgressIndicator(
-                isLoading: context.select(
-                        (CreatePatientViewmodel viewModel) => viewModel.isLoading),
-              )
-            ],
-          )),
+            ),
+          ),
+          CustomCircularProgressIndicator(
+            isLoading: context.select(
+                (CreatePatientViewmodel viewModel) => viewModel.isLoading),
+          )
+        ],
+      )),
     );
   }
 
@@ -106,8 +106,7 @@ class DiagnosisView extends StatelessWidget {
                 onTap: () async {
                   var inputFormat = DateFormat('dd/MM/yyyy');
                   await CustomDatePicker(
-                          selectedDate: viewModel
-                              .newPatient.diagnosis.date,
+                          selectedDate: viewModel.newPatient.diagnosis.date,
                           newDateCallback: (newDate) {
                             _dateController.text = inputFormat.format(newDate);
                             viewModel.newPatient.diagnosis.date = newDate;
@@ -276,15 +275,15 @@ class DiagnosisView extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                context
-                    .read<CreatePatientViewmodel>()
-                    .setLoading(LoadingState.loading);
                 Future.delayed(Duration.zero, () async {
+                  context
+                      .read<CreatePatientViewmodel>()
+                      .setLoading(LoadingState.loading);
                   await context.read<CreatePatientViewmodel>().createPatient();
+                  context
+                      .read<CreatePatientViewmodel>()
+                      .setLoading(LoadingState.complete);
                 });
-                context
-                    .read<CreatePatientViewmodel>()
-                    .setLoading(LoadingState.complete);
               },
               child: Icon(
                 Icons.save,
