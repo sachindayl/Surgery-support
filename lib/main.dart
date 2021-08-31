@@ -27,7 +27,7 @@ Future<void> main() async {
     var currentUser = FirebaseAuth.instance.currentUser;
 
     runApp(EasyLocalization(
-        supportedLocales: [Locale('en', 'US'), Locale('si', 'LK')],
+        supportedLocales: [Locale('en', 'US')],
         path: 'assets/translations',
         fallbackLocale: Locale('en', 'US'),
         child: Platform.isIOS

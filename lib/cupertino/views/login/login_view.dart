@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wardeleven/base/base_styles.dart';
 import 'package:wardeleven/cupertino/views/main_container/main_container.dart';
@@ -42,8 +43,19 @@ class _LoginViewState extends State<LoginView> {
           child: Column(
             children: [
               Expanded(
-                child: Container(
-                  color: Styles.primaryColor,
+                child: Stack(
+                  children: [
+                    Container(
+                      color: Styles.primaryColor,
+                    ),
+                    Center(
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 40.0),
+                          width: 90.0,
+                          alignment: Alignment.center,
+                          child: Image.asset('assets/images/logo_name.png', fit: BoxFit.contain,)),
+                    )
+                  ],
                 ),
               ),
               Expanded(
