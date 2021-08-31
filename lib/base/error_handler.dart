@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'failure_handler.dart';
 
@@ -17,13 +18,13 @@ class ErrorHandler {
   Future handleNetworkError(DioError e) async {
     // var error = ErrorDataResponseModel.fromJson(e.response.data);
     if (e.error is SocketException) {
-      throw FailureHandler("cannot_connect_server".tr());
+      throw FailureHandler('Cannot connect to the server.');
     } else if (e.error is HttpException) {
       throw FailureHandler("Couldn't find the post");
     } else if (e.error is FormatException) {
       throw FailureHandler("Bad response format");
     } else {
-      throw FailureHandler("unexpected_network_error_occurred".tr());
+      throw FailureHandler('Unexpected error occurred.');
     }
   }
 
@@ -33,5 +34,16 @@ class ErrorHandler {
 
   Future handleMilystoError(MilystoException e) {
     throw FailureHandler(e.error);
+  }
+
+  Future handleFirebaseError(FirebaseAuthException e) {
+    if (e.code == 'user-not-found') {
+      print('No user found for that email.');
+      throw FailureHandler('No user found for that email.');
+    } else if (e.code == 'wrong-password') {
+      print('Wrong password provided for that user.');
+      throw FailureHandler('Wrong password provided for that user.');
+    }
+    throw FailureHandler('Unexpected authentication error occurred.');
   }
 }
