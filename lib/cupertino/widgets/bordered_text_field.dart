@@ -5,8 +5,9 @@ class BorderedTextField extends StatelessWidget {
   final String? placeholder;
   final TextInputType? textInputType;
   final bool? obscureText;
+  final TextEditingController controller;
 
-  BorderedTextField({this.placeholder, this.textInputType, this.obscureText});
+  BorderedTextField({this.placeholder, this.textInputType, this.obscureText,required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,7 @@ class BorderedTextField extends StatelessWidget {
           keyboardType: textInputType ?? TextInputType.text,
           obscureText: obscureText ?? false,
           padding: EdgeInsets.all(16.0),
+          controller: controller,
         ));
   }
 }

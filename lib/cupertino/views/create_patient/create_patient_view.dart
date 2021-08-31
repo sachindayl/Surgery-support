@@ -56,7 +56,6 @@ class _CreatePatientViewState extends State<CreatePatientView> {
     _categoryController.dispose();
     _dobController.dispose();
     _dateController.dispose();
-    _dateController.dispose();
     _priorityController.dispose();
     _indicationController.dispose();
     _procedureController.dispose();

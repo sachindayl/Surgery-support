@@ -11,7 +11,10 @@ import 'package:wardeleven/shared/viewmodels/patient_history_viewmodel.dart';
 import 'material_styles.dart';
 
 class MaterialAppMain extends StatelessWidget {
-  // This widget is the root of your application.
+  final bool loginSuccessful;
+
+  MaterialAppMain(this.loginSuccessful);
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
