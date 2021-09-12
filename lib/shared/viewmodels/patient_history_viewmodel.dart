@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:wardeleven/base/base_viewmodel_contract.dart';
+import 'package:wardeleven/base/constants/constants.dart';
 import 'package:wardeleven/base/failure_handler.dart';
 import 'package:wardeleven/models/enums.dart';
 import 'package:wardeleven/models/patient_model.dart';
@@ -11,6 +12,7 @@ class PatientHistoryViewModel
   FailureHandler? _failure;
   var _isLoading = LoadingState.initial;
   List<PatientModel> _patients = [];
+  var _searchTerm = Constants.emptyString;
 
   Future<void> getPatients() async {
     try {
@@ -26,7 +28,17 @@ class PatientHistoryViewModel
     notifyListeners();
   }
 
-  List<PatientModel> get patientsList => _patients;
+  void setSearchTerm(String newTerm) {
+    _searchTerm = newTerm.toLowerCase();
+    notifyListeners();
+  }
+
+  List<PatientModel> get patientsList => _patients
+      .where((element) =>
+          element.personalInfo.name.firstName.toLowerCase().contains(_searchTerm) ||
+          element.personalInfo.name.lastName.toLowerCase().contains(_searchTerm) ||
+          element.personalInfo.registrationNo.toLowerCase().contains(_searchTerm))
+      .toList();
 
   @override
   FailureHandler? get failure => _failure;

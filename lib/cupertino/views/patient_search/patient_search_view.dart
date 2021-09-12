@@ -51,7 +51,9 @@ class _PatientSearchViewState extends State<PatientSearchView> {
             padding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: CustomCupertinoSearchTextField(
-              searchTerm: (searchTerm) => '',
+              searchTerm: (searchTerm) => context
+                  .read<PatientHistoryViewModel>()
+                  .setSearchTerm(searchTerm),
             ),
           ),
         ),
