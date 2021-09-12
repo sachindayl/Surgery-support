@@ -50,7 +50,7 @@ class AccountView extends StatelessWidget {
   _signOutUser(BuildContext context) {
     Future.microtask(() async {
       context.read<LoginViewModel>().clearData();
-      return await Navigator.of(context).pushReplacement(
+      return await Navigator.of(context, rootNavigator: true).pushReplacement(
           CupertinoPageRoute(builder: (context) => LoginView()));
     });
   }

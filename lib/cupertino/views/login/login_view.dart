@@ -50,7 +50,8 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     Center(
                       child: Container(
-                        margin: const EdgeInsets.only(top: 40.0),
+                        padding: const EdgeInsets.all(4.0),
+
                           width: 90.0,
                           alignment: Alignment.center,
                           child: Image.asset('assets/images/logo_name.png', fit: BoxFit.contain,)),
@@ -70,29 +71,35 @@ class _LoginViewState extends State<LoginView> {
                           BorderRadius.vertical(top: Radius.circular(24.0))),
                   child: Column(
                     children: [
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.only(top: 16),
-                        child: Text(
-                          'Welcome back',
-                          style: TextStyle(
-                              fontSize: Styles.fontSize36,
-                              fontWeight: Styles.fontWeightBold,
-                              color: CupertinoTheme.of(context).primaryColor),
+                      Flexible(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.only(top: 16),
+                          child: Text(
+                            'Welcome',
+                            style: TextStyle(
+                                fontSize: Styles.fontSize36,
+                                fontWeight: Styles.fontWeightBold,
+                                color: CupertinoTheme.of(context).primaryColor),
+                          ),
                         ),
                       ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        padding: const EdgeInsets.only(top: 16),
-                        child: Text(
-                          'Sign in to continue',
-                          style: TextStyle(
-                              fontSize: Styles.fontSize14,
-                              color: Styles.black.withOpacity(0.6)),
+                      Flexible(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.only(top: 16),
+                          child: Text(
+                            'Sign in to continue',
+                            style: TextStyle(
+                                fontSize: Styles.fontSize14,
+                                color: Styles.black.withOpacity(0.6)),
+                          ),
                         ),
                       ),
-                      SizedBox(
-                        height: 60.0,
+                      Flexible(
+                        child: SizedBox(
+                          height: 60.0,
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
@@ -109,8 +116,10 @@ class _LoginViewState extends State<LoginView> {
                           controller: _passwordController,
                         ),
                       ),
-                      SizedBox(
-                        height: 40.0,
+                      Flexible(
+                        child: SizedBox(
+                          height: 40.0,
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
