@@ -42,6 +42,8 @@ class _CreatePatientViewState extends State<CreatePatientView> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       context.read<CreatePatientViewmodel>().setNewPatientDetails(
           widget.selectedPatient ?? PatientModel.newInstance());
+
+      _initializeControllers();
     });
   }
 
@@ -164,7 +166,12 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         }),
         child: Padding(
           padding: const EdgeInsets.all(4.0),
-          child: Text(widget.selectedPatient != null ? 'Update' : 'Create', style: TextStyle(color: CupertinoTheme.of(context).primaryContrastingColor, fontWeight: Styles.fontWeightSemiBold),),
+          child: Text(
+            widget.selectedPatient != null ? 'Update' : 'Create',
+            style: TextStyle(
+                color: CupertinoTheme.of(context).primaryContrastingColor,
+                fontWeight: Styles.fontWeightSemiBold),
+          ),
         ),
       );
 
@@ -191,11 +198,6 @@ class _CreatePatientViewState extends State<CreatePatientView> {
   //region personal info
 
   Widget _registrationNumber(BuildContext context) {
-    _regController.text = context
-        .watch<CreatePatientViewmodel>()
-        .newPatient
-        .personalInfo
-        .registrationNo;
     return CupertinoFormRow(
         child: CupertinoTextFormFieldRow(
       placeholder: 'Registration No.',
@@ -206,11 +208,6 @@ class _CreatePatientViewState extends State<CreatePatientView> {
   }
 
   Widget _category(BuildContext context) {
-    _categoryController.text = context
-        .watch<CreatePatientViewmodel>()
-        .newPatient
-        .personalInfo
-        .category;
     return CupertinoFormRow(
         child: CustomFormFieldPicker(
       controller: _categoryController,
@@ -225,12 +222,6 @@ class _CreatePatientViewState extends State<CreatePatientView> {
   }
 
   Widget _firstName(BuildContext context) {
-    _firstNameController.text = context
-        .read<CreatePatientViewmodel>()
-        .newPatient
-        .personalInfo
-        .name
-        .firstName;
     return CupertinoFormRow(
         child: CupertinoTextFormFieldRow(
       placeholder: 'First name',
@@ -241,12 +232,6 @@ class _CreatePatientViewState extends State<CreatePatientView> {
   }
 
   Widget _lastName(BuildContext context) {
-    _lastNameController.text = context
-        .read<CreatePatientViewmodel>()
-        .newPatient
-        .personalInfo
-        .name
-        .lastName;
     return CupertinoFormRow(
         child: CupertinoTextFormFieldRow(
             maxLength: 30,
@@ -256,8 +241,6 @@ class _CreatePatientViewState extends State<CreatePatientView> {
   }
 
   Widget _dateOfBirth(BuildContext context) {
-    _dobController.text =
-        context.read<CreatePatientViewmodel>().newPatient.personalInfo.dob;
     return CupertinoFormRow(child:
         Consumer<CreatePatientViewmodel>(builder: (context, viewModel, child) {
       return CupertinoTextFormFieldRow(
@@ -285,12 +268,6 @@ class _CreatePatientViewState extends State<CreatePatientView> {
   }
 
   Widget _gender(BuildContext context) {
-    _genderController.text = context
-        .watch<CreatePatientViewmodel>()
-        .newPatient
-        .personalInfo
-        .gender
-        .capitalize();
     return CupertinoFormRow(
         child: CustomFormFieldPicker(
       controller: _genderController,
@@ -300,16 +277,11 @@ class _CreatePatientViewState extends State<CreatePatientView> {
           .select((CreatePatientViewmodel viewModel) => viewModel.genderList),
       pickerTitle: 'Gender',
       setNewIndex: (index) =>
-          context.watch<CreatePatientViewmodel>().setGenderIndex(index),
+          context.read<CreatePatientViewmodel>().setGenderIndex(index),
     ));
   }
 
   Widget _phoneNumber(BuildContext context) {
-    _phoneNumberController.text = context
-        .read<CreatePatientViewmodel>()
-        .newPatient
-        .personalInfo
-        .phoneNumber;
     return CupertinoFormRow(
         child: CupertinoTextFormFieldRow(
             maxLength: 13,
@@ -322,8 +294,6 @@ class _CreatePatientViewState extends State<CreatePatientView> {
 
 // region diagnosis
   Widget _indication(BuildContext context) {
-    _indicationController.text =
-        context.watch<CreatePatientViewmodel>().newPatient.diagnosis.indication;
     return CupertinoFormRow(
         child: CupertinoTextFormFieldRow(
       controller: _indicationController,
@@ -334,11 +304,6 @@ class _CreatePatientViewState extends State<CreatePatientView> {
   }
 
   Widget _diagnosisDate(BuildContext context) {
-    _dateController.text = context
-        .watch<CreatePatientViewmodel>()
-        .newPatient
-        .diagnosis
-        .diagnosisDateToString;
     return CupertinoFormRow(child:
         Consumer<CreatePatientViewmodel>(builder: (context, viewModel, child) {
       return CupertinoTextFormFieldRow(
@@ -366,8 +331,6 @@ class _CreatePatientViewState extends State<CreatePatientView> {
   }
 
   Widget _procedure(BuildContext context) {
-    _procedureController.text =
-        context.watch<CreatePatientViewmodel>().newPatient.diagnosis.procedure;
     return CupertinoFormRow(
         child: CustomFormFieldPicker(
       controller: _procedureController,
@@ -377,44 +340,52 @@ class _CreatePatientViewState extends State<CreatePatientView> {
           (CreatePatientViewmodel viewModel) => viewModel.procedureList),
       pickerTitle: 'Procedure',
       setNewIndex: (index) =>
-          context.watch<CreatePatientViewmodel>().setProcedureIndex(index),
+          context.read<CreatePatientViewmodel>().setProcedureIndex(index),
     ));
   }
 
   Widget _isOutside(BuildContext context) {
-    return CupertinoFormRow(child:
-        Consumer<CreatePatientViewmodel>(builder: (context, viewModel, child) {
-      return GestureDetector(
-        onTap: () {
-          viewModel.newPatient.diagnosis.isOutside =
-              !viewModel.newPatient.diagnosis.isOutside;
-          return viewModel.setNewPatientDetails(viewModel.newPatient);
-        },
-        child: Container(
-          child: Row(
-            children: [
-              Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.only(left: 26.0),
-                child: Text('Outside'),
-              )),
-              Padding(
-                padding: const EdgeInsets.only(left: 2.0, right: 4.0),
-                child: CupertinoSwitch(
-                  value: viewModel.newPatient.diagnosis.isOutside,
-                  onChanged: (_) {},
-                ),
-              )
-            ],
-          ),
+    return CupertinoFormRow(
+        child: GestureDetector(
+      onTap: () {
+        var newPatient = context.read<CreatePatientViewmodel>().newPatient;
+        newPatient.diagnosis.isOutside = !newPatient.diagnosis.isOutside;
+        return context
+            .read<CreatePatientViewmodel>()
+            .setNewPatientDetails(newPatient);
+      },
+      child: Container(
+        child: Row(
+          children: [
+            Expanded(
+                child: Padding(
+              padding: const EdgeInsets.only(left: 26.0),
+              child: Text('Outside'),
+            )),
+            Padding(
+              padding: const EdgeInsets.only(left: 2.0, right: 4.0),
+              child: CupertinoSwitch(
+                value: context
+                    .watch<CreatePatientViewmodel>()
+                    .newPatient
+                    .diagnosis
+                    .isOutside,
+                onChanged: (value) {
+                  var newPatient = context.read<CreatePatientViewmodel>().newPatient;
+                  newPatient.diagnosis.isOutside = value;
+                  return context
+                      .read<CreatePatientViewmodel>()
+                      .setNewPatientDetails(newPatient);
+                },
+              ),
+            )
+          ],
         ),
-      );
-    }));
+      ),
+    ));
   }
 
   Widget _surgery(BuildContext context) {
-    _surgeryController.text =
-        context.watch<CreatePatientViewmodel>().newPatient.diagnosis.surgery;
     return CupertinoFormRow(
         child: CupertinoTextFormFieldRow(
       controller: _surgeryController,
@@ -425,11 +396,6 @@ class _CreatePatientViewState extends State<CreatePatientView> {
   }
 
   Widget _surgeryType(BuildContext context) {
-    _surgeryTypeController.text = context
-        .watch<CreatePatientViewmodel>()
-        .newPatient
-        .diagnosis
-        .surgeryType;
     return CupertinoFormRow(
         child: CustomFormFieldPicker(
       controller: _surgeryTypeController,
@@ -439,13 +405,11 @@ class _CreatePatientViewState extends State<CreatePatientView> {
           (CreatePatientViewmodel viewModel) => viewModel.surgeryTypeList),
       pickerTitle: 'Surgery type',
       setNewIndex: (index) =>
-          context.watch<CreatePatientViewmodel>().setSurgeryTypeIndex(index),
+          context.read<CreatePatientViewmodel>().setSurgeryTypeIndex(index),
     ));
   }
 
   Widget _priority(BuildContext context) {
-    _priorityController.text =
-        context.watch<CreatePatientViewmodel>().newPatient.diagnosis.priority;
     return CupertinoFormRow(
         child: CustomFormFieldPicker(
       controller: _priorityController,
@@ -455,11 +419,69 @@ class _CreatePatientViewState extends State<CreatePatientView> {
           .select((CreatePatientViewmodel viewModel) => viewModel.priorityList),
       pickerTitle: 'Priority',
       setNewIndex: (index) =>
-          context.watch<CreatePatientViewmodel>().setPriorityIndex(index),
+          context.read<CreatePatientViewmodel>().setPriorityIndex(index),
     ));
   }
 
 // endregion
+
+  _initializeControllers() {
+    //region personal controllers
+    _regController.text = context
+        .read<CreatePatientViewmodel>()
+        .newPatient
+        .personalInfo
+        .registrationNo;
+    _firstNameController.text = context
+        .read<CreatePatientViewmodel>()
+        .newPatient
+        .personalInfo
+        .name
+        .firstName;
+    _lastNameController.text = context
+        .read<CreatePatientViewmodel>()
+        .newPatient
+        .personalInfo
+        .name
+        .lastName;
+    _categoryController.text =
+        context.read<CreatePatientViewmodel>().newPatient.personalInfo.category;
+    _dobController.text =
+        context.read<CreatePatientViewmodel>().newPatient.personalInfo.dob;
+    _phoneNumberController.text = context
+        .read<CreatePatientViewmodel>()
+        .newPatient
+        .personalInfo
+        .phoneNumber;
+    _genderController.text = context
+        .read<CreatePatientViewmodel>()
+        .newPatient
+        .personalInfo
+        .gender
+        .capitalize();
+
+    //endRegion
+
+    //region Diagnosis controllers
+    _indicationController.text =
+        context.read<CreatePatientViewmodel>().newPatient.diagnosis.indication;
+    _dateController.text = context
+        .read<CreatePatientViewmodel>()
+        .newPatient
+        .diagnosis
+        .diagnosisDateToString;
+    _surgeryController.text =
+        context.read<CreatePatientViewmodel>().newPatient.diagnosis.surgery;
+    _priorityController.text =
+        context.read<CreatePatientViewmodel>().newPatient.diagnosis.priority;
+
+    _procedureController.text =
+        context.read<CreatePatientViewmodel>().newPatient.diagnosis.procedure;
+    _surgeryTypeController.text =
+        context.read<CreatePatientViewmodel>().newPatient.diagnosis.surgeryType;
+
+    //endRegion
+  }
 
   _savePersonalInfo(BuildContext context) {
     var viewModel = context.read<CreatePatientViewmodel>();
