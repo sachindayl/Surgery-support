@@ -2,19 +2,17 @@ enum DataState { initial, success, failed }
 
 enum LoadingState { initial, loading, complete }
 
-enum ActionType { none, review, surgery, endoscopy }
+enum ActionType { review, surgery, endoscopy }
 
 extension ActionTypeString on String {
   ActionType get topic {
     switch (this) {
-      case 'review':
-        return ActionType.review;
       case 'surgery':
         return ActionType.surgery;
       case 'endoscopy':
         return ActionType.endoscopy;
       default:
-        return ActionType.none;
+        return ActionType.review;
     }
   }
 }
@@ -28,8 +26,6 @@ extension ActionTypeExtension on ActionType {
         return 'surgery';
       case ActionType.endoscopy:
         return 'endoscopy';
-      default:
-        return 'none';
     }
   }
 }

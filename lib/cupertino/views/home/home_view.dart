@@ -27,7 +27,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return CustomScrollView(slivers: [
       CupertinoSliverNavigationBar(
-        largeTitle: Text('Ward Eleven'),
+        largeTitle: Text('Ward 11'),
         trailing: GestureDetector(
           onTap: () => showCupertinoModalBottomSheet(
               useRootNavigator: true,

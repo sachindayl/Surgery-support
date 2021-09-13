@@ -25,6 +25,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
   final _regController = TextEditingController();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
+  final _ageController = TextEditingController();
   final _genderController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   final _categoryController = TextEditingController();
@@ -34,6 +35,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
   final _indicationController = TextEditingController();
   final _procedureController = TextEditingController();
   final _surgeryController = TextEditingController();
+  final _actionTypeController = TextEditingController();
   final _surgeryTypeController = TextEditingController();
 
   @override
@@ -53,6 +55,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
     _regController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
+    _ageController.dispose();
     _genderController.dispose();
     _phoneNumberController.dispose();
     _categoryController.dispose();
@@ -62,6 +65,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
     _indicationController.dispose();
     _procedureController.dispose();
     _surgeryController.dispose();
+    _actionTypeController.dispose();
     _surgeryTypeController.dispose();
   }
 
@@ -136,20 +140,39 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         _category(context),
         _firstName(context),
         _lastName(context),
-        _dateOfBirth(context),
+        _age(context),
         _gender(context),
         _phoneNumber(context)
       ];
 
-  List<Widget> _diagnosisInfoForm(BuildContext context) => [
+  List<Widget> _diagnosisInfoForm(BuildContext context) {
+    var actionType = context.watch<CreatePatientViewmodel>().actionType;
+    if (actionType == ActionType.surgery) {
+      return [
         _indication(context),
         _diagnosisDate(context),
-        _procedure(context),
-        _isOutside(context),
+        _priority(context),
+        _actionType(context),
         _surgery(context),
         _surgeryType(context),
-        _priority(context)
       ];
+    } else if (actionType == ActionType.endoscopy) {
+      return [
+        _indication(context),
+        _diagnosisDate(context),
+        _priority(context),
+        _actionType(context),
+        _surgery(context),
+        _procedure(context),
+      ];
+    }
+    return [
+      _indication(context),
+      _diagnosisDate(context),
+      _priority(context),
+      _actionType(context),
+    ];
+  }
 
   Widget _createPatientButton(BuildContext context) => GestureDetector(
         onTap: () => Future.delayed(Duration.zero, () async {
@@ -240,31 +263,13 @@ class _CreatePatientViewState extends State<CreatePatientView> {
             placeholder: 'Last name'));
   }
 
-  Widget _dateOfBirth(BuildContext context) {
-    return CupertinoFormRow(child:
-        Consumer<CreatePatientViewmodel>(builder: (context, viewModel, child) {
-      return CupertinoTextFormFieldRow(
-        onTap: () => showCupertinoModalPopup(
-            context: context,
-            builder: (_) => CustomDateTimePicker(
-                  isDate: true,
-                  value: viewModel.newPatient.personalInfo.formattedDob,
-                  maxDate: DateTime.now(),
-                  minDate: DateTime(1900, 1),
-                  valueCallback: (updatedDate) {
-                    _dobController.text =
-                        DateFormat('dd/MM/yyyy').format(updatedDate);
-                    viewModel.newPatient.personalInfo.setDob(updatedDate);
-                    viewModel.setNewPatientDetails(viewModel.newPatient);
-                  },
-                )),
-        placeholder: 'Date of birth',
-        readOnly: true,
-        controller: _dobController,
-        style: TextStyle(color: Styles.black.withOpacity(Styles.opacity87)),
-        keyboardType: TextInputType.name,
-      );
-    }));
+  Widget _age(BuildContext context) {
+    return CupertinoFormRow(
+        child: CupertinoTextFormFieldRow(
+            maxLength: 3,
+            keyboardType: TextInputType.number,
+            controller: _ageController,
+            placeholder: 'Age'));
   }
 
   Widget _gender(BuildContext context) {
@@ -297,9 +302,9 @@ class _CreatePatientViewState extends State<CreatePatientView> {
     return CupertinoFormRow(
         child: CupertinoTextFormFieldRow(
       controller: _indicationController,
-      placeholder: 'Indication/diagnosis',
+      placeholder: 'Indication / diagnosis',
       maxLength: 200,
-      keyboardType: TextInputType.name,
+      keyboardType: TextInputType.text,
     ));
   }
 
@@ -312,7 +317,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
             builder: (_) => CustomDateTimePicker(
                   isDate: true,
                   value: viewModel.newPatient.diagnosis.date,
-                  maxDate: DateTime.now(),
+                  maxDate: DateTime(DateTime.now().year + 1, DateTime.now().month, DateTime.now().day),
                   minDate: DateTime(1990, 1),
                   valueCallback: (updatedDate) {
                     _dateController.text =
@@ -344,54 +349,29 @@ class _CreatePatientViewState extends State<CreatePatientView> {
     ));
   }
 
-  Widget _isOutside(BuildContext context) {
-    return CupertinoFormRow(
-        child: GestureDetector(
-      onTap: () {
-        var newPatient = context.read<CreatePatientViewmodel>().newPatient;
-        newPatient.diagnosis.isOutside = !newPatient.diagnosis.isOutside;
-        return context
-            .read<CreatePatientViewmodel>()
-            .setNewPatientDetails(newPatient);
-      },
-      child: Container(
-        child: Row(
-          children: [
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.only(left: 26.0),
-              child: Text('Outside'),
-            )),
-            Padding(
-              padding: const EdgeInsets.only(left: 2.0, right: 4.0),
-              child: CupertinoSwitch(
-                value: context
-                    .watch<CreatePatientViewmodel>()
-                    .newPatient
-                    .diagnosis
-                    .isOutside,
-                onChanged: (value) {
-                  var newPatient = context.read<CreatePatientViewmodel>().newPatient;
-                  newPatient.diagnosis.isOutside = value;
-                  return context
-                      .read<CreatePatientViewmodel>()
-                      .setNewPatientDetails(newPatient);
-                },
-              ),
-            )
-          ],
-        ),
-      ),
-    ));
-  }
-
   Widget _surgery(BuildContext context) {
     return CupertinoFormRow(
         child: CupertinoTextFormFieldRow(
       controller: _surgeryController,
-      placeholder: 'Surgery',
+      placeholder:
+          '${context.watch<CreatePatientViewmodel>().actionType.string.capitalize()} details',
       maxLength: 200,
       keyboardType: TextInputType.name,
+    ));
+  }
+
+  Widget _actionType(BuildContext context) {
+    return CupertinoFormRow(
+        child: CustomFormFieldPicker(
+      controller: _actionTypeController,
+      placeholder: 'Action type',
+      pickerIndex: context.watch<CreatePatientViewmodel>().actionTypeIndex,
+      pickerList: ActionType.values
+          .map((action) => action.string.capitalize())
+          .toList(),
+      pickerTitle: 'Action type',
+      setNewIndex: (index) =>
+          context.read<CreatePatientViewmodel>().setActionTypeIndex(index),
     ));
   }
 
@@ -472,6 +452,9 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         .diagnosisDateToString;
     _surgeryController.text =
         context.read<CreatePatientViewmodel>().newPatient.diagnosis.surgery;
+
+    _actionTypeController.text = context.read<CreatePatientViewmodel>().actionType.string.capitalize();
+
     _priorityController.text =
         context.read<CreatePatientViewmodel>().newPatient.diagnosis.priority;
 
