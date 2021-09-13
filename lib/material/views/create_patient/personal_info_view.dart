@@ -36,6 +36,34 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       context.read<CreatePatientViewmodel>().setNewPatientDetails(
           widget.selectedPatient ?? PatientModel.newInstance());
+
+      _regController.text = context
+          .read<CreatePatientViewmodel>()
+          .newPatient
+          .personalInfo
+          .registrationNo;
+      _firstNameController.text = context
+          .read<CreatePatientViewmodel>()
+          .newPatient
+          .personalInfo
+          .name
+          .firstName;
+
+      _lastNameController.text = context
+          .read<CreatePatientViewmodel>()
+          .newPatient
+          .personalInfo
+          .name
+          .lastName;
+
+      _dobController.text =
+          context.read<CreatePatientViewmodel>().newPatient.personalInfo.dob;
+
+      _phoneController.text = context
+          .read<CreatePatientViewmodel>()
+          .newPatient
+          .personalInfo
+          .phoneNumber;
     });
   }
 
@@ -90,11 +118,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   }
 
   Widget _registrationNumber(BuildContext context) {
-    _regController.text = context
-        .watch<CreatePatientViewmodel>()
-        .newPatient
-        .personalInfo
-        .registrationNo;
+
     return Padding(
       padding: const EdgeInsets.only(top: 24.0),
       child: FormRow(
@@ -132,12 +156,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
       );
 
   Widget _firstName(BuildContext context) {
-    _firstNameController.text = context
-        .watch<CreatePatientViewmodel>()
-        .newPatient
-        .personalInfo
-        .name
-        .firstName;
+
     return Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: FormRow(
@@ -150,12 +169,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   }
 
   Widget _lastName(BuildContext context) {
-    _lastNameController.text = context
-        .watch<CreatePatientViewmodel>()
-        .newPatient
-        .personalInfo
-        .name
-        .lastName;
+
     return Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: FormRow(
@@ -268,8 +282,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
       );
 
   Widget _dob(BuildContext context) {
-    _dobController.text =
-        context.watch<CreatePatientViewmodel>().newPatient.personalInfo.dob;
+
     return Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: FormRow(
@@ -300,11 +313,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   }
 
   Widget _telephoneNumber(BuildContext context) {
-    _phoneController.text = context
-        .watch<CreatePatientViewmodel>()
-        .newPatient
-        .personalInfo
-        .phoneNumber;
+
     return Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: FormRow(

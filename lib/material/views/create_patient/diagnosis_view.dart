@@ -22,11 +22,15 @@ class DiagnosisView extends StatefulWidget {
 
 class _DiagnosisViewState extends State<DiagnosisView> {
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _indicationController = TextEditingController();
+  final TextEditingController _surgeryDateController = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
     _dateController.dispose();
+    _indicationController.dispose();
+    _surgeryDateController.dispose();
   }
 
   @override
@@ -113,11 +117,8 @@ class _DiagnosisViewState extends State<DiagnosisView> {
             icon: Icon(Icons.assessment_outlined),
             formField: CustomTextFormField(
               label: 'Indication/diagnosis',
-              initialValue: context
-                  .read<CreatePatientViewmodel>()
-                  .newPatient
-                  .diagnosis
-                  .indication,
+              controller: _indicationController,
+
               onChanged: (value) {
                 var patient = context.read<CreatePatientViewmodel>().newPatient;
                 patient.diagnosis.indication = value;
@@ -382,6 +383,7 @@ class _DiagnosisViewState extends State<DiagnosisView> {
     var viewModel = context.read<CreatePatientViewmodel>();
     viewModel.newPatient.diagnosis.date =
         DateFormat('dd/MM/yyyy').parse(_dateController.text);
+    viewModel.newPatient.diagnosis.indication = _indicationController.text;
     viewModel.setNewPatientDetails(viewModel.newPatient);
   }
 }

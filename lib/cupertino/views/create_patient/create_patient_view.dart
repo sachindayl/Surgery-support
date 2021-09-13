@@ -202,7 +202,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         child: CupertinoTextFormFieldRow(
       placeholder: 'Registration No.',
       maxLength: 25,
-      keyboardType: TextInputType.name,
+      keyboardType: TextInputType.text,
       controller: _regController,
     ));
   }

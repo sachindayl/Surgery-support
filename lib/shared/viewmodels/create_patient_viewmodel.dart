@@ -15,6 +15,7 @@ class CreatePatientViewmodel with ChangeNotifier {
   var _isPatientUpdated = DataState.initial;
   var _isLoading = LoadingState.initial;
   FailureHandler? _failure;
+  ActionType _actionType = ActionType.none;
 
   // region Getters
   List<String> get categoryList => ["ORS", "Officer", "Family"];
@@ -36,6 +37,8 @@ class CreatePatientViewmodel with ChangeNotifier {
   int get procedureIndex => _procedureIndex;
 
   int get surgeryTypeIndex => _surgeryTypeIndex;
+
+  int get actionTypeIndex => _actionType.index;
 
   PatientModel get newPatient => _newPatient;
 

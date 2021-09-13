@@ -50,11 +50,13 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     Center(
                       child: Container(
-                        padding: const EdgeInsets.all(4.0),
-
+                          padding: const EdgeInsets.all(4.0),
                           width: 90.0,
                           alignment: Alignment.center,
-                          child: Image.asset('assets/images/logo_name.png', fit: BoxFit.contain,)),
+                          child: Image.asset(
+                            'assets/images/logo_name.png',
+                            fit: BoxFit.contain,
+                          )),
                     )
                   ],
                 ),
@@ -136,12 +138,17 @@ class _LoginViewState extends State<LoginView> {
                             )),
                             CupertinoButton(
                               onPressed: () async {
-                                var viewmodel = context.read<LoginViewModel>();
-                                viewmodel.setLoadingState(LoadingState.loading);
-                                await viewmodel
-                                  .loginWithEmailPassword(_emailController.text,
-                                      _passwordController.text);
-                                viewmodel.setLoadingState(LoadingState.complete);
+                                context
+                                    .read<LoginViewModel>()
+                                    .setLoadingState(LoadingState.loading);
+                                await context
+                                    .read<LoginViewModel>()
+                                    .loginWithEmailPassword(
+                                        _emailController.text,
+                                        _passwordController.text);
+                                context
+                                    .read<LoginViewModel>()
+                                    .setLoadingState(LoadingState.complete);
                               },
                               child: Icon(
                                 CupertinoIcons.right_chevron,
