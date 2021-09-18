@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:wardeleven/base/constants/constants.dart';
 
 import 'name_model.dart';
@@ -9,7 +8,7 @@ class PersonalInfoModel {
     required this.category,
     required this.name,
     required this.gender,
-    required this.dob,
+    required this.age,
     required this.phoneNumber,
   });
 
@@ -17,7 +16,7 @@ class PersonalInfoModel {
   String category;
   NameModel name;
   String gender;
-  String dob;
+  int? age;
   String phoneNumber;
 
   factory PersonalInfoModel.fromJson(Map<String, dynamic> json) =>
@@ -26,7 +25,7 @@ class PersonalInfoModel {
         category: json["category"],
         name: NameModel.fromJson(json["name"]),
         gender: json["gender"],
-        dob: json["dob"],
+        age: json["age"],
         phoneNumber: json["phoneNumber"],
       );
 
@@ -36,7 +35,7 @@ class PersonalInfoModel {
         category: "ORS",
         name: NameModel.newInstance(),
         gender: 'Male',
-        dob: Constants.emptyString,
+        age: null,
         phoneNumber: Constants.emptyString);
   }
 
@@ -45,18 +44,7 @@ class PersonalInfoModel {
         "category": category,
         "name": name.toJson(),
         "gender": gender,
-        "dob": dob,
+        "age": age,
         "phoneNumber": phoneNumber,
       };
-
-  DateTime get formattedDob {
-    if (dob == Constants.emptyString) {
-      return DateTime.now();
-    }
-    return DateFormat('dd/MM/yyyy').parse(dob);
-  }
-
-  void setDob(DateTime newDate) {
-    dob = DateFormat('dd/MM/yyyy').format(newDate);
-  }
 }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:wardeleven/base/base_styles.dart';
 import 'package:wardeleven/cupertino/widgets/form_title.dart';
-import 'package:wardeleven/material/widgets/custom_date_picker.dart';
 import 'package:wardeleven/material/widgets/custom_text_form_field.dart';
 import 'package:wardeleven/material/widgets/form_field_dropdown.dart';
 import 'package:wardeleven/material/widgets/form_row.dart';
@@ -25,7 +23,7 @@ class PersonalInfoView extends StatefulWidget {
 
 class _PersonalInfoViewState extends State<PersonalInfoView> {
   final TextEditingController _regController = TextEditingController();
-  final TextEditingController _dobController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -56,8 +54,10 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
           .name
           .lastName;
 
-      _dobController.text =
-          context.read<CreatePatientViewmodel>().newPatient.personalInfo.dob;
+
+
+      _ageController.text =
+          context.read<CreatePatientViewmodel>().newPatient.personalInfo.age.toString();
 
       _phoneController.text = context
           .read<CreatePatientViewmodel>()
@@ -71,7 +71,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   void dispose() {
     super.dispose();
     _regController.dispose();
-    _dobController.dispose();
+    _ageController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
     _phoneController.dispose();
@@ -105,7 +105,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                   _firstName(context),
                   _lastName(context),
                   _gender(context),
-                  _dob(context),
+                  _age(context),
                   _telephoneNumber(context),
                   _continueButton(context)
                 ],
@@ -281,34 +281,15 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
         ),
       );
 
-  Widget _dob(BuildContext context) {
+  Widget _age(BuildContext context) {
 
     return Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: FormRow(
-          icon: Icon(Icons.cake),
-          formField: Consumer<CreatePatientViewmodel>(
-              builder: (context, viewModel, child) {
-            return TextFormField(
-                controller: _dobController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Date of birth',
-                ),
-                readOnly: true,
-                onTap: () async => await CustomDatePicker(
-                        selectedDate:
-                            viewModel.newPatient.personalInfo.formattedDob,
-                        newDateCallback: (newDate) {
-                          var inputFormat = DateFormat('dd/MM/yyyy');
-                          _dobController.text = inputFormat.format(newDate);
-                          viewModel.newPatient.personalInfo.setDob(newDate);
-                          viewModel.setNewPatientDetails(viewModel.newPatient);
-                        },
-                        firstDate: DateTime(1900, 1),
-                        lastDate: DateTime.now())
-                    .build(context));
-          }),
+          formField: CustomTextFormField(
+            label: 'Age',
+            controller: _ageController,
+          ),
         ));
   }
 

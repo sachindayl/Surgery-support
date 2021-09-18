@@ -20,9 +20,9 @@ class CreatePatientViewmodel with ChangeNotifier {
   // region Getters
   List<String> get categoryList => ["ORS", "Officer", "Family"];
 
-  List<String> get procedureList => ["Upper GI", "Lower GI", "Cystoscopy"];
+  List<String> get procedureList => ["None", "Upper GI", "Lower GI", "Cystoscopy"];
 
-  List<String> get surgeryTypeList => ["Major", "Minor"];
+  List<String> get surgeryTypeList => ["None", "Major", "Minor"];
 
   List<String> get priorityList => ["Low", "Medium", "High"];
 

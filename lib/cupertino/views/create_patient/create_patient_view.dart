@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:wardeleven/base/base_styles.dart';
+import 'package:wardeleven/base/constants/constants.dart';
+import 'package:wardeleven/base/regex_validator.dart';
+import 'package:wardeleven/base/text_capitalize.dart';
 import 'package:wardeleven/cupertino/widgets/custom_alert_dialog.dart';
 import 'package:wardeleven/cupertino/widgets/custom_circular_progress_indicator.dart';
 import 'package:wardeleven/cupertino/widgets/custom_date_time_picker.dart';
@@ -9,7 +12,6 @@ import 'package:wardeleven/cupertino/widgets/custom_form_field_picker.dart';
 import 'package:wardeleven/models/enums.dart';
 import 'package:wardeleven/models/patient_model.dart';
 import 'package:wardeleven/shared/viewmodels/create_patient_viewmodel.dart';
-import 'package:wardeleven/base/text_capitalize.dart';
 
 class CreatePatientView extends StatefulWidget {
   final PatientModel? selectedPatient;
@@ -22,6 +24,7 @@ class CreatePatientView extends StatefulWidget {
 }
 
 class _CreatePatientViewState extends State<CreatePatientView> {
+  final _formKey = GlobalKey<FormState>();
   final _regController = TextEditingController();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
@@ -29,7 +32,6 @@ class _CreatePatientViewState extends State<CreatePatientView> {
   final _genderController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   final _categoryController = TextEditingController();
-  final _dobController = TextEditingController();
   final _dateController = TextEditingController();
   final _priorityController = TextEditingController();
   final _indicationController = TextEditingController();
@@ -59,7 +61,6 @@ class _CreatePatientViewState extends State<CreatePatientView> {
     _genderController.dispose();
     _phoneNumberController.dispose();
     _categoryController.dispose();
-    _dobController.dispose();
     _dateController.dispose();
     _priorityController.dispose();
     _indicationController.dispose();
@@ -71,28 +72,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
 
   @override
   Widget build(BuildContext context) {
-    if (context.select(
-            (CreatePatientViewmodel viewmodel) => viewmodel.isPatientCreated) ==
-        DataState.success) {
-      Future.delayed(Duration.zero, () async {
-        await _displayMessage(
-            context, 'Success!', 'The patient was created successfully.');
-      });
-    } else if (context.select(
-            (CreatePatientViewmodel viewmodel) => viewmodel.isPatientUpdated) ==
-        DataState.success) {
-      Future.delayed(Duration.zero, () async {
-        await _displayMessage(
-            context, 'Success!', 'The patient was updated successfully.');
-      });
-    } else if (context
-            .select((CreatePatientViewmodel viewmodel) => viewmodel.failure) !=
-        null) {
-      Future.delayed(Duration.zero, () async {
-        await _displayMessage(
-            context, 'Error!', 'An internal error occurred. Please try again.');
-      });
-    }
+    _displayMessageConfig();
     return WillPopScope(
       onWillPop: () {
         context.read<CreatePatientViewmodel>().clearPatientData();
@@ -111,19 +91,22 @@ class _CreatePatientViewState extends State<CreatePatientView> {
                 child: Container(
                   width: double.infinity,
                   color: Styles.white,
-                  child: Column(children: [
-                    CupertinoFormSection(
-                        header: Text('Personal information'.toUpperCase()),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(children: [
+                      CupertinoFormSection(
+                          header: Text('Personal information'.toUpperCase()),
+                          backgroundColor: CupertinoTheme.of(context)
+                              .scaffoldBackgroundColor,
+                          children: _personalInfoForm(context)),
+                      CupertinoFormSection(
+                        header: Text('Diagnosis information'.toUpperCase()),
                         backgroundColor:
                             CupertinoTheme.of(context).scaffoldBackgroundColor,
-                        children: _personalInfoForm(context)),
-                    CupertinoFormSection(
-                      header: Text('Diagnosis information'.toUpperCase()),
-                      backgroundColor:
-                          CupertinoTheme.of(context).scaffoldBackgroundColor,
-                      children: _diagnosisInfoForm(context),
-                    ),
-                  ]),
+                        children: _diagnosisInfoForm(context),
+                      ),
+                    ]),
+                  ),
                 ),
               ),
             ),
@@ -162,7 +145,6 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         _diagnosisDate(context),
         _priority(context),
         _actionType(context),
-        _surgery(context),
         _procedure(context),
       ];
     }
@@ -179,24 +161,43 @@ class _CreatePatientViewState extends State<CreatePatientView> {
           context
               .read<CreatePatientViewmodel>()
               .setLoading(LoadingState.loading);
-          _savePersonalInfo(context);
-          widget.selectedPatient != null
-              ? await context.read<CreatePatientViewmodel>().updatePatient()
-              : await context.read<CreatePatientViewmodel>().createPatient();
+          await _validateAndSubmit(context);
           context
               .read<CreatePatientViewmodel>()
               .setLoading(LoadingState.complete);
         }),
         child: Padding(
           padding: const EdgeInsets.all(4.0),
-          child: Text(
-            widget.selectedPatient != null ? 'Update' : 'Create',
-            style: TextStyle(
-                color: CupertinoTheme.of(context).primaryContrastingColor,
-                fontWeight: Styles.fontWeightSemiBold),
-          ),
+          child: Text(widget.selectedPatient != null ? 'Update' : 'Create',
+              style: CupertinoTheme.of(context).textTheme.navActionTextStyle),
         ),
       );
+
+  ///shows message popup when form is created
+  _displayMessageConfig() {
+    if (context.select(
+            (CreatePatientViewmodel viewmodel) => viewmodel.isPatientCreated) ==
+        DataState.success) {
+      Future.delayed(Duration.zero, () async {
+        await _displayMessage(
+            context, 'Success!', 'The patient was created successfully.');
+      });
+    } else if (context.select(
+            (CreatePatientViewmodel viewmodel) => viewmodel.isPatientUpdated) ==
+        DataState.success) {
+      Future.delayed(Duration.zero, () async {
+        await _displayMessage(
+            context, 'Success!', 'The patient was updated successfully.');
+      });
+    } else if (context
+            .select((CreatePatientViewmodel viewmodel) => viewmodel.failure) !=
+        null) {
+      Future.delayed(Duration.zero, () async {
+        await _displayMessage(
+            context, 'Error!', 'An internal error occurred. Please try again.');
+      });
+    }
+  }
 
   _displayMessage(BuildContext context, String title, String content) async {
     await showCupertinoDialog(
@@ -227,6 +228,12 @@ class _CreatePatientViewState extends State<CreatePatientView> {
       maxLength: 25,
       keyboardType: TextInputType.text,
       controller: _regController,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter a valid registration no.';
+        }
+        return null;
+      },
     ));
   }
 
@@ -249,18 +256,31 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         child: CupertinoTextFormFieldRow(
       placeholder: 'First name',
       maxLength: 25,
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.name,
       controller: _firstNameController,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter a valid first name';
+        }
+        return null;
+      },
     ));
   }
 
   Widget _lastName(BuildContext context) {
     return CupertinoFormRow(
         child: CupertinoTextFormFieldRow(
-            maxLength: 30,
-            keyboardType: TextInputType.text,
-            controller: _lastNameController,
-            placeholder: 'Last name'));
+      maxLength: 30,
+      keyboardType: TextInputType.name,
+      controller: _lastNameController,
+      placeholder: 'Last name',
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter a valid last name';
+        }
+        return null;
+      },
+    ));
   }
 
   Widget _age(BuildContext context) {
@@ -289,10 +309,17 @@ class _CreatePatientViewState extends State<CreatePatientView> {
   Widget _phoneNumber(BuildContext context) {
     return CupertinoFormRow(
         child: CupertinoTextFormFieldRow(
-            maxLength: 13,
-            keyboardType: TextInputType.phone,
-            controller: _phoneNumberController,
-            placeholder: 'Phone number'));
+      maxLength: 13,
+      keyboardType: TextInputType.phone,
+      controller: _phoneNumberController,
+      placeholder: 'Phone number',
+      validator: (value) {
+        if (value == null || value.isEmpty || !value.isValidPhone) {
+          return 'Please enter a valid phone no.';
+        }
+        return null;
+      },
+    ));
   }
 
 // endregion
@@ -305,6 +332,12 @@ class _CreatePatientViewState extends State<CreatePatientView> {
       placeholder: 'Indication / diagnosis',
       maxLength: 200,
       keyboardType: TextInputType.text,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter a valid indication/diagnosis';
+        }
+        return null;
+      },
     ));
   }
 
@@ -317,7 +350,8 @@ class _CreatePatientViewState extends State<CreatePatientView> {
             builder: (_) => CustomDateTimePicker(
                   isDate: true,
                   value: viewModel.newPatient.diagnosis.date,
-                  maxDate: DateTime(DateTime.now().year + 1, DateTime.now().month, DateTime.now().day),
+                  maxDate: DateTime(DateTime.now().year + 1,
+                      DateTime.now().month, DateTime.now().day),
                   minDate: DateTime(1990, 1),
                   valueCallback: (updatedDate) {
                     _dateController.text =
@@ -353,8 +387,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
     return CupertinoFormRow(
         child: CupertinoTextFormFieldRow(
       controller: _surgeryController,
-      placeholder:
-          '${context.watch<CreatePatientViewmodel>().actionType.string.capitalize()} details',
+      placeholder: 'Surgery details',
       maxLength: 200,
       keyboardType: TextInputType.name,
     ));
@@ -426,8 +459,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         .lastName;
     _categoryController.text =
         context.read<CreatePatientViewmodel>().newPatient.personalInfo.category;
-    _dobController.text =
-        context.read<CreatePatientViewmodel>().newPatient.personalInfo.dob;
+    _ageController.text =
     _phoneNumberController.text = context
         .read<CreatePatientViewmodel>()
         .newPatient
@@ -451,33 +483,51 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         .diagnosis
         .diagnosisDateToString;
     _surgeryController.text =
-        context.read<CreatePatientViewmodel>().newPatient.diagnosis.surgery;
+        context.read<CreatePatientViewmodel>().newPatient.diagnosis.surgery ??
+            Constants.emptyString;
 
-    _actionTypeController.text = context.read<CreatePatientViewmodel>().actionType.string.capitalize();
+    _actionTypeController.text =
+        context.read<CreatePatientViewmodel>().actionType.string.capitalize();
 
     _priorityController.text =
         context.read<CreatePatientViewmodel>().newPatient.diagnosis.priority;
 
     _procedureController.text =
-        context.read<CreatePatientViewmodel>().newPatient.diagnosis.procedure;
-    _surgeryTypeController.text =
-        context.read<CreatePatientViewmodel>().newPatient.diagnosis.surgeryType;
+        context.read<CreatePatientViewmodel>().newPatient.diagnosis.procedure ??
+            Constants.emptyString;
+    _surgeryTypeController.text = context
+            .read<CreatePatientViewmodel>()
+            .newPatient
+            .diagnosis
+            .surgeryType ??
+        Constants.emptyString;
 
     //endRegion
   }
 
-  _savePersonalInfo(BuildContext context) {
-    var viewModel = context.read<CreatePatientViewmodel>();
-    viewModel.newPatient.personalInfo.registrationNo = _regController.text;
-    viewModel.newPatient.personalInfo.name.firstName =
-        _firstNameController.text;
-    viewModel.newPatient.personalInfo.name.lastName = _lastNameController.text;
-    viewModel.newPatient.personalInfo.phoneNumber = _phoneNumberController.text;
-    viewModel.newPatient.diagnosis.indication = _indicationController.text;
-    viewModel.newPatient.diagnosis.surgery = _surgeryController.text;
-    viewModel.newPatient.diagnosis.procedure = _procedureController.text;
-    viewModel.newPatient.diagnosis.priority = _priorityController.text;
-    viewModel.newPatient.diagnosis.surgeryType = _surgeryTypeController.text;
-    viewModel.setNewPatientDetails(viewModel.newPatient);
+  _validateAndSubmit(BuildContext context) async {
+    if (_formKey.currentState!.validate()) {
+      var viewModel = context.read<CreatePatientViewmodel>();
+      viewModel.newPatient.personalInfo.registrationNo = _regController.text;
+      viewModel.newPatient.personalInfo.name.firstName =
+          _firstNameController.text;
+      viewModel.newPatient.personalInfo.name.lastName =
+          _lastNameController.text;
+      viewModel.newPatient.personalInfo.phoneNumber =
+          _phoneNumberController.text;
+      viewModel.newPatient.personalInfo.age = int.parse(_ageController.text);
+      viewModel.newPatient.diagnosis.indication = _indicationController.text;
+      viewModel.newPatient.diagnosis.actionType = _actionTypeController.text;
+      viewModel.newPatient.diagnosis.surgery = _surgeryController.text;
+      viewModel.newPatient.diagnosis.procedure = _procedureController.text;
+      viewModel.newPatient.diagnosis.priority = _priorityController.text;
+      viewModel.newPatient.diagnosis.surgeryType = _surgeryTypeController.text;
+      viewModel.setNewPatientDetails(viewModel.newPatient);
+      if (widget.selectedPatient != null) {
+        await context.read<CreatePatientViewmodel>().updatePatient();
+      } else {
+        await context.read<CreatePatientViewmodel>().createPatient();
+      }
+    }
   }
 }

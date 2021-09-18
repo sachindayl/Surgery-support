@@ -92,7 +92,6 @@ class _DiagnosisViewState extends State<DiagnosisView> {
                     _indication(context),
                     _surgeryDate(context),
                     _procedure(context),
-                    _outsideSurgery(context),
                     _surgery(context),
                     _surgeryType(context),
                     _priority(context),
@@ -172,7 +171,7 @@ class _DiagnosisViewState extends State<DiagnosisView> {
                   .read<CreatePatientViewmodel>()
                   .newPatient
                   .diagnosis
-                  .procedure,
+                  .procedure ?? Constants.emptyString,
               onChangedCallback: (value) {
                 var patient = context.read<CreatePatientViewmodel>().newPatient;
                 patient.diagnosis.procedure = value;
@@ -182,47 +181,6 @@ class _DiagnosisViewState extends State<DiagnosisView> {
               },
             );
           }),
-        ),
-      );
-
-  Widget _outsideSurgery(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 8.0),
-        child: Row(
-          children: [
-            SizedBox(
-              width: MaterialStyles.iconSizedBoxWidth,
-              child: Icon(Icons.outbond_outlined),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4.0),
-                    border: Border.all(
-                        color: Styles.black.withOpacity(Styles.opacity51))),
-                child: ListTile(
-                  title: Text(
-                    'Outside',
-                    style: TextStyle(
-                        color: Styles.black.withOpacity(Styles.opacity64)),
-                  ),
-                  trailing: Checkbox(
-                      value: context
-                          .watch<CreatePatientViewmodel>()
-                          .newPatient
-                          .diagnosis
-                          .isOutside,
-                      onChanged: (value) {
-                        var patient =
-                            context.read<CreatePatientViewmodel>().newPatient;
-                        patient.diagnosis.isOutside = value ?? false;
-                        context
-                            .read<CreatePatientViewmodel>()
-                            .setNewPatientDetails(patient);
-                      }),
-                ),
-              ),
-            )
-          ],
         ),
       );
 
@@ -258,7 +216,7 @@ class _DiagnosisViewState extends State<DiagnosisView> {
                   .read<CreatePatientViewmodel>()
                   .newPatient
                   .diagnosis
-                  .surgeryType,
+                  .surgeryType ?? Constants.emptyString,
               listItems: viewModel.surgeryTypeList,
               onChangedCallback: (value) {
                 var patient = context.read<CreatePatientViewmodel>().newPatient;

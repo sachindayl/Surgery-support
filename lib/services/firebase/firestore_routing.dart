@@ -71,7 +71,6 @@ class FirestoreRouting {
         .get()
         .then((QuerySnapshot query) => query.docs.map((item) {
               var json = jsonEncode(item.data());
-              log(item.id, name: "getPatients");
               var patient = PatientModel.fromJson(jsonDecode(json));
               patient.id = item.id;
               return patient;

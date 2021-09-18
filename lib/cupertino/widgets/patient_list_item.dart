@@ -38,25 +38,39 @@ class PatientListItem extends StatelessWidget {
                   size: Styles.fontSize14,
                   color: statusColor,
                 )),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: Text(
-                      patient.fullName,
-                      style: CupertinoStyles.cardTitleText,
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4.0),
+                      child: Text(
+                        patient.fullName,
+                        style: CupertinoStyles.cardTitleText,
+                      ),
                     ),
-                  ),
-                  Text(
-                    patient.personalInfo.registrationNo,
-                    style: CupertinoStyles.cardSubTitleText,
-                  )
-                ],
+                    Text(
+                      patient.personalInfo.registrationNo,
+                      style: CupertinoStyles.cardSubTitleText.copyWith(fontSize: Styles.fontSize14),
+                    )
+                  ],
+                ),
               ),
             ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
+              decoration: BoxDecoration(
+                color: CupertinoTheme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(6.0)
+              ),
+              child: Text(
+                patient.diagnosis.actionType,
+                style: TextStyle(fontSize: Styles.fontSize14, fontWeight: Styles.fontWeightLight, color: Styles.white),
+              ),
+            )
           ],
         ),
       ),

@@ -1,47 +1,46 @@
-
 import 'package:intl/intl.dart';
 import 'package:wardeleven/base/constants/constants.dart';
 
 class DiagnosisModel {
+  String indication;
+  DateTime date;
+  String? procedure;
+  String actionType;
+  String? surgery;
+  String? surgeryType;
+  String priority;
+
   DiagnosisModel({
     required this.indication,
     required this.date,
     required this.procedure,
-    required this.isOutside,
+    required this.actionType,
     required this.surgery,
     required this.surgeryType,
     required this.priority,
   });
 
-  String indication;
-  DateTime date;
-  String procedure;
-  bool isOutside;
-  String surgery;
-  String surgeryType;
-  String priority;
-
   factory DiagnosisModel.fromJson(Map<String, dynamic> json) {
     var date = (json["date"] as String).split('T');
     return DiagnosisModel(
-        indication: json["indication"],
-        date: DateFormat('yy-MM-dd').parse(date[0]),
-        procedure: json["procedure"],
-        isOutside: json["isOutside"],
-        surgery: json["surgery"],
-        surgeryType: json["surgeryType"],
-        priority: json["priority"],
-      );
+      indication: json["indication"],
+      date: DateFormat('yy-MM-dd').parse(date[0]),
+      procedure: json["procedure"],
+      actionType: json["actionType"],
+      surgery: json["surgery"],
+      surgeryType: json["surgeryType"],
+      priority: json["priority"],
+    );
   }
 
   factory DiagnosisModel.newInstance() {
     return DiagnosisModel(
         indication: Constants.emptyString,
         date: DateTime.now(),
-        procedure: 'Upper GI',
-        isOutside: false,
+        procedure: 'None',
+        actionType: 'Review',
         surgery: Constants.emptyString,
-        surgeryType: 'Major',
+        surgeryType: 'None',
         priority: 'Low');
   }
 
@@ -49,7 +48,7 @@ class DiagnosisModel {
         "indication": indication,
         "date": date.toIso8601String(),
         "procedure": procedure,
-        "isOutside": isOutside,
+        "actionType": actionType,
         "surgery": surgery,
         "surgeryType": surgeryType,
         "priority": priority,
