@@ -309,7 +309,12 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         child: CustomFormFieldPicker(
       controller: _genderController,
       placeholder: 'Gender',
-      pickerIndex: context.watch<CreatePatientViewmodel>().newPatient.personalInfo.gender.index,
+      pickerIndex: context
+          .watch<CreatePatientViewmodel>()
+          .newPatient
+          .personalInfo
+          .gender
+          .index,
       pickerList: Gender.values.map((e) => e.string.capitalize()).toList(),
       pickerTitle: 'Gender',
       setNewIndex: (index) =>
@@ -473,30 +478,22 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         .personalInfo
         .name
         .lastName;
-    if (context
-            .read<CreatePatientViewmodel>()
-            .newPatient
-            .personalInfo
-            .category ==
-        ServiceCategory.ors) {
-      _categoryController.text = context
-          .read<CreatePatientViewmodel>()
-          .newPatient
-          .personalInfo
-          .category
-          .string
-          .toUpperCase();
+    var category =
+        context.read<CreatePatientViewmodel>().newPatient.personalInfo.category;
+    if (category == ServiceCategory.ors) {
+      _categoryController.text = category.string.toUpperCase();
     } else {
-      _categoryController.text = context
-          .read<CreatePatientViewmodel>()
-          .newPatient
-          .personalInfo
-          .category
-          .string
-          .capitalize();
+      _categoryController.text = category.string.capitalize();
     }
 
-    _ageController.text = _phoneNumberController.text = context
+    _ageController.text = context
+        .read<CreatePatientViewmodel>()
+        .newPatient
+        .personalInfo
+        .age
+        .toString();
+
+    _phoneNumberController.text = context
         .read<CreatePatientViewmodel>()
         .newPatient
         .personalInfo
