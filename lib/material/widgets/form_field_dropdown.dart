@@ -4,7 +4,7 @@ class FormFieldDropdown extends StatelessWidget {
   final String label;
   final String value;
   final List<String> listItems;
-  final Function(dynamic) onChangedCallback;
+  final Function(String?) onChangedCallback;
 
   FormFieldDropdown(
       {required this.label, required this.value, required this.listItems, required this.onChangedCallback});

@@ -2,6 +2,7 @@ enum DataState { initial, success, failed }
 
 enum LoadingState { initial, loading, complete }
 
+/// region actionType
 enum ActionType { review, surgery, endoscopy }
 
 extension ActionTypeString on String {
@@ -29,3 +30,37 @@ extension ActionTypeExtension on ActionType {
     }
   }
 }
+
+/// endRegion
+
+/// region category
+
+enum ServiceCategory { ors, officer, family }
+
+extension CategoryString on String {
+  ServiceCategory get category {
+    switch (this) {
+      case 'family':
+        return ServiceCategory.family;
+      case 'officer':
+        return ServiceCategory.officer;
+      default:
+        return ServiceCategory.ors;
+    }
+  }
+}
+
+extension CategoryExtension on ServiceCategory {
+  String get string {
+    switch (this) {
+      case ServiceCategory.ors:
+        return 'ors';
+      case ServiceCategory.officer:
+        return 'officer';
+      case ServiceCategory.family:
+        return 'family';
+    }
+  }
+}
+
+/// endregion

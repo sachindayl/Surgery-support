@@ -1,5 +1,6 @@
 import 'package:wardeleven/base/constants/constants.dart';
 
+import 'enums.dart';
 import 'name_model.dart';
 
 class PersonalInfoModel {
@@ -13,7 +14,7 @@ class PersonalInfoModel {
   });
 
   String registrationNo;
-  String category;
+  ServiceCategory category;
   NameModel name;
   String gender;
   int? age;
@@ -22,7 +23,7 @@ class PersonalInfoModel {
   factory PersonalInfoModel.fromJson(Map<String, dynamic> json) =>
       PersonalInfoModel(
         registrationNo: json["registrationNo"],
-        category: json["category"],
+        category: json["category"].toString().category,
         name: NameModel.fromJson(json["name"]),
         gender: json["gender"],
         age: json["age"],
@@ -32,7 +33,7 @@ class PersonalInfoModel {
   factory PersonalInfoModel.newInstance() {
     return PersonalInfoModel(
         registrationNo: Constants.emptyString,
-        category: "ORS",
+        category: ServiceCategory.ors,
         name: NameModel.newInstance(),
         gender: 'Male',
         age: null,
@@ -41,7 +42,7 @@ class PersonalInfoModel {
 
   Map<String, dynamic> toJson() => {
         "registrationNo": registrationNo,
-        "category": category,
+        "category": category.string,
         "name": name.toJson(),
         "gender": gender,
         "age": age,

@@ -17,7 +17,6 @@ class CreatePatientViewmodel with ChangeNotifier {
   FailureHandler? _failure;
 
   // region Getters
-  List<String> get categoryList => ["ORS", "Officer", "Family"];
 
   List<String> get procedureList => ["None", "Upper GI", "Lower GI", "Cystoscopy"];
 
@@ -87,7 +86,7 @@ class CreatePatientViewmodel with ChangeNotifier {
 
   void setCategory(int newIndex) {
     _categoryIndex = newIndex;
-    _newPatient.personalInfo.category = categoryList[newIndex];
+    _newPatient.personalInfo.category = ServiceCategory.values[newIndex];
     notifyListeners();
   }
 

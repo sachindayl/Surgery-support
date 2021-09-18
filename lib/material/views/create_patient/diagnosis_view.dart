@@ -247,7 +247,7 @@ class _DiagnosisViewState extends State<DiagnosisView> {
               onChangedCallback: (value) {
                 var viewModel = context.read<CreatePatientViewmodel>();
                 var patient = viewModel.newPatient;
-                patient.diagnosis.priority = value;
+                patient.diagnosis.priority = value!;
                 viewModel.setNewPatientDetails(patient);
               },
             );

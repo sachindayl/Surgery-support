@@ -8,6 +8,8 @@ import 'package:wardeleven/material/widgets/form_row.dart';
 import 'package:wardeleven/models/gender_model.dart';
 import 'package:wardeleven/models/patient_model.dart';
 import 'package:wardeleven/shared/viewmodels/create_patient_viewmodel.dart';
+import 'package:wardeleven/models/enums.dart';
+import 'package:wardeleven/base/text_capitalize.dart';
 
 import '../../material_styles.dart';
 import 'diagnosis_view.dart';
@@ -138,15 +140,15 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
           return FormRow(
               formField: FormFieldDropdown(
             label: 'Category',
-            listItems: viewModel.categoryList,
+            listItems: ServiceCategory.values.map((e) => e.string).toList(),
             value: context
                 .watch<CreatePatientViewmodel>()
                 .newPatient
                 .personalInfo
-                .category,
+                .category.string.capitalize(),
             onChangedCallback: (value) {
               var patient = context.read<CreatePatientViewmodel>().newPatient;
-              patient.personalInfo.category = value;
+              patient.personalInfo.category = value!.toLowerCase().category;
               context
                   .read<CreatePatientViewmodel>()
                   .setNewPatientDetails(patient);
