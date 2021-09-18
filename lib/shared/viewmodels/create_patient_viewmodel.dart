@@ -15,7 +15,6 @@ class CreatePatientViewmodel with ChangeNotifier {
   var _isPatientUpdated = DataState.initial;
   var _isLoading = LoadingState.initial;
   FailureHandler? _failure;
-  ActionType _actionType = ActionType.review;
 
   // region Getters
   List<String> get categoryList => ["ORS", "Officer", "Family"];
@@ -38,9 +37,9 @@ class CreatePatientViewmodel with ChangeNotifier {
 
   int get surgeryTypeIndex => _surgeryTypeIndex;
 
-  int get actionTypeIndex => _actionType.index;
+  int get actionTypeIndex => _newPatient.diagnosis.actionType.index;
 
-  ActionType get actionType => _actionType;
+  ActionType get actionType => _newPatient.diagnosis.actionType;
 
   PatientModel get newPatient => _newPatient;
 
@@ -77,7 +76,7 @@ class CreatePatientViewmodel with ChangeNotifier {
   }
 
   void setActionTypeIndex(int index) {
-    _actionType = ActionType.values[index];
+    _newPatient.diagnosis.actionType = ActionType.values[index];
     notifyListeners();
   }
 

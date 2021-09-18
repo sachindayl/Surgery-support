@@ -5,7 +5,7 @@ enum LoadingState { initial, loading, complete }
 enum ActionType { review, surgery, endoscopy }
 
 extension ActionTypeString on String {
-  ActionType get topic {
+  ActionType get actionType {
     switch (this) {
       case 'surgery':
         return ActionType.surgery;

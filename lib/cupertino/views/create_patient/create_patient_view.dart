@@ -398,7 +398,12 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         child: CustomFormFieldPicker(
       controller: _actionTypeController,
       placeholder: 'Action type',
-      pickerIndex: context.watch<CreatePatientViewmodel>().actionTypeIndex,
+      pickerIndex: context
+          .watch<CreatePatientViewmodel>()
+          .newPatient
+          .diagnosis
+          .actionType
+          .index,
       pickerList: ActionType.values
           .map((action) => action.string.capitalize())
           .toList(),
@@ -459,8 +464,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         .lastName;
     _categoryController.text =
         context.read<CreatePatientViewmodel>().newPatient.personalInfo.category;
-    _ageController.text =
-    _phoneNumberController.text = context
+    _ageController.text = _phoneNumberController.text = context
         .read<CreatePatientViewmodel>()
         .newPatient
         .personalInfo
@@ -486,8 +490,13 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         context.read<CreatePatientViewmodel>().newPatient.diagnosis.surgery ??
             Constants.emptyString;
 
-    _actionTypeController.text =
-        context.read<CreatePatientViewmodel>().actionType.string.capitalize();
+    _actionTypeController.text = context
+        .read<CreatePatientViewmodel>()
+        .newPatient
+        .diagnosis
+        .actionType
+        .string
+        .capitalize();
 
     _priorityController.text =
         context.read<CreatePatientViewmodel>().newPatient.diagnosis.priority;
@@ -517,7 +526,6 @@ class _CreatePatientViewState extends State<CreatePatientView> {
           _phoneNumberController.text;
       viewModel.newPatient.personalInfo.age = int.parse(_ageController.text);
       viewModel.newPatient.diagnosis.indication = _indicationController.text;
-      viewModel.newPatient.diagnosis.actionType = _actionTypeController.text;
       viewModel.newPatient.diagnosis.surgery = _surgeryController.text;
       viewModel.newPatient.diagnosis.procedure = _procedureController.text;
       viewModel.newPatient.diagnosis.priority = _priorityController.text;

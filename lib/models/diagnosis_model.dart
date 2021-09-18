@@ -1,11 +1,13 @@
 import 'package:intl/intl.dart';
 import 'package:wardeleven/base/constants/constants.dart';
+import 'package:wardeleven/models/enums.dart';
+import 'enums.dart';
 
 class DiagnosisModel {
   String indication;
   DateTime date;
   String? procedure;
-  String actionType;
+  ActionType actionType;
   String? surgery;
   String? surgeryType;
   String priority;
@@ -26,7 +28,7 @@ class DiagnosisModel {
       indication: json["indication"],
       date: DateFormat('yy-MM-dd').parse(date[0]),
       procedure: json["procedure"],
-      actionType: json["actionType"],
+      actionType: json["actionType"].toString().actionType,
       surgery: json["surgery"],
       surgeryType: json["surgeryType"],
       priority: json["priority"],
@@ -38,7 +40,7 @@ class DiagnosisModel {
         indication: Constants.emptyString,
         date: DateTime.now(),
         procedure: 'None',
-        actionType: 'Review',
+        actionType: ActionType.review,
         surgery: Constants.emptyString,
         surgeryType: 'None',
         priority: 'Low');
@@ -48,7 +50,7 @@ class DiagnosisModel {
         "indication": indication,
         "date": date.toIso8601String(),
         "procedure": procedure,
-        "actionType": actionType,
+        "actionType": actionType.string,
         "surgery": surgery,
         "surgeryType": surgeryType,
         "priority": priority,
