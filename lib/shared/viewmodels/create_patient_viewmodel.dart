@@ -6,6 +6,7 @@ import 'package:wardeleven/models/gender_model.dart';
 import 'package:wardeleven/models/patient_model.dart';
 import 'package:wardeleven/models/priority_model.dart';
 import 'package:wardeleven/models/service_category_model.dart';
+import 'package:wardeleven/models/surgery_type_model.dart';
 import 'package:wardeleven/services/firebase/firebase_service.dart';
 
 class CreatePatientViewmodel with ChangeNotifier {
@@ -25,7 +26,6 @@ class CreatePatientViewmodel with ChangeNotifier {
   List<String> get procedureList =>
       ["None", "Upper GI", "Lower GI", "Cystoscopy"];
 
-  List<String> get surgeryTypeList => ["None", "Major", "Minor"];
 
   int get genderIndex => _genderIndex;
 
@@ -71,7 +71,7 @@ class CreatePatientViewmodel with ChangeNotifier {
   }
 
   void setSurgeryTypeIndex(int index) {
-    _surgeryTypeIndex = index;
+    _newPatient.diagnosis.surgeryType = SurgeryType.values[index];
     notifyListeners();
   }
 

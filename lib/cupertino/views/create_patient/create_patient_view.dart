@@ -15,6 +15,7 @@ import 'package:wardeleven/models/gender_model.dart';
 import 'package:wardeleven/models/patient_model.dart';
 import 'package:wardeleven/models/priority_model.dart';
 import 'package:wardeleven/models/service_category_model.dart';
+import 'package:wardeleven/models/surgery_type_model.dart';
 import 'package:wardeleven/shared/viewmodels/create_patient_viewmodel.dart';
 
 class CreatePatientView extends StatefulWidget {
@@ -436,8 +437,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
       controller: _surgeryTypeController,
       placeholder: 'Surgery type',
       pickerIndex: context.watch<CreatePatientViewmodel>().surgeryTypeIndex,
-      pickerList: context.select(
-          (CreatePatientViewmodel viewModel) => viewModel.surgeryTypeList),
+      pickerList: SurgeryType.values.map((e) => e.string.capitalize()).toList(),
       pickerTitle: 'Surgery type',
       setNewIndex: (index) =>
           context.read<CreatePatientViewmodel>().setSurgeryTypeIndex(index),
@@ -533,18 +533,24 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         .string
         .capitalize();
 
-    _priorityController.text =
-        context.read<CreatePatientViewmodel>().newPatient.diagnosis.priority.string.capitalize();
+    _priorityController.text = context
+        .read<CreatePatientViewmodel>()
+        .newPatient
+        .diagnosis
+        .priority
+        .string
+        .capitalize();
 
     _procedureController.text =
         context.read<CreatePatientViewmodel>().newPatient.diagnosis.procedure ??
             Constants.emptyString;
     _surgeryTypeController.text = context
-            .read<CreatePatientViewmodel>()
-            .newPatient
-            .diagnosis
-            .surgeryType ??
-        Constants.emptyString;
+        .read<CreatePatientViewmodel>()
+        .newPatient
+        .diagnosis
+        .surgeryType
+        .string
+        .capitalize();
 
     //endRegion
   }
@@ -563,7 +569,6 @@ class _CreatePatientViewState extends State<CreatePatientView> {
       viewModel.newPatient.diagnosis.indication = _indicationController.text;
       viewModel.newPatient.diagnosis.surgery = _surgeryController.text;
       viewModel.newPatient.diagnosis.procedure = _procedureController.text;
-      viewModel.newPatient.diagnosis.surgeryType = _surgeryTypeController.text;
       viewModel.setNewPatientDetails(viewModel.newPatient);
       if (widget.selectedPatient != null) {
         await context.read<CreatePatientViewmodel>().updatePatient();

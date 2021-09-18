@@ -45,6 +45,9 @@ class _HomeViewState extends State<HomeView> {
               child: Icon(CupertinoIcons.person_add)),
         ),
       ),
+      CupertinoSliverRefreshControl(
+        onRefresh: () => context.read<HomeViewModel>().getMonthlyPatients(),
+      ),
       SliverToBoxAdapter(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),

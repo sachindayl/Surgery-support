@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:wardeleven/base/constants/constants.dart';
 import 'package:wardeleven/models/action_type_model.dart';
 import 'package:wardeleven/models/priority_model.dart';
+import 'package:wardeleven/models/surgery_type_model.dart';
 
 class DiagnosisModel {
   String indication;
@@ -9,7 +10,7 @@ class DiagnosisModel {
   String? procedure;
   ActionType actionType;
   String? surgery;
-  String? surgeryType;
+  SurgeryType? surgeryType;
   Priority priority;
 
   DiagnosisModel({
@@ -30,7 +31,7 @@ class DiagnosisModel {
       procedure: json["procedure"],
       actionType: json["actionType"].toString().toLowerCase().actionType,
       surgery: json["surgery"],
-      surgeryType: json["surgeryType"],
+      surgeryType: json["surgeryType"].toString().surgeryType,
       priority: json["priority"].toString().toLowerCase().priority,
     );
   }
@@ -42,7 +43,7 @@ class DiagnosisModel {
         procedure: 'None',
         actionType: ActionType.review,
         surgery: Constants.emptyString,
-        surgeryType: 'None',
+        surgeryType: SurgeryType.none,
         priority: Priority.high);
   }
 
@@ -52,7 +53,7 @@ class DiagnosisModel {
         "procedure": procedure,
         "actionType": actionType.string.toLowerCase(),
         "surgery": surgery,
-        "surgeryType": surgeryType,
+        "surgeryType": surgeryType.string.toLowerCase(),
         "priority": priority.string.toLowerCase(),
       };
 

@@ -13,6 +13,7 @@ import 'package:wardeleven/material/widgets/form_row.dart';
 import 'package:wardeleven/material/widgets/form_title.dart';
 import 'package:wardeleven/models/enums.dart';
 import 'package:wardeleven/models/priority_model.dart';
+import 'package:wardeleven/models/surgery_type_model.dart';
 import 'package:wardeleven/shared/viewmodels/create_patient_viewmodel.dart';
 
 import '../../material_styles.dart';
@@ -119,7 +120,6 @@ class _DiagnosisViewState extends State<DiagnosisView> {
             formField: CustomTextFormField(
               label: 'Indication/diagnosis',
               controller: _indicationController,
-
               onChanged: (value) {
                 var patient = context.read<CreatePatientViewmodel>().newPatient;
                 patient.diagnosis.indication = value;
@@ -170,10 +170,11 @@ class _DiagnosisViewState extends State<DiagnosisView> {
               label: 'Procedure',
               listItems: viewModel.procedureList,
               value: context
-                  .read<CreatePatientViewmodel>()
-                  .newPatient
-                  .diagnosis
-                  .procedure ?? Constants.emptyString,
+                      .read<CreatePatientViewmodel>()
+                      .newPatient
+                      .diagnosis
+                      .procedure ??
+                  Constants.emptyString,
               onChangedCallback: (value) {
                 var patient = context.read<CreatePatientViewmodel>().newPatient;
                 patient.diagnosis.procedure = value;
@@ -218,11 +219,14 @@ class _DiagnosisViewState extends State<DiagnosisView> {
                   .read<CreatePatientViewmodel>()
                   .newPatient
                   .diagnosis
-                  .surgeryType ?? Constants.emptyString,
-              listItems: viewModel.surgeryTypeList,
+                  .surgeryType
+                  .toString()
+                  .capitalize(),
+              listItems:
+                  SurgeryType.values.map((e) => e.string.capitalize()).toList(),
               onChangedCallback: (value) {
                 var patient = context.read<CreatePatientViewmodel>().newPatient;
-                patient.diagnosis.surgeryType = value;
+                patient.diagnosis.surgeryType = value.surgeryType;
                 context
                     .read<CreatePatientViewmodel>()
                     .setNewPatientDetails(patient);
@@ -240,12 +244,14 @@ class _DiagnosisViewState extends State<DiagnosisView> {
               builder: (context, viewModel, child) {
             return FormFieldDropdown(
               label: 'Priority',
-              listItems: Priority.values.map((e) => e.string.capitalize()).toList(),
+              listItems:
+                  Priority.values.map((e) => e.string.capitalize()).toList(),
               value: context
                   .watch<CreatePatientViewmodel>()
                   .newPatient
                   .diagnosis
-                  .priority.string,
+                  .priority
+                  .string,
               onChangedCallback: (value) {
                 var viewModel = context.read<CreatePatientViewmodel>();
                 var patient = viewModel.newPatient;
