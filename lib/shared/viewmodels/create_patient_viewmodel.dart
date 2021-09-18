@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:wardeleven/base/failure_handler.dart';
+import 'package:wardeleven/models/action_type_model.dart';
 import 'package:wardeleven/models/enums.dart';
+import 'package:wardeleven/models/gender_model.dart';
 import 'package:wardeleven/models/patient_model.dart';
+import 'package:wardeleven/models/service_category_model.dart';
 import 'package:wardeleven/services/firebase/firebase_service.dart';
 
 class CreatePatientViewmodel with ChangeNotifier {
@@ -23,8 +26,6 @@ class CreatePatientViewmodel with ChangeNotifier {
   List<String> get surgeryTypeList => ["None", "Major", "Minor"];
 
   List<String> get priorityList => ["Low", "Medium", "High"];
-
-  List<String> get genderList => ["Male", "Female", "Other"];
 
   int get genderIndex => _genderIndex;
 
@@ -55,7 +56,7 @@ class CreatePatientViewmodel with ChangeNotifier {
   // region Setters
 
   void setGenderIndex(int index) {
-    _genderIndex = index;
+    _newPatient.personalInfo.gender = Gender.values[index];
     notifyListeners();
   }
 

@@ -9,8 +9,11 @@ import 'package:wardeleven/cupertino/widgets/custom_alert_dialog.dart';
 import 'package:wardeleven/cupertino/widgets/custom_circular_progress_indicator.dart';
 import 'package:wardeleven/cupertino/widgets/custom_date_time_picker.dart';
 import 'package:wardeleven/cupertino/widgets/custom_form_field_picker.dart';
+import 'package:wardeleven/models/action_type_model.dart';
 import 'package:wardeleven/models/enums.dart';
+import 'package:wardeleven/models/gender_model.dart';
 import 'package:wardeleven/models/patient_model.dart';
+import 'package:wardeleven/models/service_category_model.dart';
 import 'package:wardeleven/shared/viewmodels/create_patient_viewmodel.dart';
 
 class CreatePatientView extends StatefulWidget {
@@ -249,7 +252,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
           .category
           .index,
       pickerList: ServiceCategory.values.map((e) {
-        if(e == ServiceCategory.ors) {
+        if (e == ServiceCategory.ors) {
           return e.string.toUpperCase();
         }
         return e.string.capitalize();
@@ -306,9 +309,8 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         child: CustomFormFieldPicker(
       controller: _genderController,
       placeholder: 'Gender',
-      pickerIndex: context.watch<CreatePatientViewmodel>().genderIndex,
-      pickerList: context
-          .select((CreatePatientViewmodel viewModel) => viewModel.genderList),
+      pickerIndex: context.watch<CreatePatientViewmodel>().newPatient.personalInfo.gender.index,
+      pickerList: Gender.values.map((e) => e.string.capitalize()).toList(),
       pickerTitle: 'Gender',
       setNewIndex: (index) =>
           context.read<CreatePatientViewmodel>().setGenderIndex(index),
@@ -504,6 +506,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         .newPatient
         .personalInfo
         .gender
+        .string
         .capitalize();
 
     //endRegion

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wardeleven/base/base_styles.dart';
+import 'package:wardeleven/base/text_capitalize.dart';
 import 'package:wardeleven/cupertino/widgets/form_title.dart';
 import 'package:wardeleven/material/widgets/custom_text_form_field.dart';
 import 'package:wardeleven/material/widgets/form_field_dropdown.dart';
 import 'package:wardeleven/material/widgets/form_row.dart';
 import 'package:wardeleven/models/gender_model.dart';
 import 'package:wardeleven/models/patient_model.dart';
+import 'package:wardeleven/models/service_category_model.dart';
 import 'package:wardeleven/shared/viewmodels/create_patient_viewmodel.dart';
-import 'package:wardeleven/models/enums.dart';
-import 'package:wardeleven/base/text_capitalize.dart';
 
 import '../../material_styles.dart';
 import 'diagnosis_view.dart';
@@ -205,13 +205,13 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                         title: Text('Male'),
                         onTap: () {
                           viewModel.newPatient.personalInfo.gender =
-                              Gender.male.string;
+                              Gender.male;
                           viewModel.setNewPatientDetails(viewModel.newPatient);
                         },
                         trailing: Radio<Gender>(
                           value: Gender.male,
                           groupValue:
-                              viewModel.newPatient.personalInfo.gender.gender,
+                              viewModel.newPatient.personalInfo.gender,
                           onChanged: (_) {},
                         ),
                       );
@@ -231,13 +231,13 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                         title: Text('Female'),
                         onTap: () {
                           viewModel.newPatient.personalInfo.gender =
-                              Gender.female.string;
+                              Gender.female;
                           viewModel.setNewPatientDetails(viewModel.newPatient);
                         },
                         trailing: Radio<Gender>(
                           value: Gender.female,
                           groupValue:
-                              viewModel.newPatient.personalInfo.gender.gender,
+                              viewModel.newPatient.personalInfo.gender,
                           onChanged: (_) => {},
                         ),
                       );
@@ -264,13 +264,13 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                         title: Text('Other'),
                         onTap: () {
                           viewModel.newPatient.personalInfo.gender =
-                              Gender.other.string;
+                              Gender.other;
                           viewModel.setNewPatientDetails(viewModel.newPatient);
                         },
                         trailing: Radio<Gender>(
                           value: Gender.other,
                           groupValue:
-                              viewModel.newPatient.personalInfo.gender.gender,
+                              viewModel.newPatient.personalInfo.gender,
                           onChanged: (_) => {},
                         ),
                       );

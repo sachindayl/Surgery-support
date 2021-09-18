@@ -1,7 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:wardeleven/base/constants/constants.dart';
-import 'package:wardeleven/models/enums.dart';
-import 'enums.dart';
+import 'package:wardeleven/models/action_type_model.dart';
 
 class DiagnosisModel {
   String indication;
