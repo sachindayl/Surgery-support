@@ -4,6 +4,7 @@ import 'package:wardeleven/models/action_type_model.dart';
 import 'package:wardeleven/models/enums.dart';
 import 'package:wardeleven/models/gender_model.dart';
 import 'package:wardeleven/models/patient_model.dart';
+import 'package:wardeleven/models/priority_model.dart';
 import 'package:wardeleven/models/service_category_model.dart';
 import 'package:wardeleven/services/firebase/firebase_service.dart';
 
@@ -21,11 +22,10 @@ class CreatePatientViewmodel with ChangeNotifier {
 
   // region Getters
 
-  List<String> get procedureList => ["None", "Upper GI", "Lower GI", "Cystoscopy"];
+  List<String> get procedureList =>
+      ["None", "Upper GI", "Lower GI", "Cystoscopy"];
 
   List<String> get surgeryTypeList => ["None", "Major", "Minor"];
-
-  List<String> get priorityList => ["Low", "Medium", "High"];
 
   int get genderIndex => _genderIndex;
 
@@ -66,7 +66,7 @@ class CreatePatientViewmodel with ChangeNotifier {
   }
 
   void setPriorityIndex(int index) {
-    _priorityIndex = index;
+    _newPatient.diagnosis.priority = Priority.values[index];
     notifyListeners();
   }
 

@@ -6,6 +6,7 @@ import 'package:wardeleven/cupertino/cupertino_styles.dart';
 import 'package:wardeleven/cupertino/views/create_patient/create_patient_view.dart';
 import 'package:wardeleven/models/action_type_model.dart';
 import 'package:wardeleven/models/patient_model.dart';
+import 'package:wardeleven/models/priority_model.dart';
 
 class PatientListItem extends StatelessWidget {
   final Function(bool) isUpdateSuccessful;
@@ -56,21 +57,25 @@ class PatientListItem extends StatelessWidget {
                     ),
                     Text(
                       patient.personalInfo.registrationNo,
-                      style: CupertinoStyles.cardSubTitleText.copyWith(fontSize: Styles.fontSize14),
+                      style: CupertinoStyles.cardSubTitleText
+                          .copyWith(fontSize: Styles.fontSize14),
                     )
                   ],
                 ),
               ),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
               decoration: BoxDecoration(
-                color: CupertinoTheme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(6.0)
-              ),
+                  color: CupertinoTheme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(6.0)),
               child: Text(
                 patient.diagnosis.actionType.string.capitalize(),
-                style: TextStyle(fontSize: Styles.fontSize14, fontWeight: Styles.fontWeightLight, color: Styles.white),
+                style: TextStyle(
+                    fontSize: Styles.fontSize14,
+                    fontWeight: Styles.fontWeightLight,
+                    color: Styles.white),
               ),
             )
           ],
@@ -80,14 +85,15 @@ class PatientListItem extends StatelessWidget {
   }
 
   Color get statusColor {
-    if (patient.diagnosis.priority.toLowerCase() == "high") {
-      return CupertinoColors.destructiveRed;
-    } else if (patient.diagnosis.priority.toLowerCase() == "medium") {
-      return CupertinoColors.activeOrange;
-    } else if (patient.diagnosis.priority.toLowerCase() == "low") {
-      return CupertinoColors.activeGreen;
-    } else {
-      return CupertinoColors.inactiveGray;
+    switch (patient.diagnosis.priority) {
+      case Priority.low:
+        return CupertinoColors.activeGreen;
+      case Priority.medium:
+        return CupertinoColors.activeOrange;
+      case Priority.high:
+        return CupertinoColors.destructiveRed;
+      default:
+        return CupertinoColors.inactiveGray;
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:wardeleven/base/base_viewmodel_contract.dart';
 import 'package:wardeleven/base/failure_handler.dart';
 import 'package:wardeleven/models/enums.dart';
 import 'package:wardeleven/models/patient_model.dart';
+import 'package:wardeleven/models/priority_model.dart';
 import 'package:wardeleven/services/firebase/firebase_service.dart';
 
 class HomeViewModel with ChangeNotifier implements BaseViewModelContract {
@@ -59,7 +60,7 @@ class HomeViewModel with ChangeNotifier implements BaseViewModelContract {
 
   List<PatientModel> get todayHighPriorityPatients => _patients
       .where((patient) =>
-          patient.diagnosis.priority == 'High' &&
+          patient.diagnosis.priority == Priority.high &&
           patient.diagnosis.date.day == _selectedDay.day &&
           patient.diagnosis.date.month == _selectedDay.month &&
           patient.diagnosis.date.year == _selectedDay.year)
@@ -67,7 +68,7 @@ class HomeViewModel with ChangeNotifier implements BaseViewModelContract {
 
   List<PatientModel> get todayOtherPatients => _patients
       .where((patient) =>
-          patient.diagnosis.priority != 'High' &&
+          patient.diagnosis.priority != Priority.high &&
           patient.diagnosis.date.day == _selectedDay.day &&
           patient.diagnosis.date.month == _selectedDay.month &&
           patient.diagnosis.date.year == _selectedDay.year)

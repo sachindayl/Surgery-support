@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:wardeleven/base/base_styles.dart';
 import 'package:wardeleven/base/constants/constants.dart';
+import 'package:wardeleven/base/text_capitalize.dart';
 import 'package:wardeleven/material/views/main_container/main_container.dart';
 import 'package:wardeleven/material/widgets/custom_circular_progress_indicator.dart';
 import 'package:wardeleven/material/widgets/custom_date_picker.dart';
@@ -11,6 +12,7 @@ import 'package:wardeleven/material/widgets/form_field_dropdown.dart';
 import 'package:wardeleven/material/widgets/form_row.dart';
 import 'package:wardeleven/material/widgets/form_title.dart';
 import 'package:wardeleven/models/enums.dart';
+import 'package:wardeleven/models/priority_model.dart';
 import 'package:wardeleven/shared/viewmodels/create_patient_viewmodel.dart';
 
 import '../../material_styles.dart';
@@ -238,16 +240,16 @@ class _DiagnosisViewState extends State<DiagnosisView> {
               builder: (context, viewModel, child) {
             return FormFieldDropdown(
               label: 'Priority',
-              listItems: viewModel.priorityList,
+              listItems: Priority.values.map((e) => e.string.capitalize()).toList(),
               value: context
                   .watch<CreatePatientViewmodel>()
                   .newPatient
                   .diagnosis
-                  .priority,
+                  .priority.string,
               onChangedCallback: (value) {
                 var viewModel = context.read<CreatePatientViewmodel>();
                 var patient = viewModel.newPatient;
-                patient.diagnosis.priority = value!;
+                patient.diagnosis.priority = value!.priority;
                 viewModel.setNewPatientDetails(patient);
               },
             );

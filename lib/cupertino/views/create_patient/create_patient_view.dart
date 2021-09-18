@@ -13,6 +13,7 @@ import 'package:wardeleven/models/action_type_model.dart';
 import 'package:wardeleven/models/enums.dart';
 import 'package:wardeleven/models/gender_model.dart';
 import 'package:wardeleven/models/patient_model.dart';
+import 'package:wardeleven/models/priority_model.dart';
 import 'package:wardeleven/models/service_category_model.dart';
 import 'package:wardeleven/shared/viewmodels/create_patient_viewmodel.dart';
 
@@ -448,9 +449,13 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         child: CustomFormFieldPicker(
       controller: _priorityController,
       placeholder: 'Priority',
-      pickerIndex: context.watch<CreatePatientViewmodel>().priorityIndex,
-      pickerList: context
-          .select((CreatePatientViewmodel viewModel) => viewModel.priorityList),
+      pickerIndex: context
+          .watch<CreatePatientViewmodel>()
+          .newPatient
+          .diagnosis
+          .priority
+          .index,
+      pickerList: Priority.values.map((e) => e.string.capitalize()).toList(),
       pickerTitle: 'Priority',
       setNewIndex: (index) =>
           context.read<CreatePatientViewmodel>().setPriorityIndex(index),
@@ -529,7 +534,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         .capitalize();
 
     _priorityController.text =
-        context.read<CreatePatientViewmodel>().newPatient.diagnosis.priority;
+        context.read<CreatePatientViewmodel>().newPatient.diagnosis.priority.string.capitalize();
 
     _procedureController.text =
         context.read<CreatePatientViewmodel>().newPatient.diagnosis.procedure ??
@@ -558,7 +563,6 @@ class _CreatePatientViewState extends State<CreatePatientView> {
       viewModel.newPatient.diagnosis.indication = _indicationController.text;
       viewModel.newPatient.diagnosis.surgery = _surgeryController.text;
       viewModel.newPatient.diagnosis.procedure = _procedureController.text;
-      viewModel.newPatient.diagnosis.priority = _priorityController.text;
       viewModel.newPatient.diagnosis.surgeryType = _surgeryTypeController.text;
       viewModel.setNewPatientDetails(viewModel.newPatient);
       if (widget.selectedPatient != null) {

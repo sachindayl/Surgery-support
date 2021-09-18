@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:wardeleven/base/constants/constants.dart';
 import 'package:wardeleven/models/action_type_model.dart';
+import 'package:wardeleven/models/priority_model.dart';
 
 class DiagnosisModel {
   String indication;
@@ -9,7 +10,7 @@ class DiagnosisModel {
   ActionType actionType;
   String? surgery;
   String? surgeryType;
-  String priority;
+  Priority priority;
 
   DiagnosisModel({
     required this.indication,
@@ -27,10 +28,10 @@ class DiagnosisModel {
       indication: json["indication"],
       date: DateFormat('yy-MM-dd').parse(date[0]),
       procedure: json["procedure"],
-      actionType: json["actionType"].toString().actionType,
+      actionType: json["actionType"].toString().toLowerCase().actionType,
       surgery: json["surgery"],
       surgeryType: json["surgeryType"],
-      priority: json["priority"],
+      priority: json["priority"].toString().toLowerCase().priority,
     );
   }
 
@@ -42,17 +43,17 @@ class DiagnosisModel {
         actionType: ActionType.review,
         surgery: Constants.emptyString,
         surgeryType: 'None',
-        priority: 'Low');
+        priority: Priority.high);
   }
 
   Map<String, dynamic> toJson() => {
         "indication": indication,
         "date": date.toIso8601String(),
         "procedure": procedure,
-        "actionType": actionType.string,
+        "actionType": actionType.string.toLowerCase(),
         "surgery": surgery,
         "surgeryType": surgeryType,
-        "priority": priority,
+        "priority": priority.string.toLowerCase(),
       };
 
   String get diagnosisDateToString => DateFormat('dd/MM/yyyy').format(date);

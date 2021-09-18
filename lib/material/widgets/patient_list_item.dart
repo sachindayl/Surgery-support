@@ -3,6 +3,7 @@ import 'package:wardeleven/base/base_styles.dart';
 import 'package:wardeleven/material/views/create_patient/personal_info_view.dart';
 import 'package:wardeleven/material/widgets/custom_card.dart';
 import 'package:wardeleven/models/patient_model.dart';
+import 'package:wardeleven/models/priority_model.dart';
 
 class PatientListItem extends StatelessWidget {
   final PatientModel patient;
@@ -31,14 +32,15 @@ class PatientListItem extends StatelessWidget {
   }
 
   Color get statusColor {
-    if (patient.diagnosis.priority.toLowerCase() == "high") {
-      return Colors.red;
-    } else if (patient.diagnosis.priority.toLowerCase() == "medium") {
-      return Colors.orangeAccent;
-    } else if (patient.diagnosis.priority.toLowerCase() == "low") {
-      return Colors.green;
-    } else {
-      return Colors.grey;
+    switch (patient.diagnosis.priority) {
+      case Priority.low:
+        return Colors.green;
+      case Priority.medium:
+        return Colors.orangeAccent;
+      case Priority.high:
+        return Colors.red;
+      default:
+        return Colors.grey;
     }
   }
 }
