@@ -3,9 +3,9 @@ enum ActionType { review, surgery, endoscopy }
 extension ActionTypeString on String {
   ActionType get actionType {
     switch (this) {
-      case 'surgery':
+      case 'SURGERY':
         return ActionType.surgery;
-      case 'endoscopy':
+      case 'ENDOSCOPY':
         return ActionType.endoscopy;
       default:
         return ActionType.review;
@@ -17,13 +17,13 @@ extension ActionTypeExtension on ActionType {
   String get string {
     switch (this) {
       case ActionType.review:
-        return 'review';
+        return 'REVIEW';
       case ActionType.surgery:
-        return 'surgery';
+        return 'SURGERY';
       case ActionType.endoscopy:
-        return 'endoscopy';
+        return 'ENDOSCOPY';
       default:
-        return 'review';
+        return 'REVIEW';
     }
   }
 }

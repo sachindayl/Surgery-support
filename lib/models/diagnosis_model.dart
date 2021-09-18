@@ -26,13 +26,13 @@ class DiagnosisModel {
   factory DiagnosisModel.fromJson(Map<String, dynamic> json) {
     var date = (json["date"] as String).split('T');
     return DiagnosisModel(
-      indication: json["indication"],
+      indication: json["indication"].toString().toUpperCase(),
       date: DateFormat('yy-MM-dd').parse(date[0]),
-      procedure: json["procedure"],
-      actionType: json["actionType"].toString().toLowerCase().actionType,
-      surgery: json["surgery"],
-      surgeryType: json["surgeryType"].toString().surgeryType,
-      priority: json["priority"].toString().toLowerCase().priority,
+      procedure: json["procedure"].toString().toUpperCase(),
+      actionType: json["actionType"].toString().toUpperCase().actionType,
+      surgery: json["surgery"].toString().toUpperCase(),
+      surgeryType: json["surgeryType"].toString().toUpperCase().surgeryType,
+      priority: json["priority"].toString().toUpperCase().priority,
     );
   }
 
@@ -48,11 +48,11 @@ class DiagnosisModel {
   }
 
   Map<String, dynamic> toJson() => {
-        "indication": indication,
+        "indication": indication.toLowerCase(),
         "date": date.toIso8601String(),
-        "procedure": procedure,
+        "procedure": procedure?.toLowerCase(),
         "actionType": actionType.string.toLowerCase(),
-        "surgery": surgery,
+        "surgery": surgery?.toLowerCase(),
         "surgeryType": surgeryType.string.toLowerCase(),
         "priority": priority.string.toLowerCase(),
       };

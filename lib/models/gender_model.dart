@@ -3,9 +3,9 @@ enum Gender { male, female, other }
 extension GenderString on String {
   Gender get gender {
     switch (this) {
-      case 'male':
+      case 'MALE':
         return Gender.male;
-      case 'female':
+      case 'FEMALE':
         return Gender.female;
       default:
         return Gender.other;
@@ -17,11 +17,11 @@ extension GenderExtension on Gender {
   String get string {
     switch (this) {
       case Gender.male:
-        return 'male';
+        return 'MALE';
       case Gender.female:
-        return 'female';
+        return 'FEMALE';
       default:
-        return 'other';
+        return 'OTHER';
     }
   }
 }

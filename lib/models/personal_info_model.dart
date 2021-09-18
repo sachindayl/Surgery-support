@@ -23,10 +23,10 @@ class PersonalInfoModel {
 
   factory PersonalInfoModel.fromJson(Map<String, dynamic> json) =>
       PersonalInfoModel(
-        registrationNo: json["registrationNo"],
-        category: json["category"].toString().toLowerCase().category,
+        registrationNo: json["registrationNo"].toString().toUpperCase(),
+        category: json["category"].toString().toUpperCase().category,
         name: NameModel.fromJson(json["name"]),
-        gender: json["gender"].toString().toLowerCase().gender,
+        gender: json["gender"].toString().toUpperCase().gender,
         age: json["age"],
         phoneNumber: json["phoneNumber"],
       );
@@ -37,12 +37,12 @@ class PersonalInfoModel {
         category: ServiceCategory.ors,
         name: NameModel.newInstance(),
         gender: Gender.male,
-        age: null,
+        age: -1,
         phoneNumber: Constants.emptyString);
   }
 
   Map<String, dynamic> toJson() => {
-        "registrationNo": registrationNo,
+        "registrationNo": registrationNo.toLowerCase(),
         "category": category.string.toLowerCase(),
         "name": name.toJson(),
         "gender": gender.string.toLowerCase(),

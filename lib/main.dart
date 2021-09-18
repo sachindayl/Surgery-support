@@ -26,13 +26,16 @@ Future<void> main() async {
 
     var currentUser = FirebaseAuth.instance.currentUser;
 
-    runApp(EasyLocalization(
-        supportedLocales: [Locale('en', 'US')],
-        path: 'assets/translations',
-        fallbackLocale: Locale('en', 'US'),
-        child: Platform.isIOS
-            ? CupertinoAppMain(currentUser != null)
-            : MaterialAppMain(currentUser != null)));
+    Future.delayed(Duration(seconds: 1), (){
+      runApp(EasyLocalization(
+          supportedLocales: [Locale('en', 'US')],
+          path: 'assets/translations',
+          fallbackLocale: Locale('en', 'US'),
+          child: Platform.isIOS
+              ? CupertinoAppMain(currentUser != null)
+              : MaterialAppMain(currentUser != null)));
+    });
+
   } catch (e) {
     log(e.toString(), name: "main");
   }

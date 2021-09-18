@@ -3,9 +3,9 @@ enum ServiceCategory { ors, officer, family }
 extension CategoryString on String {
   ServiceCategory get category {
     switch (this) {
-      case 'family':
+      case 'FAMILY':
         return ServiceCategory.family;
-      case 'officer':
+      case 'OFFICER':
         return ServiceCategory.officer;
       default:
         return ServiceCategory.ors;
@@ -17,11 +17,11 @@ extension CategoryExtension on ServiceCategory {
   String get string {
     switch (this) {
       case ServiceCategory.ors:
-        return 'ors';
+        return 'ORS';
       case ServiceCategory.officer:
-        return 'officer';
+        return 'OFFICER';
       default:
-        return 'family';
+        return 'FAMILY';
     }
   }
 }

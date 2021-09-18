@@ -24,7 +24,7 @@ class CreatePatientViewmodel with ChangeNotifier {
   // region Getters
 
   List<String> get procedureList =>
-      ["None", "Upper GI", "Lower GI", "Cystoscopy"];
+      ["NONE", "UPPER GI", "LOWER GI", "CYSTOSCOPY"];
 
 
   int get genderIndex => _genderIndex;

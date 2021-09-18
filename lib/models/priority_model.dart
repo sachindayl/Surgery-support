@@ -3,9 +3,9 @@ enum Priority { low, medium, high }
 extension PriorityString on String {
   Priority get priority {
     switch (this) {
-      case 'low':
+      case 'LOW':
         return Priority.low;
-      case 'medium':
+      case 'MEDIUM':
         return Priority.medium;
       default:
         return Priority.high;
@@ -17,11 +17,11 @@ extension PriorityExtension on Priority {
   String get string {
     switch (this) {
       case Priority.low:
-        return 'low';
+        return 'LOW';
       case Priority.medium:
-        return 'medium';
+        return 'MEDIUM';
       default:
-        return 'high';
+        return 'HIGH';
     }
   }
 }

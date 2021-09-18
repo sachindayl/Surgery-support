@@ -66,7 +66,7 @@ class _HomeViewState extends State<HomeView> {
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
-            'High priority surgeries',
+            'High priority actions',
             style: CupertinoStyles.mainTitleText,
           ),
         ),
@@ -106,7 +106,7 @@ class _HomeViewState extends State<HomeView> {
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
-            'Surgeries',
+            'Actions',
             style: CupertinoStyles.mainTitleText,
           ),
         ),

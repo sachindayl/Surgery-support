@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:wardeleven/base/base_viewmodel_contract.dart';
+import 'package:wardeleven/base/constants/constants.dart';
 import 'package:wardeleven/base/failure_handler.dart';
 import 'package:wardeleven/models/enums.dart';
 import 'package:wardeleven/services/firebase/firebase_service.dart';

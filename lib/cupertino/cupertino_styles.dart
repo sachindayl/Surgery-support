@@ -20,13 +20,13 @@ abstract class CupertinoStyles {
         color: Styles.black.withOpacity(Styles.opacity87),
       ),
       navActionTextStyle: TextStyle(
-        fontSize: Styles.fontSize19,
+        fontSize: Styles.fontSize16,
         fontWeight: Styles.fontWeightSemiBold,
         color: Styles.accentColor,
       ),
       actionTextStyle: TextStyle(
         fontSize: Styles.fontSize19,
-        fontWeight: Styles.fontWeightSemiBold,
+        fontWeight: Styles.fontWeightNormal,
         color: Styles.accentColor,
       ),
       textStyle: TextStyle(

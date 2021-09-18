@@ -52,7 +52,8 @@ class PatientListItem extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
                       child: Text(
                         patient.fullName,
-                        style: CupertinoStyles.cardTitleText,
+                        style: CupertinoStyles.cardTitleText
+                            .copyWith(fontSize: Styles.fontSize16),
                       ),
                     ),
                     Text(
@@ -71,7 +72,7 @@ class PatientListItem extends StatelessWidget {
                   color: CupertinoTheme.of(context).primaryColor,
                   borderRadius: BorderRadius.circular(6.0)),
               child: Text(
-                patient.diagnosis.actionType.string.capitalize(),
+                patient.diagnosis.actionType.string.toLowerCase().capitalize(),
                 style: TextStyle(
                     fontSize: Styles.fontSize14,
                     fontWeight: Styles.fontWeightLight,

@@ -172,7 +172,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
               .setLoading(LoadingState.complete);
         }),
         child: Padding(
-          padding: const EdgeInsets.all(4.0),
+          padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0),
           child: Text(widget.selectedPatient != null ? 'Update' : 'Create',
               style: CupertinoTheme.of(context).textTheme.navActionTextStyle),
         ),
@@ -229,6 +229,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
   Widget _registrationNumber(BuildContext context) {
     return CupertinoFormRow(
         child: CupertinoTextFormFieldRow(
+      textCapitalization: TextCapitalization.characters,
       placeholder: 'Registration No.',
       maxLength: 25,
       keyboardType: TextInputType.text,
@@ -268,9 +269,10 @@ class _CreatePatientViewState extends State<CreatePatientView> {
   Widget _firstName(BuildContext context) {
     return CupertinoFormRow(
         child: CupertinoTextFormFieldRow(
+      textCapitalization: TextCapitalization.characters,
       placeholder: 'First name',
       maxLength: 25,
-      keyboardType: TextInputType.name,
+      keyboardType: TextInputType.text,
       controller: _firstNameController,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -284,8 +286,9 @@ class _CreatePatientViewState extends State<CreatePatientView> {
   Widget _lastName(BuildContext context) {
     return CupertinoFormRow(
         child: CupertinoTextFormFieldRow(
+      textCapitalization: TextCapitalization.characters,
       maxLength: 30,
-      keyboardType: TextInputType.name,
+      keyboardType: TextInputType.text,
       controller: _lastNameController,
       placeholder: 'Last name',
       validator: (value) {
@@ -346,6 +349,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
   Widget _indication(BuildContext context) {
     return CupertinoFormRow(
         child: CupertinoTextFormFieldRow(
+          textCapitalization: TextCapitalization.characters,
       controller: _indicationController,
       placeholder: 'Indication / diagnosis',
       maxLength: 200,
@@ -404,10 +408,11 @@ class _CreatePatientViewState extends State<CreatePatientView> {
   Widget _surgery(BuildContext context) {
     return CupertinoFormRow(
         child: CupertinoTextFormFieldRow(
+          textCapitalization: TextCapitalization.characters,
       controller: _surgeryController,
       placeholder: 'Surgery details',
       maxLength: 200,
-      keyboardType: TextInputType.name,
+      keyboardType: TextInputType.text,
     ));
   }
 
@@ -470,33 +475,38 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         .read<CreatePatientViewmodel>()
         .newPatient
         .personalInfo
-        .registrationNo;
+        .registrationNo
+        .toUpperCase();
     _firstNameController.text = context
         .read<CreatePatientViewmodel>()
         .newPatient
         .personalInfo
         .name
-        .firstName;
+        .firstName
+        .toUpperCase();
     _lastNameController.text = context
         .read<CreatePatientViewmodel>()
         .newPatient
         .personalInfo
         .name
-        .lastName;
+        .lastName
+        .toUpperCase();
     var category =
         context.read<CreatePatientViewmodel>().newPatient.personalInfo.category;
-    if (category == ServiceCategory.ors) {
-      _categoryController.text = category.string.toUpperCase();
-    } else {
-      _categoryController.text = category.string.capitalize();
-    }
+    _categoryController.text = category.string.toUpperCase();
 
-    _ageController.text = context
-        .read<CreatePatientViewmodel>()
-        .newPatient
-        .personalInfo
-        .age
-        .toString();
+    var age =
+        context.read<CreatePatientViewmodel>().newPatient.personalInfo.age;
+    if (age == -1) {
+      _ageController.text = Constants.emptyString;
+    } else {
+      _ageController.text = context
+          .read<CreatePatientViewmodel>()
+          .newPatient
+          .personalInfo
+          .age
+          .toString();
+    }
 
     _phoneNumberController.text = context
         .read<CreatePatientViewmodel>()
@@ -509,21 +519,29 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         .personalInfo
         .gender
         .string
-        .capitalize();
+        .toUpperCase();
 
     //endRegion
 
     //region Diagnosis controllers
-    _indicationController.text =
-        context.read<CreatePatientViewmodel>().newPatient.diagnosis.indication;
+    _indicationController.text = context
+        .read<CreatePatientViewmodel>()
+        .newPatient
+        .diagnosis
+        .indication
+        .toUpperCase();
     _dateController.text = context
         .read<CreatePatientViewmodel>()
         .newPatient
         .diagnosis
         .diagnosisDateToString;
-    _surgeryController.text =
-        context.read<CreatePatientViewmodel>().newPatient.diagnosis.surgery ??
-            Constants.emptyString;
+    _surgeryController.text = context
+            .read<CreatePatientViewmodel>()
+            .newPatient
+            .diagnosis
+            .surgery
+            ?.toUpperCase() ??
+        Constants.emptyString;
 
     _actionTypeController.text = context
         .read<CreatePatientViewmodel>()
@@ -531,7 +549,7 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         .diagnosis
         .actionType
         .string
-        .capitalize();
+        .toUpperCase();
 
     _priorityController.text = context
         .read<CreatePatientViewmodel>()
@@ -539,18 +557,22 @@ class _CreatePatientViewState extends State<CreatePatientView> {
         .diagnosis
         .priority
         .string
-        .capitalize();
+        .toUpperCase();
 
-    _procedureController.text =
-        context.read<CreatePatientViewmodel>().newPatient.diagnosis.procedure ??
-            Constants.emptyString;
+    _procedureController.text = context
+            .read<CreatePatientViewmodel>()
+            .newPatient
+            .diagnosis
+            .procedure
+            ?.toUpperCase() ??
+        Constants.emptyString;
     _surgeryTypeController.text = context
         .read<CreatePatientViewmodel>()
         .newPatient
         .diagnosis
         .surgeryType
         .string
-        .capitalize();
+        .toUpperCase();
 
     //endRegion
   }
