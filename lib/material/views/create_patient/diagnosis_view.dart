@@ -10,6 +10,7 @@ import 'package:wardeleven/material/widgets/custom_date_picker.dart';
 import 'package:wardeleven/material/widgets/custom_text_form_field.dart';
 import 'package:wardeleven/material/widgets/form_field_dropdown.dart';
 import 'package:wardeleven/material/widgets/form_row.dart';
+import 'package:wardeleven/material/widgets/form_title.dart';
 import 'package:wardeleven/models/action_type_model.dart';
 import 'package:wardeleven/models/enums.dart';
 import 'package:wardeleven/models/patient_model.dart';
@@ -29,6 +30,7 @@ class DiagnosisView extends StatefulWidget {
 }
 
 class _DiagnosisViewState extends State<DiagnosisView> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _indicationController = TextEditingController();
   final TextEditingController _surgeryController = TextEditingController();
@@ -87,16 +89,13 @@ class _DiagnosisViewState extends State<DiagnosisView> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(context
-                      .read<CreatePatientViewmodel>()
-                      .newPatient
-                      .personalInfo
-                      .name
-                      .firstName !=
-                  Constants.emptyString
+          title: Text(widget.selectedPatient != null
               ? 'Update patient'
-              : 'Create patient'),
-        ),
+              : 'Create patient', style: Theme.of(context)
+        .textTheme
+        .headline4!
+        .copyWith(color: Styles.white),
+        )),
         body: SafeArea(
             child: Stack(
           children: [
@@ -104,9 +103,12 @@ class _DiagnosisViewState extends State<DiagnosisView> {
               child: Container(
                 padding: const EdgeInsets.symmetric(
                     horizontal: Styles.horizontalPadding, vertical: 8.0),
-                child: Column(
-                    children: _initializeView() +
-                        [_validateAndSubmitButton(context)]),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                      children: _initializeView() +
+                          [_validateAndSubmitButton(context)]),
+                ),
               ),
             ),
             CustomCircularProgressIndicator(
@@ -123,6 +125,9 @@ class _DiagnosisViewState extends State<DiagnosisView> {
     var actionType = context.watch<CreatePatientViewmodel>().actionType;
     if (actionType == ActionType.surgery) {
       return [
+        FormTitle(
+          title: 'Diagnosis Information',
+        ),
         _indication(context),
         _diagnosisDate(context),
         _priority(context),
@@ -132,6 +137,9 @@ class _DiagnosisViewState extends State<DiagnosisView> {
       ];
     } else if (actionType == ActionType.endoscopy) {
       return [
+        FormTitle(
+          title: 'Diagnosis Information',
+        ),
         _indication(context),
         _diagnosisDate(context),
         _priority(context),
@@ -140,6 +148,9 @@ class _DiagnosisViewState extends State<DiagnosisView> {
       ];
     }
     return [
+      FormTitle(
+        title: 'Diagnosis Information',
+      ),
       _indication(context),
       _diagnosisDate(context),
       _priority(context),
@@ -152,14 +163,22 @@ class _DiagnosisViewState extends State<DiagnosisView> {
         child: FormRow(
             icon: Icon(Icons.assessment_outlined),
             formField: CustomTextFormField(
-                label: 'Indication/diagnosis',
-                controller: _indicationController)),
+              label: 'Indication/diagnosis',
+              controller: _indicationController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a valid indication/diagnosis';
+                }
+                return null;
+              },
+            )),
       );
 
   Widget _diagnosisDate(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: FormRow(
+        icon: Icon(Icons.event),
         formField: Consumer<CreatePatientViewmodel>(
             builder: (context, viewModel, child) {
           return TextFormField(
@@ -214,6 +233,7 @@ class _DiagnosisViewState extends State<DiagnosisView> {
   Widget _actionType(BuildContext context) => Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: FormRow(
+            icon: Icon(Icons.dynamic_form_outlined),
             formField: FormFieldDropdown(
           label: 'Action type',
           value: context

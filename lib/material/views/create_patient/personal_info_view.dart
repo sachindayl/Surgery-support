@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wardeleven/base/base_styles.dart';
+import 'package:wardeleven/base/constants/constants.dart';
+import 'package:wardeleven/base/regex_validator.dart';
 import 'package:wardeleven/base/text_capitalize.dart';
 import 'package:wardeleven/cupertino/widgets/form_title.dart';
 import 'package:wardeleven/material/widgets/custom_text_form_field.dart';
@@ -24,6 +26,7 @@ class PersonalInfoView extends StatefulWidget {
 }
 
 class _PersonalInfoViewState extends State<PersonalInfoView> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _regController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
@@ -57,29 +60,38 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.selectedPatient != null
-              ? 'Update patient'
-              : 'Create patient'),
+          title: Text(
+            widget.selectedPatient != null
+                ? 'Update patient'
+                : 'Create patient',
+            style: Theme.of(context)
+                .textTheme
+                .headline4!
+                .copyWith(color: Styles.white),
+          ),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(
-                  horizontal: Styles.horizontalPadding),
-              child: Column(
-                children: [
-                  FormTitle(
-                    title: 'Personal Information',
-                  ),
-                  _registrationNumber(context),
-                  _category(context),
-                  _firstName(context),
-                  _lastName(context),
-                  _gender(context),
-                  _age(context),
-                  _telephoneNumber(context),
-                  _continueButton(context)
-                ],
+                  horizontal: Styles.horizontalPadding, vertical: 8.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    FormTitle(
+                      title: 'Personal Information',
+                    ),
+                    _registrationNumber(context),
+                    _category(context),
+                    _firstName(context),
+                    _lastName(context),
+                    _gender(context),
+                    _age(context),
+                    _telephoneNumber(context),
+                    _continueButton(context)
+                  ],
+                ),
               ),
             ),
           ),
@@ -96,6 +108,12 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
         formField: CustomTextFormField(
           controller: _regController,
           label: 'Registration No',
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a valid registration no.';
+            }
+            return null;
+          },
         ),
       ),
     );
@@ -131,10 +149,16 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
     return Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: FormRow(
-          icon: Icon(Icons.person),
+          icon: Icon(Icons.person_outline),
           formField: CustomTextFormField(
             label: 'First name',
             controller: _firstNameController,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a valid first name';
+              }
+              return null;
+            },
           ),
         ));
   }
@@ -146,6 +170,12 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
           formField: CustomTextFormField(
             label: 'Last name',
             controller: _lastNameController,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a valid last name';
+              }
+              return null;
+            },
           ),
         ));
   }
@@ -252,9 +282,18 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
     return Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: FormRow(
+          icon: Icon(Icons.cake_outlined),
           formField: CustomTextFormField(
             label: 'Age',
             controller: _ageController,
+            textInputType: TextInputType.number,
+            maxLength: 3,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a valid age';
+              }
+              return null;
+            },
           ),
         ));
   }
@@ -267,6 +306,14 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
           formField: CustomTextFormField(
             label: 'Telephone no.',
             controller: _phoneController,
+            textInputType: TextInputType.phone,
+            maxLength: 13,
+            validator: (value) {
+              if (value == null || value.isEmpty || !value.isValidPhone) {
+                return 'Please enter a valid phone no.';
+              }
+              return null;
+            },
           ),
         ));
   }
@@ -288,11 +335,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
             ),
             ElevatedButton(
               onPressed: () {
-                _savePersonalInfo(context);
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => DiagnosisView(
-                          selectedPatient: widget.selectedPatient,
-                        )));
+                _validateAndContinue(context);
               },
               child: Icon(
                 Icons.arrow_right_alt_rounded,
@@ -330,12 +373,18 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
         .name
         .lastName;
 
-    _ageController.text = context
-        .read<CreatePatientViewmodel>()
-        .newPatient
-        .personalInfo
-        .age
-        .toString();
+    var age =
+        context.read<CreatePatientViewmodel>().newPatient.personalInfo.age;
+    if (age == -1) {
+      _ageController.text = Constants.emptyString;
+    } else {
+      _ageController.text = context
+          .read<CreatePatientViewmodel>()
+          .newPatient
+          .personalInfo
+          .age
+          .toString();
+    }
 
     _phoneController.text = context
         .read<CreatePatientViewmodel>()
@@ -344,14 +393,21 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
         .phoneNumber;
   }
 
-  _savePersonalInfo(BuildContext context) {
-    var viewModel = context.read<CreatePatientViewmodel>();
-    viewModel.newPatient.personalInfo.registrationNo = _regController.text;
-    viewModel.newPatient.personalInfo.name.firstName =
-        _firstNameController.text;
-    viewModel.newPatient.personalInfo.name.lastName = _lastNameController.text;
-    viewModel.newPatient.personalInfo.phoneNumber = _phoneController.text;
+  _validateAndContinue(BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      var viewModel = context.read<CreatePatientViewmodel>();
+      viewModel.newPatient.personalInfo.registrationNo = _regController.text;
+      viewModel.newPatient.personalInfo.name.firstName =
+          _firstNameController.text;
+      viewModel.newPatient.personalInfo.name.lastName =
+          _lastNameController.text;
+      viewModel.newPatient.personalInfo.phoneNumber = _phoneController.text;
 
-    viewModel.setNewPatientDetails(viewModel.newPatient);
+      viewModel.setNewPatientDetails(viewModel.newPatient);
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => DiagnosisView(
+                selectedPatient: widget.selectedPatient,
+              )));
+    }
   }
 }

@@ -13,7 +13,6 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-
   @override
   void initState() {
     super.initState();
@@ -30,7 +29,14 @@ class _HomeViewState extends State<HomeView> {
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
-              title: Text('Ward Eleven'),
+              onStretchTrigger: () async {},
+              expandedHeight: 100.0,
+              flexibleSpace: FlexibleSpaceBar(
+                  title: Text('Ward 11',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4!
+                          .copyWith(color: Styles.white))),
             ),
             SliverToBoxAdapter(
               child: Container(
@@ -52,65 +58,71 @@ class _HomeViewState extends State<HomeView> {
             SliverToBoxAdapter(
               child: Container(
                 alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0, vertical: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Text(
                   'High priority surgeries',
                   style: Theme.of(context).textTheme.headline4,
                 ),
               ),
             ),
-            context.watch<HomeViewModel>().todayHighPriorityPatients.isNotEmpty ?
-                SliverList(delegate: SliverChildBuilderDelegate(
+            context.watch<HomeViewModel>().todayHighPriorityPatients.isNotEmpty
+                ? SliverList(
+                    delegate: SliverChildBuilderDelegate(
                     (context, index) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12.0, vertical: 4.0),
                       child: PatientListItem(
                           patient: context
                               .watch<HomeViewModel>()
-                              .todayHighPriorityPatients[index]
-                      ),
+                              .todayHighPriorityPatients[index]),
                     ),
-                  childCount: context
-                      .watch<HomeViewModel>()
-                      .todayHighPriorityPatients.length,
-                )): SliverToBoxAdapter(
-              child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: Styles.itemBorderRadius, vertical: 8.0),
-                  child: MessageTile()),
-            ),
+                    childCount: context
+                        .watch<HomeViewModel>()
+                        .todayHighPriorityPatients
+                        .length,
+                  ))
+                : SliverToBoxAdapter(
+                    child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: Styles.itemBorderRadius, vertical: 8.0),
+                        child: MessageTile()),
+                  ),
             SliverToBoxAdapter(
               child: Container(
                 alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0, vertical: 4.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
                 child: Text(
                   'Surgeries',
                   style: Theme.of(context).textTheme.headline4,
                 ),
               ),
             ),
-            context.watch<HomeViewModel>().todayOtherPatients.isNotEmpty ?
-            SliverList(delegate: SliverChildBuilderDelegate(
-                  (context, index) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-                child: PatientListItem(
-                    patient: context
+            context.watch<HomeViewModel>().todayOtherPatients.isNotEmpty
+                ? SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                    (context, index) => Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12.0, vertical: 4.0),
+                      child: PatientListItem(
+                          patient: context
+                              .watch<HomeViewModel>()
+                              .todayOtherPatients[index]),
+                    ),
+                    childCount: context
                         .watch<HomeViewModel>()
-                        .todayOtherPatients[index]
-                ),
-              ),
-              childCount: context
-                  .watch<HomeViewModel>()
-                  .todayOtherPatients.length,
-            )): SliverToBoxAdapter(
-              child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: Styles.itemBorderRadius, vertical: 4.0),
-                  child: MessageTile()),
-            ),
+                        .todayOtherPatients
+                        .length,
+                  ))
+                : SliverToBoxAdapter(
+                    child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: Styles.itemBorderRadius, vertical: 4.0),
+                        child: MessageTile()),
+                  ),
           ],
         ),
       ),

@@ -11,6 +11,9 @@ class MainContainer extends StatelessWidget {
     return DefaultTabController(
         length: 2,
         child: Scaffold(
+          appBar: AppBar(
+            toolbarHeight: 0.0,
+          ),
           bottomNavigationBar:
               TabBar(labelColor: Colors.black, tabs: _tabs(context)),
           body: TabBarView(children: [HomeView(), PatientSearchView()]),
