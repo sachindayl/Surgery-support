@@ -89,13 +89,16 @@ class _DiagnosisViewState extends State<DiagnosisView> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.selectedPatient != null
-              ? 'Update patient'
-              : 'Create patient', style: Theme.of(context)
-        .textTheme
-        .headline4!
-        .copyWith(color: Styles.white),
-        )),
+            backgroundColor: Theme.of(context).primaryColor,
+            title: Text(
+              widget.selectedPatient != null
+                  ? 'Update patient'
+                  : 'Create patient',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline4!
+                  .copyWith(color: Styles.white),
+            )),
         body: SafeArea(
             child: Stack(
           children: [
@@ -235,24 +238,24 @@ class _DiagnosisViewState extends State<DiagnosisView> {
         child: FormRow(
             icon: Icon(Icons.dynamic_form_outlined),
             formField: FormFieldDropdown(
-          label: 'Action type',
-          value: context
-              .read<CreatePatientViewmodel>()
-              .newPatient
-              .diagnosis
-              .actionType
-              .string,
-          listItems:
-              ActionType.values.map((e) => e.string.capitalize()).toList(),
-          onChangedCallback: (String? value) {
-            var patient = context.read<CreatePatientViewmodel>().newPatient;
-            patient.diagnosis.actionType =
-                value?.actionType ?? ActionType.review;
-            context
-                .read<CreatePatientViewmodel>()
-                .setNewPatientDetails(patient);
-          },
-        )),
+              label: 'Action type',
+              value: context
+                  .read<CreatePatientViewmodel>()
+                  .newPatient
+                  .diagnosis
+                  .actionType
+                  .string,
+              listItems:
+                  ActionType.values.map((e) => e.string.capitalize()).toList(),
+              onChangedCallback: (String? value) {
+                var patient = context.read<CreatePatientViewmodel>().newPatient;
+                patient.diagnosis.actionType =
+                    value?.actionType ?? ActionType.review;
+                context
+                    .read<CreatePatientViewmodel>()
+                    .setNewPatientDetails(patient);
+              },
+            )),
       );
 
   Widget _surgery(BuildContext context) => Padding(

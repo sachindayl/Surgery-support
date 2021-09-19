@@ -30,6 +30,7 @@ class _HomeViewState extends State<HomeView> {
           slivers: [
             SliverAppBar(
               onStretchTrigger: () async {},
+              backgroundColor: Theme.of(context).primaryColor,
               expandedHeight: 100.0,
               flexibleSpace: FlexibleSpaceBar(
                   title: Text('Ward 11',
@@ -61,7 +62,7 @@ class _HomeViewState extends State<HomeView> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Text(
-                  'High priority surgeries',
+                  'High priority actions',
                   style: Theme.of(context).textTheme.headline4,
                 ),
               ),
@@ -95,7 +96,7 @@ class _HomeViewState extends State<HomeView> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
                 child: Text(
-                  'Surgeries',
+                  'Actions',
                   style: Theme.of(context).textTheme.headline4,
                 ),
               ),

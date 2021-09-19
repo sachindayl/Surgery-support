@@ -26,6 +26,7 @@ class _PatientSearchViewState extends State<PatientSearchView> {
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
+                backgroundColor: Theme.of(context).primaryColor,
                 onStretchTrigger: () async {},
                 expandedHeight: 100.0,
                 flexibleSpace: FlexibleSpaceBar(
@@ -50,11 +51,16 @@ class _PatientSearchViewState extends State<PatientSearchView> {
                     },
                   ),
                 ]),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: 8.0,
+              ),
+            ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) => Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 12.0, vertical: 4.0),
+                      horizontal: 12.0),
                   child: PatientListItem(
                       patient: context
                           .watch<PatientHistoryViewModel>()
@@ -65,7 +71,12 @@ class _PatientSearchViewState extends State<PatientSearchView> {
                     .patientsList
                     .length,
               ),
-            )
+            ),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: 8.0,
+              ),
+            ),
           ],
         ),
       ),

@@ -60,6 +60,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColor,
           title: Text(
             widget.selectedPatient != null
                 ? 'Update patient'
