@@ -34,38 +34,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      context.read<CreatePatientViewmodel>().setNewPatientDetails(
-          widget.selectedPatient ?? PatientModel.newInstance());
-
-      _regController.text = context
-          .read<CreatePatientViewmodel>()
-          .newPatient
-          .personalInfo
-          .registrationNo;
-      _firstNameController.text = context
-          .read<CreatePatientViewmodel>()
-          .newPatient
-          .personalInfo
-          .name
-          .firstName;
-
-      _lastNameController.text = context
-          .read<CreatePatientViewmodel>()
-          .newPatient
-          .personalInfo
-          .name
-          .lastName;
-
-
-
-      _ageController.text =
-          context.read<CreatePatientViewmodel>().newPatient.personalInfo.age.toString();
-
-      _phoneController.text = context
-          .read<CreatePatientViewmodel>()
-          .newPatient
-          .personalInfo
-          .phoneNumber;
+      _initializeControllers();
     });
   }
 
@@ -120,7 +89,6 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   }
 
   Widget _registrationNumber(BuildContext context) {
-
     return Padding(
       padding: const EdgeInsets.only(top: 24.0),
       child: FormRow(
@@ -145,7 +113,9 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                 .watch<CreatePatientViewmodel>()
                 .newPatient
                 .personalInfo
-                .category.string.capitalize(),
+                .category
+                .string
+                .capitalize(),
             onChangedCallback: (value) {
               var patient = context.read<CreatePatientViewmodel>().newPatient;
               patient.personalInfo.category = value!.toLowerCase().category;
@@ -158,7 +128,6 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
       );
 
   Widget _firstName(BuildContext context) {
-
     return Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: FormRow(
@@ -171,7 +140,6 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   }
 
   Widget _lastName(BuildContext context) {
-
     return Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: FormRow(
@@ -210,8 +178,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                         },
                         trailing: Radio<Gender>(
                           value: Gender.male,
-                          groupValue:
-                              viewModel.newPatient.personalInfo.gender,
+                          groupValue: viewModel.newPatient.personalInfo.gender,
                           onChanged: (_) {},
                         ),
                       );
@@ -236,8 +203,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                         },
                         trailing: Radio<Gender>(
                           value: Gender.female,
-                          groupValue:
-                              viewModel.newPatient.personalInfo.gender,
+                          groupValue: viewModel.newPatient.personalInfo.gender,
                           onChanged: (_) => {},
                         ),
                       );
@@ -269,8 +235,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                         },
                         trailing: Radio<Gender>(
                           value: Gender.other,
-                          groupValue:
-                              viewModel.newPatient.personalInfo.gender,
+                          groupValue: viewModel.newPatient.personalInfo.gender,
                           onChanged: (_) => {},
                         ),
                       );
@@ -284,7 +249,6 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
       );
 
   Widget _age(BuildContext context) {
-
     return Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: FormRow(
@@ -296,7 +260,6 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
   }
 
   Widget _telephoneNumber(BuildContext context) {
-
     return Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: FormRow(
@@ -326,8 +289,10 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
             ElevatedButton(
               onPressed: () {
                 _savePersonalInfo(context);
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => DiagnosisView()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => DiagnosisView(
+                          selectedPatient: widget.selectedPatient,
+                        )));
               },
               child: Icon(
                 Icons.arrow_right_alt_rounded,
@@ -341,6 +306,43 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
           ],
         ),
       );
+
+  _initializeControllers() {
+    context.read<CreatePatientViewmodel>().setNewPatientDetails(
+        widget.selectedPatient ?? PatientModel.newInstance());
+
+    _regController.text = context
+        .read<CreatePatientViewmodel>()
+        .newPatient
+        .personalInfo
+        .registrationNo;
+    _firstNameController.text = context
+        .read<CreatePatientViewmodel>()
+        .newPatient
+        .personalInfo
+        .name
+        .firstName;
+
+    _lastNameController.text = context
+        .read<CreatePatientViewmodel>()
+        .newPatient
+        .personalInfo
+        .name
+        .lastName;
+
+    _ageController.text = context
+        .read<CreatePatientViewmodel>()
+        .newPatient
+        .personalInfo
+        .age
+        .toString();
+
+    _phoneController.text = context
+        .read<CreatePatientViewmodel>()
+        .newPatient
+        .personalInfo
+        .phoneNumber;
+  }
 
   _savePersonalInfo(BuildContext context) {
     var viewModel = context.read<CreatePatientViewmodel>();

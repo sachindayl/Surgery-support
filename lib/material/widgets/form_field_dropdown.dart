@@ -25,7 +25,7 @@ class FormFieldDropdown extends StatelessWidget {
             child: Text(value),
           );
         }).toList(),
-        onChanged: onChangedCallback,
+        onChanged: (value) => onChangedCallback(value),
       ),
     );
   }

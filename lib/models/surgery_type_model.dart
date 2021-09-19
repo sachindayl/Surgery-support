@@ -20,6 +20,8 @@ extension SurgeryTypeExtension on SurgeryType? {
         return 'MAJOR';
       case SurgeryType.minor:
         return 'MINOR';
+      case SurgeryType.none:
+        return 'NONE';
       default:
         return 'NONE';
     }

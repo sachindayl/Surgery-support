@@ -10,8 +10,9 @@ import 'package:wardeleven/material/widgets/custom_date_picker.dart';
 import 'package:wardeleven/material/widgets/custom_text_form_field.dart';
 import 'package:wardeleven/material/widgets/form_field_dropdown.dart';
 import 'package:wardeleven/material/widgets/form_row.dart';
-import 'package:wardeleven/material/widgets/form_title.dart';
+import 'package:wardeleven/models/action_type_model.dart';
 import 'package:wardeleven/models/enums.dart';
+import 'package:wardeleven/models/patient_model.dart';
 import 'package:wardeleven/models/priority_model.dart';
 import 'package:wardeleven/models/surgery_type_model.dart';
 import 'package:wardeleven/shared/viewmodels/create_patient_viewmodel.dart';
@@ -19,6 +20,10 @@ import 'package:wardeleven/shared/viewmodels/create_patient_viewmodel.dart';
 import '../../material_styles.dart';
 
 class DiagnosisView extends StatefulWidget {
+  final PatientModel? selectedPatient;
+
+  const DiagnosisView({Key? key, this.selectedPatient}) : super(key: key);
+
   @override
   _DiagnosisViewState createState() => _DiagnosisViewState();
 }
@@ -26,14 +31,24 @@ class DiagnosisView extends StatefulWidget {
 class _DiagnosisViewState extends State<DiagnosisView> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _indicationController = TextEditingController();
-  final TextEditingController _surgeryDateController = TextEditingController();
+  final TextEditingController _surgeryController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    var newPatient = context.read<CreatePatientViewmodel>().newPatient;
+    _indicationController.text = newPatient.diagnosis.indication;
+    _dateController.text = newPatient.diagnosis.diagnosisDateToString;
+    _surgeryController.text =
+        newPatient.diagnosis.surgery ?? Constants.emptyString;
+  }
 
   @override
   void dispose() {
     super.dispose();
     _dateController.dispose();
     _indicationController.dispose();
-    _surgeryDateController.dispose();
+    _surgeryController.dispose();
   }
 
   @override
@@ -90,17 +105,8 @@ class _DiagnosisViewState extends State<DiagnosisView> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: Styles.horizontalPadding, vertical: 8.0),
                 child: Column(
-                  children: [
-                    FormTitle(title: 'Diagnosis information'),
-                    _indication(context),
-                    _surgeryDate(context),
-                    _procedure(context),
-                    _surgery(context),
-                    _surgeryType(context),
-                    _priority(context),
-                    _createButton(context)
-                  ],
-                ),
+                    children: _initializeView() +
+                        [_validateAndSubmitButton(context)]),
               ),
             ),
             CustomCircularProgressIndicator(
@@ -113,31 +119,49 @@ class _DiagnosisViewState extends State<DiagnosisView> {
     );
   }
 
+  List<Widget> _initializeView() {
+    var actionType = context.watch<CreatePatientViewmodel>().actionType;
+    if (actionType == ActionType.surgery) {
+      return [
+        _indication(context),
+        _diagnosisDate(context),
+        _priority(context),
+        _actionType(context),
+        _surgery(context),
+        _surgeryType(context),
+      ];
+    } else if (actionType == ActionType.endoscopy) {
+      return [
+        _indication(context),
+        _diagnosisDate(context),
+        _priority(context),
+        _actionType(context),
+        _procedure(context),
+      ];
+    }
+    return [
+      _indication(context),
+      _diagnosisDate(context),
+      _priority(context),
+      _actionType(context),
+    ];
+  }
+
   Widget _indication(BuildContext context) => Padding(
         padding: const EdgeInsets.only(top: 24.0),
         child: FormRow(
             icon: Icon(Icons.assessment_outlined),
             formField: CustomTextFormField(
-              label: 'Indication/diagnosis',
-              controller: _indicationController,
-              onChanged: (value) {
-                var patient = context.read<CreatePatientViewmodel>().newPatient;
-                patient.diagnosis.indication = value;
-                context
-                    .read<CreatePatientViewmodel>()
-                    .setNewPatientDetails(patient);
-              },
-            )),
+                label: 'Indication/diagnosis',
+                controller: _indicationController)),
       );
 
-  Widget _surgeryDate(BuildContext context) {
+  Widget _diagnosisDate(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: FormRow(
         formField: Consumer<CreatePatientViewmodel>(
             builder: (context, viewModel, child) {
-          _dateController.text =
-              viewModel.newPatient.diagnosis.diagnosisDateToString;
           return TextFormField(
               controller: _dateController,
               decoration: InputDecoration(
@@ -187,24 +211,37 @@ class _DiagnosisViewState extends State<DiagnosisView> {
         ),
       );
 
+  Widget _actionType(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: FormRow(
+            formField: FormFieldDropdown(
+          label: 'Action type',
+          value: context
+              .read<CreatePatientViewmodel>()
+              .newPatient
+              .diagnosis
+              .actionType
+              .string,
+          listItems:
+              ActionType.values.map((e) => e.string.capitalize()).toList(),
+          onChangedCallback: (String? value) {
+            var patient = context.read<CreatePatientViewmodel>().newPatient;
+            patient.diagnosis.actionType =
+                value?.actionType ?? ActionType.review;
+            context
+                .read<CreatePatientViewmodel>()
+                .setNewPatientDetails(patient);
+          },
+        )),
+      );
+
   Widget _surgery(BuildContext context) => Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: FormRow(
             icon: Icon(Icons.cut),
             formField: CustomTextFormField(
               label: 'Surgery',
-              initialValue: context
-                  .read<CreatePatientViewmodel>()
-                  .newPatient
-                  .diagnosis
-                  .surgery,
-              onChanged: (value) {
-                var patient = context.read<CreatePatientViewmodel>().newPatient;
-                patient.diagnosis.surgery = value;
-                context
-                    .read<CreatePatientViewmodel>()
-                    .setNewPatientDetails(patient);
-              },
+              controller: _surgeryController,
             )),
       );
 
@@ -220,10 +257,9 @@ class _DiagnosisViewState extends State<DiagnosisView> {
                   .newPatient
                   .diagnosis
                   .surgeryType
-                  .toString()
-                  .capitalize(),
-              listItems:
-                  SurgeryType.values.map((e) => e.string.capitalize()).toList(),
+                  .string
+                  .toUpperCase(),
+              listItems: SurgeryType.values.map((e) => e.string).toList(),
               onChangedCallback: (value) {
                 var patient = context.read<CreatePatientViewmodel>().newPatient;
                 patient.diagnosis.surgeryType = value.surgeryType;
@@ -263,57 +299,6 @@ class _DiagnosisViewState extends State<DiagnosisView> {
         ),
       );
 
-  Widget _createButton(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 24.0),
-        child: Row(
-          children: [
-            Spacer(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                context
-                            .read<CreatePatientViewmodel>()
-                            .newPatient
-                            .personalInfo
-                            .name
-                            .firstName !=
-                        Constants.emptyString
-                    ? 'Update'
-                    : 'Create',
-                style: TextStyle(
-                    fontSize: Styles.fontSize21,
-                    fontWeight: Styles.fontWeightSemiBold,
-                    color: MaterialStyles.lightTheme.primaryColor),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Future.delayed(Duration.zero, () async {
-                  var viewModel = context.read<CreatePatientViewmodel>();
-
-                  viewModel.setLoading(LoadingState.loading);
-                  _submitControllerData(context);
-                  viewModel.newPatient.personalInfo.name.firstName !=
-                          Constants.emptyString
-                      ? await viewModel.updatePatient()
-                      : await viewModel.createPatient();
-
-                  viewModel.setLoading(LoadingState.complete);
-                });
-              },
-              child: Icon(
-                Icons.save,
-                color: Styles.white,
-              ),
-              style: ElevatedButton.styleFrom(
-                  primary: Styles.accentColor,
-                  shape: CircleBorder(),
-                  padding: EdgeInsets.all(16.0)),
-            )
-          ],
-        ),
-      );
-
   Future<void> _showMessage(
       BuildContext context, String title, String content) async {
     return showDialog<void>(
@@ -345,11 +330,54 @@ class _DiagnosisViewState extends State<DiagnosisView> {
     );
   }
 
-  _submitControllerData(BuildContext context) {
+  Widget _validateAndSubmitButton(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(top: 24.0),
+        child: Row(
+          children: [
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Submit',
+                style: TextStyle(
+                    fontSize: Styles.fontSize21,
+                    fontWeight: Styles.fontWeightSemiBold,
+                    color: MaterialStyles.lightTheme.primaryColor),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                var viewModel = context.read<CreatePatientViewmodel>();
+                viewModel.setLoading(LoadingState.loading);
+                _submitControllerData(context);
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => DiagnosisView()));
+                viewModel.setLoading(LoadingState.complete);
+              },
+              child: Icon(
+                Icons.save,
+                color: Styles.white,
+              ),
+              style: ElevatedButton.styleFrom(
+                  primary: Styles.accentColor,
+                  shape: CircleBorder(),
+                  padding: EdgeInsets.all(16.0)),
+            )
+          ],
+        ),
+      );
+
+  _submitControllerData(BuildContext context) async {
     var viewModel = context.read<CreatePatientViewmodel>();
     viewModel.newPatient.diagnosis.date =
         DateFormat('dd/MM/yyyy').parse(_dateController.text);
     viewModel.newPatient.diagnosis.indication = _indicationController.text;
+    viewModel.newPatient.diagnosis.surgery = _surgeryController.text;
     viewModel.setNewPatientDetails(viewModel.newPatient);
+    if (widget.selectedPatient != null) {
+      await context.read<CreatePatientViewmodel>().updatePatient();
+    } else {
+      await context.read<CreatePatientViewmodel>().createPatient();
+    }
   }
 }
