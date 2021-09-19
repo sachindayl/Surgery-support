@@ -34,27 +34,28 @@ class _PatientSearchViewState extends State<PatientSearchView> {
                         style: Theme.of(context)
                             .textTheme
                             .headline4!
-                            .copyWith(color: Styles.white))),
-                actions: <Widget>[
-                  IconButton(
-                    icon: const Icon(Icons.search),
-                    tooltip: 'Search',
-                    onPressed: () {
-                      /* ... */
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.filter_alt),
-                    tooltip: 'Search',
-                    onPressed: () {
-                      /* ... */
-                    },
-                  ),
-                ]),
+                            .copyWith(color: Styles.white))),),
             SliverToBoxAdapter(
-              child: SizedBox(
-                height: 8.0,
-              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                child: Card(
+                  color: Theme.of(context).primaryColor,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                    child: TextField(
+                        style: TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.search, color: Styles.white,),
+                          hintText: 'Search...',
+                        hintStyle: TextStyle(color: Colors.white),
+                      ),
+                      onChanged: (searchTerm) => context
+                          .read<PatientHistoryViewModel>()
+                          .setSearchTerm(searchTerm),
+                    ),
+                  ),
+                ),
+              )
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
