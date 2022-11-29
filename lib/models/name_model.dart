@@ -11,8 +11,8 @@ class NameModel {
   });
 
   factory NameModel.fromJson(Map<String, dynamic> json) => NameModel(
-        firstName: json["firstName"],
-        lastName: json["lastName"],
+        firstName: json["firstName"].toString().toUpperCase(),
+        lastName: json["lastName"].toString().toUpperCase(),
       );
 
   factory NameModel.newInstance() {
@@ -21,7 +21,7 @@ class NameModel {
   }
 
   Map<String, dynamic> toJson() => {
-        "firstName": firstName,
-        "lastName": lastName,
+        "firstName": firstName.toLowerCase(),
+        "lastName": lastName.toLowerCase(),
       };
 }

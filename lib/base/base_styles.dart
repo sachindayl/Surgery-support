@@ -26,6 +26,7 @@ abstract class Styles {
   static const FontWeight fontWeightSemiBold = FontWeight.w600;
   static const FontWeight fontWeightNormal = FontWeight.normal;
   static const FontWeight fontWeightLight = FontWeight.w300;
+  static const FontWeight fontWeightExtraLight = FontWeight.w200;
 
   static const double opacity87 = 0.87;
   static const double opacity64 = 0.64;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wardeleven/base/base_styles.dart';
+import 'package:wardeleven/material/views/account/account_view.dart';
 import 'package:wardeleven/material/views/patient_search/patient_search_view.dart';
 
 import '../create_patient/personal_info_view.dart';
@@ -9,11 +10,16 @@ class MainContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Theme.of(context).primaryColor,
+            toolbarHeight: 0.0,
+          ),
           bottomNavigationBar:
               TabBar(labelColor: Colors.black, tabs: _tabs(context)),
-          body: TabBarView(children: [HomeView(), PatientSearchView()]),
+          body: TabBarView(
+              children: [HomeView(), PatientSearchView(), AccountView()]),
           floatingActionButton: ElevatedButton(
             onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => PersonalInfoView())),
@@ -36,6 +42,12 @@ class MainContainer extends StatelessWidget {
         Tab(
           icon: Icon(
             Icons.person_search,
+            color: IconTheme.of(context).color,
+          ),
+        ),
+        Tab(
+          icon: Icon(
+            Icons.person,
             color: IconTheme.of(context).color,
           ),
         ),

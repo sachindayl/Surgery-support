@@ -1,5 +1,6 @@
-import 'package:intl/intl.dart';
 import 'package:wardeleven/base/constants/constants.dart';
+import 'package:wardeleven/models/gender_model.dart';
+import 'package:wardeleven/models/service_category_model.dart';
 
 import 'name_model.dart';
 
@@ -9,54 +10,43 @@ class PersonalInfoModel {
     required this.category,
     required this.name,
     required this.gender,
-    required this.dob,
+    required this.age,
     required this.phoneNumber,
   });
 
   String registrationNo;
-  String category;
+  ServiceCategory category;
   NameModel name;
-  String gender;
-  String dob;
+  Gender gender;
+  int? age;
   String phoneNumber;
 
   factory PersonalInfoModel.fromJson(Map<String, dynamic> json) =>
       PersonalInfoModel(
-        registrationNo: json["registrationNo"],
-        category: json["category"],
+        registrationNo: json["registrationNo"].toString().toUpperCase(),
+        category: json["category"].toString().toUpperCase().category,
         name: NameModel.fromJson(json["name"]),
-        gender: json["gender"],
-        dob: json["dob"],
+        gender: json["gender"].toString().toUpperCase().gender,
+        age: json["age"],
         phoneNumber: json["phoneNumber"],
       );
 
   factory PersonalInfoModel.newInstance() {
     return PersonalInfoModel(
         registrationNo: Constants.emptyString,
-        category: Constants.emptyString,
+        category: ServiceCategory.ors,
         name: NameModel.newInstance(),
-        gender: Constants.emptyString,
-        dob: Constants.emptyString,
+        gender: Gender.male,
+        age: -1,
         phoneNumber: Constants.emptyString);
   }
 
   Map<String, dynamic> toJson() => {
-        "registrationNo": registrationNo,
-        "category": category,
+        "registrationNo": registrationNo.toLowerCase(),
+        "category": category.string.toLowerCase(),
         "name": name.toJson(),
-        "gender": gender,
-        "dob": dob,
+        "gender": gender.string.toLowerCase(),
+        "age": age,
         "phoneNumber": phoneNumber,
       };
-
-  DateTime get formattedDob {
-    if (dob == Constants.emptyString) {
-      return DateTime.now();
-    }
-    return DateFormat('dd/MM/yyyy').parse(dob);
-  }
-
-  void setDob(DateTime newDate) {
-    dob = DateFormat('dd/MM/yyyy').format(newDate);
-  }
 }

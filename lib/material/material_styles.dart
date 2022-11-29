@@ -5,7 +5,7 @@ abstract class MaterialStyles {
   static final ThemeData lightTheme = ThemeData(
       fontFamily: 'Roboto',
       brightness: Brightness.light,
-      primarySwatch: Colors.brown,
+      primarySwatch: Colors.blue,
       primaryColor: Styles.primaryColor,
       accentColor: Styles.accentColor,
       primaryColorDark: Styles.primaryColorDark,

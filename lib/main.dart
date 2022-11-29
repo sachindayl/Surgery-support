@@ -2,13 +2,12 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 
 import 'cupertino/app_main.dart';
 import 'material/app_main.dart';
-
-final app = Platform.isIOS ? CupertinoAppMain() : MaterialAppMain();
 
 Future<void> main() async {
   try {
@@ -25,11 +24,18 @@ Future<void> main() async {
 
     await Firebase.initializeApp();
 
-    runApp(EasyLocalization(
-        supportedLocales: [Locale('en', 'US'), Locale('si', 'LK')],
-        path: 'assets/translations',
-        fallbackLocale: Locale('en', 'US'),
-        child: app));
+    var currentUser = FirebaseAuth.instance.currentUser;
+
+    Future.delayed(Duration(seconds: 1), (){
+      runApp(EasyLocalization(
+          supportedLocales: [Locale('en', 'US')],
+          path: 'assets/translations',
+          fallbackLocale: Locale('en', 'US'),
+          child: Platform.isIOS
+              ? CupertinoAppMain(currentUser != null)
+              : MaterialAppMain(currentUser != null)));
+    });
+
   } catch (e) {
     log(e.toString(), name: "main");
   }

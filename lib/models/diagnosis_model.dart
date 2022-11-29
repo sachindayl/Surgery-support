@@ -1,69 +1,61 @@
 import 'package:intl/intl.dart';
 import 'package:wardeleven/base/constants/constants.dart';
+import 'package:wardeleven/models/action_type_model.dart';
+import 'package:wardeleven/models/priority_model.dart';
+import 'package:wardeleven/models/surgery_type_model.dart';
 
 class DiagnosisModel {
+  String indication;
+  DateTime date;
+  String? procedure;
+  ActionType actionType;
+  String? surgery;
+  SurgeryType? surgeryType;
+  Priority priority;
+
   DiagnosisModel({
     required this.indication,
     required this.date,
     required this.procedure,
-    required this.isOutside,
+    required this.actionType,
     required this.surgery,
     required this.surgeryType,
     required this.priority,
-    required this.remarks,
   });
 
-  String indication;
-  String date;
-  String procedure;
-  bool isOutside;
-  String surgery;
-  String surgeryType;
-  String priority;
-  String remarks;
-
-  factory DiagnosisModel.fromJson(Map<String, dynamic> json) => DiagnosisModel(
-        indication: json["indication"],
-        date: json["date"],
-        procedure: json["procedure"],
-        isOutside: json["is_outside"],
-        surgery: json["surgery"],
-        surgeryType: json["surgeryType"],
-        priority: json["priority"],
-        remarks: json["remarks"],
-      );
+  factory DiagnosisModel.fromJson(Map<String, dynamic> json) {
+    var date = (json["date"] as String).split('T');
+    return DiagnosisModel(
+      indication: json["indication"].toString().toUpperCase(),
+      date: DateFormat('yy-MM-dd').parse(date[0]),
+      procedure: json["procedure"].toString().toUpperCase(),
+      actionType: json["actionType"].toString().toUpperCase().actionType,
+      surgery: json["surgery"].toString().toUpperCase(),
+      surgeryType: json["surgeryType"].toString().toUpperCase().surgeryType,
+      priority: json["priority"].toString().toUpperCase().priority,
+    );
+  }
 
   factory DiagnosisModel.newInstance() {
     return DiagnosisModel(
         indication: Constants.emptyString,
-        date: Constants.emptyString,
-        procedure: Constants.emptyString,
-        isOutside: false,
+        date: DateTime.now(),
+        procedure: 'None',
+        actionType: ActionType.review,
         surgery: Constants.emptyString,
-        surgeryType: Constants.emptyString,
-        priority: Constants.emptyString,
-        remarks: Constants.emptyString);
+        surgeryType: SurgeryType.none,
+        priority: Priority.high);
   }
 
   Map<String, dynamic> toJson() => {
-        "indication": indication,
-        "date": date,
-        "procedure": procedure,
-        "is_outside": isOutside,
-        "surgery": surgery,
-        "surgeryType": surgeryType,
-        "priority": priority,
-        "remarks": remarks,
+        "indication": indication.toLowerCase(),
+        "date": date.toIso8601String(),
+        "procedure": procedure?.toLowerCase(),
+        "actionType": actionType.string.toLowerCase(),
+        "surgery": surgery?.toLowerCase(),
+        "surgeryType": surgeryType.string.toLowerCase(),
+        "priority": priority.string.toLowerCase(),
       };
 
-  DateTime get formattedDiagnosisDate {
-    if(date == Constants.emptyString) {
-      return DateTime.now();
-    }
-    return DateFormat('dd/MM/yyyy').parse(date);
-  }
-
-  void setDiagnosisDate(DateTime newDate) {
-    date = DateFormat('dd/MM/yyyy').format(newDate);
-  }
+  String get diagnosisDateToString => DateFormat('dd/MM/yyyy').format(date);
 }
